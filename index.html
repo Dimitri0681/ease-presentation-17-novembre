@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EASE, trois ressources à tester</title>
+<style>
+  :root {
+    --nuit: #093071;
+    --bleu: #0068DC;
+    --vert: #108454;
+    --pale: #D2E6F0;
+    --gris: #48596C;
+    --fond: #F5F9FC;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #000; color: var(--nuit); }
+  body { font-family: "Avenir Next", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; overflow: hidden; }
+
+  /* ---------- scène 16:9, mise à l'échelle de la fenêtre ---------- */
+  #stage { position: absolute; left: 50%; top: 50%; width: 1600px; height: 900px; transform-origin: 50% 50%; overflow: hidden; background: #fff; }
+  .slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .6s ease, visibility 0s linear .6s; }
+  .slide.active { opacity: 1; visibility: visible; transition: opacity .6s ease, visibility 0s; }
+  body.instant .slide, body.instant .carte { transition: none !important; }
+
+  /* ---------- titre ---------- */
+  #s-titre { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 70%); }
+  #s-titre .logo { position: absolute; left: 70px; top: 56px; height: 120px; }
+  #s-titre .ue { position: absolute; right: 70px; top: 70px; height: 70px; }
+  #s-titre .kicker { position: absolute; left: 110px; top: 300px; font-size: 26px; letter-spacing: .18em; text-transform: uppercase; color: var(--bleu); font-weight: 600; }
+  #s-titre h1 { position: absolute; left: 105px; top: 345px; width: 1300px; margin: 0; font-size: 86px; line-height: 1.05; font-weight: 700; color: var(--nuit); letter-spacing: -.01em; }
+  #s-titre .auteurs { position: absolute; left: 110px; top: 590px; font-size: 30px; line-height: 1.5; color: var(--gris); }
+  #s-titre .auteurs b { color: var(--nuit); font-weight: 600; }
+  #s-titre .partenaires { position: absolute; left: 110px; right: 110px; bottom: 50px; padding-top: 22px; border-top: 1px solid #C9D9E6; font-size: 19px; line-height: 1.5; color: var(--gris); }
+
+  /* ---------- accroche ---------- */
+  #s-accroche { background: radial-gradient(ellipse at 30% 40%, #12408F 0%, var(--nuit) 70%); color: #fff; }
+  #s-accroche .live { position: absolute; left: 70px; top: 60px; display: flex; align-items: center; gap: 14px; font-size: 24px; font-weight: 700; letter-spacing: .14em; }
+  #s-accroche .live i { width: 18px; height: 18px; border-radius: 50%; background: #FF4D4D; box-shadow: 0 0 0 0 rgba(255,77,77,.7); animation: pulse 1.6s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,77,77,.7); } 70% { box-shadow: 0 0 0 18px rgba(255,77,77,0); } 100% { box-shadow: 0 0 0 0 rgba(255,77,77,0); } }
+  #s-accroche img { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); max-height: 800px; max-width: 1400px; border-radius: 28px; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+  #s-accroche .manque { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 900px; padding: 40px 50px; border-radius: 24px;
+                        background: linear-gradient(90deg, rgba(255,255,255,.14), rgba(255,255,255,.05)); font-size: 26px; line-height: 1.5; text-align: center; color: #DCE8F5; display: none; }
+  #s-accroche .manque code { color: #fff; font-size: 24px; }
+
+  /* ---------- zoom ---------- */
+  #s-zoom { background: #000; }
+  #zc { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; }
+  .zlab { position: absolute; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,.85), 0 0 2px rgba(0,0,0,.9); pointer-events: none; }
+  #z-instr { left: 50px; top: 44px; padding: 12px 22px; border-radius: 40px; background: linear-gradient(90deg, rgba(9,48,113,.85), rgba(0,104,220,.55)); text-shadow: none; font-size: 22px; line-height: 1.35; }
+  #z-instr b { font-weight: 700; }
+  #z-instr span { opacity: .85; }
+  #z-place { left: 60px; bottom: 120px; transition: opacity .5s; }
+  #z-place .n { font-size: 64px; font-weight: 700; letter-spacing: -.01em; }
+  #z-place .s { font-size: 28px; margin-top: 4px; opacity: .92; }
+  #z-width { left: 60px; bottom: 60px; font-size: 26px; font-variant-numeric: tabular-nums; }
+  #z-width i { display: inline-block; width: 120px; height: 0; border-top: 3px solid #fff; vertical-align: middle; margin-right: 14px; position: relative; }
+  #z-width i::before, #z-width i::after { content: ""; position: absolute; top: -9px; height: 15px; border-left: 3px solid #fff; }
+  #z-width i::before { left: 0; } #z-width i::after { right: 0; }
+  #z-switch { left: 50%; top: 120px; transform: translateX(-50%); padding: 16px 30px; border-radius: 16px; background: linear-gradient(90deg, rgba(16,132,84,.92), rgba(16,132,84,.65)); text-shadow: none; font-size: 30px; font-weight: 600; opacity: 0; transition: opacity .5s; white-space: nowrap; }
+  #z-credit { right: 24px; bottom: 16px; font-size: 14px; opacity: .8; max-width: 900px; text-align: right; }
+
+  /* ---------- trois ressources ---------- */
+  #s-ressources { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 75%); }
+  .cartes { position: absolute; left: 70px; right: 70px; top: 80px; bottom: 80px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 44px; }
+  .carte { border-radius: 26px; overflow: hidden; background: #fff; box-shadow: 0 18px 50px rgba(9,48,113,.16); display: flex; flex-direction: column;
+           opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  #s-ressources.active .carte { opacity: 1; transform: none; }
+  #s-ressources.active .carte:nth-child(2) { transition-delay: .35s; }
+  #s-ressources.active .carte:nth-child(3) { transition-delay: .7s; }
+  .carte .img { height: 430px; background-size: cover; background-position: center; position: relative; }
+  .carte .img::after { content: ""; position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 0 8px rgba(0,0,0,.6); }
+  .carte .txt { padding: 30px 34px; background: linear-gradient(90deg, #EEF5FB, #FFFFFF); flex: 1; }
+  .carte .echelle { font-size: 54px; font-weight: 700; color: var(--bleu); letter-spacing: -.01em; }
+  .carte .titre { font-size: 27px; font-weight: 600; margin-top: 10px; line-height: 1.25; }
+  .carte .sujet { font-size: 23px; color: var(--gris); margin-top: 10px; }
+
+  /* ---------- grille ---------- */
+  #s-grille { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 75%); }
+  table.grille { position: absolute; left: 60px; right: 60px; top: 50px; width: 1480px; border-collapse: separate; border-spacing: 10px 8px; table-layout: fixed; }
+  .grille th.vide { width: 400px; }
+  .grille thead th { vertical-align: top; text-align: left; padding: 18px 22px; border-radius: 18px; color: #fff; background: linear-gradient(90deg, var(--nuit), #1A56B8); }
+  .grille thead .ech { font-size: 40px; font-weight: 700; letter-spacing: -.01em; }
+  .grille thead .nom { font-size: 21px; font-weight: 600; margin-top: 4px; opacity: .95; line-height: 1.25; min-height: 54px; }
+  .grille thead .tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .grille thead .tags span { font-size: 16px; font-weight: 600; padding: 5px 12px; border-radius: 20px; background: rgba(255,255,255,.18); }
+  .grille thead .tags span.terrain { background: var(--vert); }
+  .grille tbody th { text-align: left; font-size: 25px; font-weight: 600; padding: 0 22px; height: 82px; border-radius: 14px; background: linear-gradient(90deg, #DCEBF6, #F3F8FC); color: var(--nuit); }
+  .grille tbody td { border-radius: 14px; border: 2px dashed #C3D6E6; background: rgba(255,255,255,.6); }
+
+  /* ---------- éléments communs des blocs ---------- */
+  .bloc { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 75%); }
+  .chip { position: absolute; left: 60px; top: 40px; padding: 10px 20px; border-radius: 30px; font-size: 20px; font-weight: 600; color: #fff; background: linear-gradient(90deg, var(--nuit), var(--bleu)); }
+  .chip b { font-weight: 700; }
+  .src { position: absolute; left: 60px; right: 60px; bottom: 22px; font-size: 15px; color: var(--gris); line-height: 1.4; }
+  [data-step] { opacity: 0; transform: translateY(10px); transition: opacity .55s ease, transform .55s ease; }
+  [data-step].on { opacity: 1; transform: none; }
+  body.instant [data-step] { transition: none !important; }
+
+  /* attente du bloc capteurs */
+  #s-capteurs-attente { background: repeating-linear-gradient(135deg, #F3F7FB 0 40px, #EAF1F8 40px 80px); }
+  #s-capteurs-attente .msg { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center; font-size: 40px; font-weight: 700; color: var(--nuit); }
+  #s-capteurs-attente .msg span { display: block; font-size: 24px; font-weight: 500; color: var(--gris); margin-top: 14px; }
+
+
+  /* Capteurs : éléments communs */
+  .bloc .tel { position: absolute; right: 70px; top: 110px; height: 720px; border-radius: 34px; border: 10px solid #1E2A36; box-shadow: 0 20px 50px rgba(9,48,113,.25); }
+  .vide { border: 3px dashed #9DB6CC; border-radius: 16px; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--gris); font-size: 24px; line-height: 1.4; background: rgba(255,255,255,.6); padding: 20px; }
+  .p1 { background: linear-gradient(90deg, #DCE8FA, #EEF4FD); color: #2457A6; }
+  .p2 { background: linear-gradient(90deg, #DDF2DF, #EEF8EF); color: #2E7D32; }
+  .p3 { background: linear-gradient(90deg, #FDEFD9, #FEF7EC); color: #A8650A; }
+  .p4 { background: linear-gradient(90deg, #EADCF7, #F4EDFB); color: #7B3FB8; }
+
+  /* Capteurs 1 : le boîtier */
+  #k-boitier .capts { position: absolute; left: 60px; top: 130px; width: 900px; }
+  #k-boitier .cp { display: grid; grid-template-columns: 200px 1fr; align-items: center; padding: 22px 26px; border-radius: 18px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); margin-bottom: 20px; }
+  #k-boitier .cp .n { font-size: 26px; font-weight: 700; color: var(--bleu); }
+  #k-boitier .cp .m { font-size: 32px; font-weight: 700; color: var(--nuit); }
+  #k-boitier .cp .u { grid-column: 2; font-size: 22px; color: var(--gris); margin-top: 2px; }
+  #k-boitier .cp.nox { background: linear-gradient(90deg, #FDF0D9, #FFFAF0); }
+  #k-boitier .acces { position: absolute; left: 60px; width: 900px; top: 640px; padding: 20px 26px; border-radius: 18px; background: linear-gradient(90deg, rgba(16,132,84,.16), rgba(16,132,84,.04)); font-size: 25px; font-weight: 600; color: var(--vert); line-height: 1.35; }
+
+  /* Capteurs 2 : quatre lieux, deux passages */
+  #k-protocole .lieux { position: absolute; left: 60px; top: 125px; width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  #k-protocole .lieux div { padding: 20px 24px; border-radius: 16px; font-size: 30px; font-weight: 700; }
+  #k-protocole .lieux div span { font-weight: 500; margin-left: 10px; }
+  #k-protocole .seq { position: absolute; left: 60px; width: 900px; top: 345px; display: flex; align-items: center; gap: 8px; }
+  #k-protocole .seq b { padding: 10px 14px; border-radius: 12px; font-size: 26px; }
+  #k-protocole .seq i { font-style: normal; font-size: 24px; color: var(--gris); }
+  #k-protocole .seq .ret { margin-left: 6px; font-size: 18px; color: var(--gris); }
+  #k-protocole .regles { position: absolute; left: 60px; width: 900px; top: 440px; }
+  #k-protocole .regles div { font-size: 25px; color: var(--nuit); padding: 14px 0; border-bottom: 1px solid #D5E2EE; }
+  #k-protocole .regles div b { color: var(--bleu); }
+
+  /* Capteurs 3 : la boucle mesurée */
+  #k-boucle .vide.g { position: absolute; left: 60px; top: 120px; width: 980px; height: 640px; }
+  #k-boucle .infos { position: absolute; left: 1080px; right: 60px; top: 130px; }
+  #k-boucle .infos div { padding: 18px 22px; border-radius: 16px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); margin-bottom: 18px; font-size: 22px; color: var(--gris); }
+  #k-boucle .infos div b { display: block; font-size: 26px; color: var(--nuit); margin-bottom: 4px; }
+
+  /* Capteurs 4 : le critère aller-retour */
+  #k-critere .titre { position: absolute; left: 60px; right: 60px; top: 118px; font-size: 32px; font-weight: 600; line-height: 1.3; }
+  #k-critere .formule { position: absolute; left: 60px; width: 700px; top: 220px; padding: 26px 30px; border-radius: 20px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); }
+  #k-critere .formule .f { font-size: 40px; font-weight: 700; color: var(--nuit); font-family: Menlo, Consolas, monospace; }
+  #k-critere .formule .l { font-size: 21px; color: var(--gris); margin-top: 12px; line-height: 1.5; }
+  #k-critere .vide.t { position: absolute; left: 800px; right: 60px; top: 220px; height: 400px; }
+  #k-critere .bandeau { top: 660px; }
+
+  /* Capteurs 5 : ce que mesure chaque capteur */
+  #k-fiabilite .deux { position: absolute; left: 60px; width: 920px; top: 125px; }
+  #k-fiabilite .c { padding: 24px 28px; border-radius: 18px; margin-bottom: 22px; }
+  #k-fiabilite .c.pm { background: linear-gradient(90deg, #DCEBF6, #F5F9FC); }
+  #k-fiabilite .c.nox { background: linear-gradient(90deg, #FDF0D9, #FFFAF0); }
+  #k-fiabilite .c .h { font-size: 30px; font-weight: 700; color: var(--nuit); }
+  #k-fiabilite .c .h span { font-size: 22px; font-weight: 600; color: var(--bleu); margin-left: 10px; }
+  #k-fiabilite .c .x { font-size: 23px; color: var(--nuit); margin-top: 10px; line-height: 1.45; }
+  #k-fiabilite .c .q { font-size: 25px; font-style: italic; color: #8A4B00; margin-top: 10px; }
+  #k-fiabilite .c .q span { display: block; font-style: normal; font-size: 17px; color: var(--gris); margin-top: 4px; }
+
+  /* Capteurs 6 : trois échelles */
+  #k-echelles .trois-e { position: absolute; left: 60px; right: 60px; top: 125px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+  #k-echelles .e { padding: 24px 26px; border-radius: 18px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); }
+  #k-echelles .e .a { font-size: 18px; letter-spacing: .1em; text-transform: uppercase; color: var(--bleu); font-weight: 700; }
+  #k-echelles .e .v { font-size: 30px; font-weight: 700; color: var(--nuit); margin-top: 6px; line-height: 1.2; }
+  #k-echelles .e .d { font-size: 20px; color: var(--gris); margin-top: 8px; line-height: 1.4; }
+  #k-echelles .vide.v2 { position: absolute; left: 60px; right: 60px; top: 380px; height: 250px; }
+  #k-echelles .bandeau { top: 665px; }
+  #k-echelles .bandeau span { display: block; font-size: 16px; font-weight: 500; color: var(--gris); margin-top: 4px; }
+
+  /* Capteurs 7 : le jeu de la source adaptée */
+  #k-jeu .qs { position: absolute; left: 60px; width: 820px; top: 125px; }
+  #k-jeu .qs .lab { font-size: 17px; letter-spacing: .1em; text-transform: uppercase; color: var(--bleu); font-weight: 700; margin-bottom: 14px; }
+  #k-jeu .qs .qq { padding: 22px 26px; border-radius: 18px; background: linear-gradient(90deg, var(--nuit), #1A56B8); color: #fff; font-size: 30px; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+  #k-jeu .cartes4 { position: absolute; left: 930px; right: 60px; top: 160px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  #k-jeu .cartes4 div { height: 190px; border-radius: 18px; background: #fff; box-shadow: 0 14px 36px rgba(9,48,113,.16); display: flex; align-items: center; justify-content: center; text-align: center; padding: 16px; font-size: 26px; font-weight: 700; color: var(--nuit); line-height: 1.25; }
+  #k-jeu .cartes4 div.aucune { background: linear-gradient(90deg, #F9DCD8, #FFF6F5); color: #A93226; }
+  #k-jeu .src { left: 930px; }
+
+  /* Capteurs 8 : trier avant d'écrire */
+  #k-tri .cols { position: absolute; left: 60px; right: 60px; top: 125px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  #k-tri .col { border-radius: 18px; padding: 22px 24px; height: 400px; display: flex; flex-direction: column; }
+  #k-tri .col.et { background: linear-gradient(90deg, #DDF3E7, #F4FBF7); }
+  #k-tri .col.su { background: linear-gradient(90deg, #FDF0D9, #FFFAF0); }
+  #k-tri .col.ho { background: linear-gradient(90deg, #E4ECF3, #F8FAFC); }
+  #k-tri .col .h { font-size: 32px; font-weight: 700; color: var(--nuit); }
+  #k-tri .col .d { font-size: 20px; color: var(--gris); margin-top: 8px; line-height: 1.4; }
+  #k-tri .col .vide { margin-top: auto; height: 130px; font-size: 19px; }
+  #k-tri .note { position: absolute; left: 60px; right: 60px; top: 560px; padding: 22px 28px; border-radius: 18px; background: linear-gradient(90deg, rgba(16,132,84,.16), rgba(16,132,84,.04)); }
+  #k-tri .note b { display: block; font-size: 26px; color: var(--vert); }
+  #k-tri .note span { display: block; font-size: 21px; color: var(--nuit); margin-top: 6px; line-height: 1.4; }
+
+  /* Chikungunya 1 : Antibes */
+  #c-antibes .gauche { position: absolute; left: 60px; top: 150px; width: 560px; }
+  #c-antibes .lieu { font-size: 30px; font-weight: 600; color: var(--gris); }
+  #c-antibes .nb { font-size: 150px; line-height: 1; font-weight: 700; color: #C0392B; letter-spacing: -.03em; margin-top: 10px; }
+  #c-antibes .nbl { font-size: 34px; font-weight: 600; margin-top: 6px; }
+  #c-antibes .quote { font-size: 26px; margin-top: 26px; color: var(--nuit); font-style: italic; }
+  #c-antibes .quote span { display: block; font-style: normal; font-size: 18px; color: var(--gris); margin-top: 6px; }
+  #c-antibes .pb { position: absolute; left: 60px; width: 560px; top: 640px; padding: 18px 22px; border-radius: 16px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); font-size: 21px; line-height: 1.4; }
+  #c-antibes .pb b { display: block; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; color: var(--bleu); margin-bottom: 6px; }
+  #c-antibes img { position: absolute; right: 60px; top: 120px; width: 860px; border-radius: 14px; box-shadow: 0 16px 44px rgba(9,48,113,.18); }
+
+  /* Chikungunya 2 : trois jeux de données */
+  .trois { position: absolute; left: 60px; right: 60px; top: 130px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px; }
+  .trois .d { border-radius: 20px; overflow: hidden; background: #fff; box-shadow: 0 14px 40px rgba(9,48,113,.15); }
+  .trois .d .i { height: 330px; background-size: cover; background-position: center top; }
+  .trois .d .t { padding: 20px 24px; background: linear-gradient(90deg, #EEF5FB, #FFFFFF); }
+  .trois .d .q { font-size: 34px; font-weight: 700; color: var(--bleu); }
+  .trois .d .o { font-size: 22px; font-weight: 600; margin-top: 4px; }
+  .trois .d .p { font-size: 18px; color: var(--gris); margin-top: 6px; }
+  .bandeau { position: absolute; left: 60px; right: 60px; top: 640px; padding: 22px 30px; border-radius: 18px; background: linear-gradient(90deg, rgba(16,132,84,.16), rgba(16,132,84,.04)); font-size: 28px; font-weight: 600; color: var(--vert); }
+
+  /* Chikungunya 3 : l'énigme */
+  table.enigme { position: absolute; left: 60px; top: 120px; width: 1480px; border-collapse: separate; border-spacing: 10px 10px; table-layout: fixed; }
+  .enigme th.coin { width: 230px; background: none; }
+  .enigme thead th { padding: 14px 18px; border-radius: 14px; background: linear-gradient(90deg, var(--nuit), #1A56B8); color: #fff; font-size: 22px; font-weight: 600; text-align: left; line-height: 1.25; }
+  .enigme thead th span { display: block; font-size: 16px; font-weight: 500; opacity: .85; margin-top: 3px; }
+  .enigme thead th .ico { width: 58px; height: 58px; border-radius: 50%; background: rgba(255,255,255,.16); display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+  .enigme thead th .ico svg { width: 32px; height: 32px; fill: #fff; }
+  .enigme tbody th { text-align: left; font-size: 32px; font-weight: 700; padding: 0 18px; border-radius: 14px; background: linear-gradient(90deg, #DCEBF6, #F3F8FC); }
+  .enigme tbody th span { display: block; font-size: 17px; font-weight: 500; color: var(--gris); }
+  .enigme td { height: 132px; border-radius: 14px; padding: 12px 18px; vertical-align: middle; background: rgba(255,255,255,.7); border: 2px dashed #C3D6E6; }
+  .enigme td .v { font-size: 38px; font-weight: 700; line-height: 1.1; }
+  .enigme td .tr { font-size: 16px; color: var(--gris); margin-top: 6px; line-height: 1.3; }
+  .enigme td.chaud { background: linear-gradient(90deg, #FBE3DF, #FFF6F4); border: none; }
+  .enigme td.tiede { background: linear-gradient(90deg, #FDF0D9, #FFFAF0); border: none; }
+  .enigme td.froid { background: linear-gradient(90deg, #DDF3E7, #F4FBF7); border: none; }
+  .enigme td.rouge { background: linear-gradient(90deg, #C0392B, #E05A4B); border: none; color: #fff; }
+  .enigme td.rouge .tr { color: #FFE3DF; }
+  .question { position: absolute; left: 50%; bottom: 70px; transform: translateX(-50%); padding: 22px 44px; border-radius: 22px; background: linear-gradient(90deg, var(--nuit), var(--bleu)); color: #fff; font-size: 38px; font-weight: 700; white-space: nowrap; box-shadow: 0 16px 40px rgba(9,48,113,.35); }
+  .question[data-step] { transform: translateX(-50%) translateY(10px); }
+  .question[data-step].on { transform: translateX(-50%); }
+
+  /* Chikungunya 4 : la formule */
+  #c-formule .f { position: absolute; left: 80px; right: 80px; top: 300px; text-align: center; font-size: 66px; font-weight: 700; color: var(--nuit); line-height: 1.25; }
+  #c-formule .f .ne { color: #C0392B; padding: 0 .2em; }
+  #c-formule .ref { position: absolute; left: 0; right: 0; top: 540px; text-align: center; font-size: 22px; color: var(--gris); }
+
+  /* Chikungunya 5 : la courbe */
+  #c-courbe img { position: absolute; left: 60px; top: 130px; width: 1040px; border-radius: 12px; background: #fff; box-shadow: 0 14px 40px rgba(9,48,113,.14); }
+  #c-courbe .chiffres { position: absolute; left: 1140px; right: 60px; top: 150px; }
+  #c-courbe .c { padding: 20px 24px; border-radius: 16px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); margin-bottom: 22px; }
+  #c-courbe .c .l { font-size: 24px; font-weight: 600; }
+  #c-courbe .c .v { font-size: 44px; font-weight: 700; color: var(--bleu); margin-top: 4px; }
+  #c-courbe .c .u { font-size: 18px; color: var(--gris); }
+
+  /* Chikungunya 6 : fiabilité et échelles */
+  #c-fiab .titre { position: absolute; left: 60px; top: 120px; font-size: 30px; font-weight: 600; }
+  .barres { position: absolute; left: 60px; top: 190px; width: 1000px; }
+  .barres .ligne { display: grid; grid-template-columns: 170px 1fr; align-items: center; gap: 16px; margin-bottom: 22px; }
+  .barres .nom { font-size: 26px; font-weight: 700; }
+  .barres .b { height: 40px; border-radius: 8px; margin: 4px 0; display: flex; align-items: center; padding-left: 12px; color: #fff; font-size: 20px; font-weight: 700; white-space: nowrap; }
+  .barres .b.k { background: linear-gradient(90deg, var(--nuit), #1A56B8); }
+  .barres .b.v { background: linear-gradient(90deg, var(--vert), #2BA673); }
+  .legende { position: absolute; left: 60px; top: 650px; display: flex; gap: 30px; font-size: 19px; color: var(--gris); }
+  .legende i { display: inline-block; width: 18px; height: 18px; border-radius: 4px; vertical-align: -3px; margin-right: 8px; }
+  #c-fiab .echelle { position: absolute; left: 1110px; right: 60px; top: 190px; padding: 28px 30px; border-radius: 20px; background: linear-gradient(90deg, #FDF0D9, #FFFAF0); }
+  #c-fiab .echelle .a { font-size: 22px; color: var(--gris); }
+  #c-fiab .echelle .v { font-size: 46px; font-weight: 700; color: var(--nuit); margin: 2px 0 18px; }
+
+  /* Chikungunya 7 : bulletin */
+  #c-bulletin .extraits { position: absolute; left: 60px; top: 112px; width: 860px; }
+  #c-bulletin .ext-label { font-size: 21px; font-weight: 600; color: var(--gris); margin-bottom: 14px; }
+  #c-bulletin .ext { background: #fff; border: 3px solid #C0392B; border-radius: 16px; padding: 22px 30px; box-shadow: 0 14px 40px rgba(9,48,113,.14); font-family: Helvetica, Arial, sans-serif; color: #1E2A36; }
+  #c-bulletin .ext + .ext { margin-top: 18px; }
+  #c-bulletin .niveau { background: linear-gradient(90deg, #F9DCD8, #FFF6F5); font-size: 23px; line-height: 1.4; }
+  #c-bulletin .niveau .petit { font-size: 19px; color: #5A6573; }
+  #c-bulletin .niveau .v { font-size: 40px; font-weight: 700; color: #C0392B; margin: 4px 0 6px; }
+  #c-bulletin .reco .h { font-size: 25px; font-weight: 700; margin-bottom: 8px; }
+  #c-bulletin .reco ul { margin: 0; padding-left: 26px; font-size: 23px; line-height: 1.4; }
+  #c-bulletin .reco li + li { margin-top: 8px; }
+  #c-bulletin .alerte { position: absolute; left: 960px; right: 60px; top: 112px; padding: 30px 34px; border-radius: 22px; background: linear-gradient(90deg, #C0392B, #E05A4B); color: #fff; font-size: 29px; font-weight: 600; line-height: 1.35; }
+  #c-bulletin .alerte b { display: block; font-size: 22px; letter-spacing: .14em; margin-bottom: 12px; }
+  #c-bulletin .alerte span { display: block; font-size: 18px; font-weight: 500; opacity: .85; margin-top: 16px; }
+  #c-bulletin .role { position: absolute; left: 960px; right: 60px; top: 490px; font-size: 22px; color: var(--nuit); line-height: 1.45; }
+
+
+  /* Vibrio 1 : la question */
+  #v-question .gauche { position: absolute; left: 60px; top: 140px; width: 660px; }
+  #v-question .lab { font-size: 17px; letter-spacing: .1em; text-transform: uppercase; color: var(--bleu); font-weight: 700; }
+  #v-question .q { font-size: 42px; font-weight: 700; line-height: 1.25; color: var(--nuit); margin-top: 12px; }
+  #v-question .q span { display: block; font-size: 18px; font-weight: 500; color: var(--gris); margin-top: 12px; }
+  #v-question .hyp { margin-top: 26px; font-size: 26px; font-weight: 600; color: var(--vert); }
+  #v-question .pb { position: absolute; left: 60px; width: 660px; top: 640px; padding: 18px 22px; border-radius: 16px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); font-size: 21px; line-height: 1.4; }
+  #v-question .pb b { display: block; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; color: var(--bleu); margin-bottom: 6px; }
+  #v-question img { position: absolute; right: 60px; top: 120px; width: 780px; height: 640px; object-fit: cover; object-position: 30% 62%; border-radius: 14px; box-shadow: 0 16px 44px rgba(9,48,113,.18); }
+  #v-question .credit { position: absolute; right: 60px; top: 770px; font-size: 14px; color: var(--gris); }
+
+  /* Vibrio 3 : l'énigme de la carte vide */
+  #v-enigme img { position: absolute; left: 60px; top: 110px; width: 960px; border-radius: 12px; box-shadow: 0 14px 40px rgba(9,48,113,.16); }
+  #v-enigme .pts { position: absolute; left: 1060px; right: 60px; top: 120px; }
+  #v-enigme .pt { padding: 20px 24px; border-radius: 16px; margin-bottom: 22px; }
+  #v-enigme .pt.colore { background: linear-gradient(90deg, #FDE3C4, #FFF8EE); }
+  #v-enigme .pt.vide { background: linear-gradient(90deg, #E4ECF3, #F8FAFC); }
+  #v-enigme .pt .l { font-size: 26px; font-weight: 700; }
+  #v-enigme .pt .l span { display: block; font-size: 17px; font-weight: 500; color: var(--gris); }
+  #v-enigme .pt .v { font-size: 56px; font-weight: 700; color: var(--nuit); line-height: 1.1; margin-top: 6px; }
+  #v-enigme .pt .e { font-size: 21px; font-weight: 600; margin-top: 4px; }
+  #v-enigme .pt.colore .e { color: #B65A00; }
+  #v-enigme .pt.vide .e { color: var(--gris); }
+  #v-enigme .question { white-space: normal; text-align: center; width: 1240px; font-size: 34px; line-height: 1.3; bottom: 34px; }
+
+  /* Vibrio 4 : la réponse du modèle */
+  #v-reponse .titre { position: absolute; left: 60px; right: 60px; top: 118px; font-size: 30px; font-weight: 600; }
+  #v-reponse .tab { position: absolute; left: 60px; top: 185px; width: 960px; display: grid; grid-template-columns: 220px repeat(3, 1fr); gap: 10px; }
+  #v-reponse .tab div { border-radius: 14px; padding: 14px 18px; }
+  #v-reponse .tab .h { background: linear-gradient(90deg, var(--nuit), #1A56B8); color: #fff; font-size: 22px; font-weight: 700; line-height: 1.2; }
+  #v-reponse .tab .h span { display: block; font-size: 15px; font-weight: 500; opacity: .85; }
+  #v-reponse .tab .r { background: linear-gradient(90deg, #DCEBF6, #F3F8FC); font-size: 22px; font-weight: 700; display: flex; flex-direction: column; justify-content: center; }
+  #v-reponse .tab .r span { font-size: 15px; font-weight: 500; color: var(--gris); }
+  #v-reponse .tab .ok { background: linear-gradient(90deg, #DDF3E7, #F4FBF7); font-size: 34px; font-weight: 700; }
+  #v-reponse .tab .no { background: linear-gradient(90deg, #F9DCD8, #FFF6F5); font-size: 34px; font-weight: 700; color: #C0392B; }
+  #v-reponse .tab .ok small, #v-reponse .tab .no small { display: block; font-size: 16px; font-weight: 600; color: var(--gris); }
+  #v-reponse .ecdc { position: absolute; left: 1060px; right: 60px; top: 185px; padding: 26px 28px; border-radius: 20px; background: linear-gradient(90deg, #FDF0D9, #FFFAF0); font-size: 23px; line-height: 1.42; color: var(--nuit); }
+  #v-reponse .ecdc b { display: block; font-size: 15px; letter-spacing: .1em; text-transform: uppercase; color: #B65A00; margin-bottom: 8px; }
+  #v-reponse .ecdc span { display: block; font-size: 16px; color: var(--gris); margin-top: 12px; }
+  #v-reponse .bandeau { top: 650px; }
+
+  /* Vibrio 5 : le nuage de points */
+  #v-nuage img { position: absolute; left: 60px; top: 120px; width: 1000px; border-radius: 12px; background: #fff; box-shadow: 0 14px 40px rgba(9,48,113,.14); }
+  #v-nuage .droite { position: absolute; left: 1100px; right: 60px; top: 130px; }
+  #v-nuage .r2 { padding: 22px 26px; border-radius: 16px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); }
+  #v-nuage .r2 .v { font-size: 52px; font-weight: 700; color: var(--bleu); }
+  #v-nuage .r2 .u { font-size: 20px; color: var(--gris); }
+  #v-nuage .txt { font-size: 23px; line-height: 1.45; margin-top: 22px; color: var(--nuit); }
+  #v-nuage .txt p { margin: 0 0 14px; }
+
+  /* Vibrio 6 : les échelles */
+  #v-echelles .titre { position: absolute; left: 60px; right: 60px; top: 118px; font-size: 30px; font-weight: 600; }
+  #v-echelles .deux { position: absolute; left: 60px; right: 60px; top: 180px; display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
+  #v-echelles .deux img { width: 100%; border-radius: 12px; box-shadow: 0 14px 40px rgba(9,48,113,.15); display: block; }
+  #v-echelles .deux .cap { font-size: 19px; color: var(--gris); margin-top: 10px; line-height: 1.35; }
+  #v-echelles .bandeau { top: 745px; }
+  #v-echelles .bandeau span { display: block; font-size: 16px; font-weight: 500; color: var(--gris); margin-top: 4px; }
+
+  /* Vibrio 7 : le bulletin */
+  #v-bulletin .extraits { position: absolute; left: 60px; top: 112px; width: 900px; }
+  #v-bulletin .ext-label { font-size: 21px; font-weight: 600; color: var(--gris); margin-bottom: 14px; }
+  #v-bulletin .ext { background: #fff; border: 3px solid #C0392B; border-radius: 16px; padding: 18px 26px; box-shadow: 0 14px 40px rgba(9,48,113,.14); font-family: Helvetica, Arial, sans-serif; color: #1E2A36; }
+  #v-bulletin .ext + .ext { margin-top: 16px; }
+  #v-bulletin .niv { display: grid; grid-template-columns: 250px 1fr; gap: 6px 18px; align-items: baseline; font-size: 20px; line-height: 1.35; }
+  #v-bulletin .niv .z { font-weight: 700; font-size: 21px; }
+  #v-bulletin .niv .n { font-weight: 700; font-size: 26px; }
+  #v-bulletin .niv .n.eleve { color: #C0392B; } #v-bulletin .niv .n.faible { color: #1E7A4E; } #v-bulletin .niv .n.ne { color: #5A6573; }
+  #v-bulletin .niv .d { grid-column: 2; font-size: 19px; color: #3A4652; margin-bottom: 8px; }
+  #v-bulletin .reco .h { font-size: 23px; font-weight: 700; margin-bottom: 6px; }
+  #v-bulletin .reco ul { margin: 0; padding-left: 24px; font-size: 20px; line-height: 1.38; }
+  #v-bulletin .reco li + li { margin-top: 6px; }
+  #v-bulletin .crise { position: absolute; left: 1000px; right: 60px; top: 112px; padding: 28px 30px; border-radius: 22px; background: linear-gradient(90deg, var(--nuit), #1A56B8); color: #fff; font-size: 24px; font-weight: 600; line-height: 1.4; }
+  #v-bulletin .crise b { display: block; font-size: 20px; letter-spacing: .14em; margin-bottom: 12px; }
+  #v-bulletin .crise span { display: block; font-size: 16px; font-weight: 500; opacity: .85; margin-top: 14px; }
+  #v-bulletin .jours { position: absolute; left: 1000px; right: 60px; top: 560px; font-size: 19px; color: var(--nuit); }
+  #v-bulletin .jours .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+  #v-bulletin .jours .row div { padding: 10px 6px; border-radius: 12px; background: linear-gradient(90deg, #FDE3C4, #FFF8EE); text-align: center; font-size: 15px; color: var(--gris); }
+  #v-bulletin .jours .row div b { display: block; font-size: 24px; color: var(--nuit); }
+
+
+  /* Clôture 2 : à vous de tester */
+  #f-action { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 75%); }
+  #f-action h2 { position: absolute; left: 60px; top: 108px; margin: 0; font-size: 56px; font-weight: 700; color: var(--nuit); }
+  #f-action .sous { position: absolute; left: 62px; top: 185px; font-size: 26px; color: var(--gris); }
+  #f-action .res { position: absolute; left: 60px; right: 60px; top: 250px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  #f-action .r { display: flex; gap: 18px; align-items: center; padding: 22px 22px; border-radius: 20px; background: #fff; box-shadow: 0 14px 40px rgba(9,48,113,.14); }
+  #f-action .r .t { flex: 1; }
+  #f-action .r .ech { font-size: 16px; letter-spacing: .12em; text-transform: uppercase; color: var(--bleu); font-weight: 700; }
+  #f-action .r .nom { font-size: 24px; font-weight: 700; color: var(--nuit); line-height: 1.2; margin-top: 4px; }
+  #f-action .r .tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  #f-action .r .tags span { font-size: 14px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: #E3EEF8; color: var(--nuit); }
+  #f-action .r .tags span.terrain { background: var(--vert); color: #fff; }
+  #f-action .qr { width: 130px; height: 130px; flex: none; border: 3px dashed #9DB6CC; border-radius: 12px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 15px; color: var(--gris); line-height: 1.3; }
+  #f-action .retours { position: absolute; left: 60px; right: 60px; top: 520px; padding: 26px 32px; border-radius: 20px; background: linear-gradient(90deg, rgba(16,132,84,.16), rgba(16,132,84,.04)); }
+  #f-action .retours .h { font-size: 28px; font-weight: 700; color: var(--vert); }
+  #f-action .retours .l { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 16px; }
+  #f-action .retours .l div { padding: 16px 18px; border-radius: 14px; background: #fff; font-size: 23px; font-weight: 600; color: var(--nuit); line-height: 1.25; }
+  #f-action .retours .l div span { display: block; font-size: 16px; font-weight: 500; color: var(--gris); margin-top: 4px; }
+
+  /* Clôture 3 : et après */
+  #f-fin { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 70%); }
+  #f-fin .logo { position: absolute; left: 70px; top: 56px; height: 110px; }
+  #f-fin .ue { position: absolute; right: 70px; top: 70px; height: 64px; }
+  #f-fin .chaine { position: absolute; left: 60px; right: 60px; top: 360px; display: flex; align-items: center; justify-content: center; gap: 14px; }
+  #f-fin .chaine .e { padding: 22px 26px; border-radius: 18px; background: linear-gradient(90deg, #DCEBF6, #F3F8FC); font-size: 30px; font-weight: 700; color: var(--nuit); }
+  #f-fin .chaine .e.vous { background: linear-gradient(90deg, var(--vert), #2BA673); color: #fff; }
+  #f-fin .chaine .fl { font-size: 34px; color: var(--gris); }
+  #f-fin .part { position: absolute; left: 0; right: 0; top: 470px; text-align: center; font-size: 24px; font-weight: 600; color: var(--vert); }
+  #f-fin .noms { position: absolute; left: 0; right: 0; bottom: 70px; text-align: center; font-size: 26px; color: var(--gris); }
+  #f-fin .noms b { color: var(--nuit); font-weight: 600; }
+
+  /* grilles remplies */
+  .grille td.ok { border: none; background: linear-gradient(90deg, #DDF3E7, #F4FBF7); text-align: center; font-size: 34px; color: var(--vert); font-weight: 700; }
+  .slide.active .grille td.ok.neuf { animation: apparait .6s ease both; }
+  .slide.active .grille tr:nth-child(2) td.ok.neuf { animation-delay: .15s; }
+  .slide.active .grille tr:nth-child(3) td.ok.neuf { animation-delay: .3s; }
+  .slide.active .grille tr:nth-child(4) td.ok.neuf { animation-delay: .45s; }
+  .slide.active .grille tr:nth-child(5) td.ok.neuf { animation-delay: .6s; }
+  .slide.active .grille tr:nth-child(6) td.ok.neuf { animation-delay: .75s; }
+  @keyframes apparait { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+
+  /* ---------- vue présentateur ---------- */
+  body.presenter { overflow: auto; background: #1E1F22; color: #EEE; }
+  body.presenter #stage { display: none; }
+  #pres { display: none; padding: 22px 30px; max-width: 1100px; margin: 0 auto; }
+  body.presenter #pres { display: block; }
+  #pres .bar { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 14px; }
+  #pres .where { color: #fff; font-weight: 600; font-size: 22px; }
+  #pres .timer { font-variant-numeric: tabular-nums; font-size: 34px; color: #9FD6CF; }
+  #pres .plan { display: flex; gap: 26px; font-size: 17px; color: #BBB; margin-bottom: 10px; }
+  #pres .plan b { color: #fff; }
+  #pres .plan .late { color: #FF8A80; }
+  #pres .prog { height: 5px; background: #333; border-radius: 3px; margin-bottom: 18px; }
+  #pres .prog div { height: 100%; background: #9FD6CF; border-radius: 3px; transition: width .3s; }
+  #pres .note { font-size: 18px; line-height: 1.5; color: #E8C170; background: linear-gradient(90deg, #2E2B24, #232323); padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; }
+  #pres .read { font-family: "Charter", Georgia, serif; font-size: 25px; line-height: 1.55; color: #F3F3F3; }
+  #pres .read .vide { color: #888; font-style: italic; }
+  #pres .read p { margin: 0 0 14px; }
+  #pres .read .qui { font-family: "Avenir Next", Helvetica, sans-serif; font-size: 15px; letter-spacing: .12em; text-transform: uppercase; color: #9FD6CF; margin-bottom: 10px; }
+  #pres .read .ap { font-family: "Avenir Next", Helvetica, sans-serif; font-size: 15px; font-weight: 700; color: #E8C170; margin-right: 8px; }
+  #pres .read .jeu { color: #9AA4AE; font-style: italic; }
+  #pres .read .trou { color: #FF8A80; }
+  #pres .next { margin-top: 24px; border-top: 1px dashed #555; padding-top: 12px; color: #999; font-size: 17px; }
+  #pres .keys { margin-top: 18px; color: #777; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <section class="slide" id="s-titre">
+    <img class="logo" src="images/logo-ease.png" alt="EASE">
+    <img class="ue" src="images/cofinance-ue.png" alt="Cofinancé par l'Union européenne">
+    <div class="kicker">Journée EASE · 17 novembre 2026 · IPMC, Valbonne</div>
+    <h1>Trois ressources EASE<br>à tester en classe</h1>
+    <div class="auteurs"><b>Dimitri Garcia</b>, Université Côte d'Azur<br><b>Cédric Bordi</b>, lycée Masséna, Nice</div>
+    <div class="partenaires">Projet Erasmus+ porté par l'académie de Nice et l'INSPÉ de Nice, la Richard-Hallmann-Schule (Allemagne) et l'Institut national de physique de la Terre (Roumanie), avec l'appui de Météo-France, du CNES (Calisph'Air) et de Thales Alenia Space.</div>
+  </section>
+
+  <section class="slide" id="s-accroche">
+    <div class="live"><i></i>EN DIRECT</div>
+    <img id="secours" src="images/secours-appli.jpg" alt="Capture de l'application du capteur">
+    <div class="manque" id="manque">Capture de secours à déposer avant chaque rotation :<br><code>images/secours-appli.jpg</code><br>Elle s'affiche ici si la recopie de l'écran du téléphone échoue.</div>
+  </section>
+
+  <section class="slide" id="s-zoom">
+    <canvas id="zc"></canvas>
+    <div class="zlab" id="z-instr"></div>
+    <div class="zlab" id="z-switch">Même cadre : 10 m par pixel, puis 20 cm par pixel</div>
+    <div class="zlab" id="z-place"><div class="n"></div><div class="s"></div></div>
+    <div class="zlab" id="z-width"></div>
+    <div class="zlab" id="z-credit"></div>
+  </section>
+
+  <section class="slide" id="s-ressources">
+    <div class="cartes">
+      <div class="carte">
+        <div class="img" style="background-image:url('images/zoom/ign18.jpg')"></div>
+        <div class="txt"><div class="echelle">La rue</div><div class="titre">Respirer autour de l'établissement</div><div class="sujet">L'air et les capteurs</div></div>
+      </div>
+      <div class="carte">
+        <div class="img" style="background-image:url('images/zoom/s209.jpg')"></div>
+        <div class="txt"><div class="echelle">La région</div><div class="titre">Chikungunya, le climat change la donne</div><div class="sujet">Le moustique tigre</div></div>
+      </div>
+      <div class="carte">
+        <div class="img" style="background-image:url('images/zoom/s205.jpg')"></div>
+        <div class="txt"><div class="echelle">La mer</div><div class="titre">Le risque Vibrio</div><div class="sujet">Les bactéries des eaux côtières</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="s-grille">
+    <table class="grille">
+      <thead><tr>
+        <th class="vide" style="background:none"></th>
+        <th><div class="ech">La rue</div><div class="nom">Respirer autour de l'établissement</div><div class="tags"><span class="terrain">Capteurs sur le terrain</span><span>Collège, prolongements lycée</span><span>4 à 5 h</span></div></th>
+        <th><div class="ech">La région</div><div class="nom">Chikungunya, le climat change la donne</div><div class="tags"><span>Données en ligne</span><span>Lycée</span><span>3 à 4 h</span></div></th>
+        <th><div class="ech">La mer</div><div class="nom">Le risque Vibrio</div><div class="tags"><span>Données en ligne</span><span>Lycée</span><span>3 à 4 h</span></div></th>
+      </tr></thead>
+      <tbody>
+        <tr><th>Comprendre ce que mesure la source</th><td></td><td></td><td></td></tr>
+        <tr><th>Comparer des situations</th><td></td><td></td><td></td></tr>
+        <tr><th>Caractériser un événement</th><td></td><td></td><td></td></tr>
+        <tr><th>Discuter la fiabilité</th><td></td><td></td><td></td></tr>
+        <tr><th>Mettre en regard les échelles</th><td></td><td></td><td></td></tr>
+        <tr><th>Formuler une recommandation</th><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ===================== BLOC CAPTEURS (10 min) ===================== -->
+  <section class="slide bloc" id="k-boitier">
+    <div class="chip"><b>La rue</b> · Le boîtier</div>
+    <div class="capts">
+      <div class="cp"><div class="n">BMV080</div><div class="m">Particules fines</div><div class="u">PM2,5 et PM10, en µg/m³</div></div>
+      <div class="cp"><div class="n">BME280</div><div class="m">Température, humidité, pression</div><div class="u">°C, % d'humidité relative, hPa</div></div>
+      <div class="cp nox"><div class="n">SGP41</div><div class="m">Indice NOx</div><div class="u">sans unité</div></div>
+    </div>
+    <div class="acces">Le boîtier crée son propre Wi-Fi ou se branche en USB : sa page s'ouvre dans un navigateur.</div>
+    <img class="tel" src="images/capteurs/appli-valeurs.png" alt="Page du boîtier : valeurs en direct et nom de chaque capteur">
+  </section>
+
+  <section class="slide bloc" id="k-protocole">
+    <div class="chip"><b>La rue</b> · Quatre lieux, deux passages</div>
+    <div class="lieux">
+      <div class="p1">P1<span>Entrée</span></div>
+      <div class="p2">P2<span>Axe circulé</span></div>
+      <div class="p3">P3<span>Espace calme</span></div>
+      <div class="p4">P4<span>Végétalisé</span></div>
+    </div>
+    <div class="seq"><b class="p1">P1</b><i>→</i><b class="p2">P2</b><i>→</i><b class="p3">P3</b><i>→</i><b class="p4">P4</b><i>→</i><b class="p4">P4</b><i>→</i><b class="p3">P3</b><i>→</i><b class="p2">P2</b><i>→</i><b class="p1">P1</b></div>
+    <div class="regles">
+      <div><b>3 minutes</b> d'arrêt à chaque lieu, capteur immobile à hauteur de respiration</div>
+      <div><b>Une mesure toutes les 10 secondes</b>, le lieu choisi sur la page avant chaque arrêt</div>
+      <div><b>Les véhicules comptés</b> pendant l'arrêt, l'heure de début et de fin notée</div>
+    </div>
+    <img class="tel" src="images/capteurs/appli-mesures.png" alt="Page du boîtier : boutons P1 à P4, intervalle entre deux mesures, démarrer, pause, terminer">
+  </section>
+
+  <section class="slide bloc" id="k-boucle">
+    <div class="chip"><b>La rue</b> · Une boucle mesurée avec ce boîtier</div>
+    <div class="vide g">Graphique à insérer<br>moyenne des PM2,5 de chaque arrêt,<br>aller et retour côte à côte, de P1 à P4</div>
+    <div class="infos">
+      <div><b>Où</b>à compléter</div>
+      <div><b>Quand</b>à compléter</div>
+      <div><b>Comment</b>8 arrêts de 3 minutes, une mesure toutes les 10 secondes</div>
+    </div>
+  </section>
+
+  <section class="slide bloc" id="k-critere">
+    <div class="chip"><b>La rue</b> · Un écart est-il réel ?</div>
+    <div class="titre">Un écart entre deux lieux n'est retenu que s'il dépasse la variation entre les deux passages de chacun de ces lieux.</div>
+    <div class="formule"><div class="f">D(i,j) &gt; max( d(i), d(j) )</div><div class="l">d(i) : différence entre l'aller et le retour au lieu i<br>D(i,j) : différence entre les moyennes des lieux i et j<br>Critère appliqué séparément à chaque grandeur mesurée</div></div>
+    <div class="vide t">Tableau à insérer<br>écarts entre lieux et variations aller-retour<br>de la boucle mesurée</div>
+    <div class="bandeau">Le mot juste : « écart spatial discernable dans les conditions de cette campagne ».</div>
+  </section>
+
+  <section class="slide bloc" id="k-fiabilite">
+    <div class="chip"><b>La rue</b> · Ce que mesure chaque capteur</div>
+    <div class="deux">
+      <div class="c pm"><div class="h">PM2,5 et PM10<span>µg/m³</span></div><div class="x">Une concentration. Précision annoncée pour le BMV080 : ±10 µg/m³ entre 0 et 100 µg/m³. Le capteur n'a pas été comparé à une station sur place.</div></div>
+      <div class="c nox"><div class="h">Indice NOx<span>sans unité</span></div><div class="x">Un indicateur relatif, sensible à certains gaz oxydants, calculé à partir de l'historique récent du capteur (référence sur 24 h). Il ne mesure pas la concentration de NO₂ et ne se compare pas directement à une station réglementaire.</div><div class="q">« Le SGP41 fournit un indice NOx, pas une concentration de NO₂. »<span>La page du boîtier, sous les valeurs</span></div></div>
+    </div>
+    <img class="tel" src="images/capteurs/appli-capteurs-detectes.png" alt="Page du boîtier : les trois capteurs détectés et la phrase sur l'indice NOx">
+  </section>
+
+  <section class="slide bloc" id="k-echelles">
+    <div class="chip"><b>La rue</b> · Trois sources, trois échelles</div>
+    <div class="trois-e">
+      <div class="e"><div class="a">Mesure portée</div><div class="v">Un arrêt de 3 minutes, en un point</div><div class="d">Le boîtier, pendant la boucle</div></div>
+      <div class="e"><div class="a">Mesure fixe réglementaire</div><div class="v">La station la plus proche qui mesure les PM2,5</div><div class="d">Nom, distance, typologie et influence : à compléter</div></div>
+      <div class="e"><div class="a">Estimation par un modèle</div><div class="v">Une maille du produit CAMS</div><div class="d">Taille de la maille et pas de temps : à compléter</div></div>
+    </div>
+    <div class="vide v2">À insérer : les PM2,5 pendant la boucle, selon le boîtier, la station et CAMS</div>
+    <div class="bandeau">Maille du modèle régional → périmètre représenté par la station → arrêt de trois minutes en un point du trajet<span>Les échelles de la ressource, bloc Analyser</span></div>
+  </section>
+
+  <section class="slide bloc" id="k-jeu">
+    <div class="chip"><b>La rue</b> · Le jeu de la source adaptée</div>
+    <div class="qs">
+      <div class="lab">Chaque groupe lève une carte, puis justifie</div>
+      <div class="qq">L'entrée est-elle plus chargée en PM2,5 que l'espace calme ?</div>
+      <div class="qq" data-step="1">Les élèves respirent-ils un air dangereux pour leur santé ?</div>
+    </div>
+    <div class="cartes4">
+      <div>Capteur porté</div>
+      <div>Station</div>
+      <div>Modèle régional</div>
+      <div class="aucune">Aucune source ne permet de répondre</div>
+    </div>
+    <div class="src">« Respirer autour de l'établissement », bloc Agir, gamification</div>
+  </section>
+
+  <section class="slide bloc" id="k-tri">
+    <div class="chip"><b>La rue</b> · Trier avant d'écrire</div>
+    <div class="cols">
+      <div class="col et"><div class="h">Établi</div><div class="d">Un écart discernable selon le critère <span style="white-space:nowrap">aller-retour</span>, dans les conditions de cette campagne</div><div class="vide">Exemple de la boucle à compléter</div></div>
+      <div class="col su"><div class="h">Suggéré</div><div class="d">Une tendance non discernable, observée une fois, ou à plusieurs explications</div><div class="vide">Exemple de la boucle à compléter</div></div>
+      <div class="col ho"><div class="h">Hors de portée</div><div class="d">Valeur guide sur 24 heures, exposition réelle, risque sanitaire, polluants non mesurés</div><div class="vide">Exemple de la boucle à compléter</div></div>
+    </div>
+    <div class="note"><b>EASE Air : note de situation et recommandation pour l'établissement</b><span>Une page, adressée à un responsable nommé de l'établissement. Recommander une nouvelle campagne est une issue complète.</span></div>
+  </section>
+
+  <section class="slide" id="g-capteurs"></section>
+
+  <!-- ===================== BLOC CHIKUNGUNYA (7 min) ===================== -->
+  <section class="slide bloc" id="c-antibes">
+    <div class="chip"><b>La région</b> · Chikungunya, le climat change la donne</div>
+    <div class="gauche">
+      <div class="lieu">Antibes, été 2025</div>
+      <div class="nb">144</div>
+      <div class="nbl">cas autochtones de chikungunya</div>
+      <div class="quote">« Un épisode hors norme »<span>Santé publique France, bilan 2025, édition Paca, p. 11</span></div>
+    </div>
+    <div class="pb"><b>La question de la ressource</b>Dans quelle mesure l'évolution des conditions climatiques peut-elle favoriser l'expansion d'Aedes albopictus et contribuer à l'émergence du chikungunya en Europe ?</div>
+    <img src="images/chik/spf-antibes-episode.png" alt="Bilan de Santé publique France : Chikungunya à Antibes, un épisode hors norme">
+  </section>
+
+  <section class="slide bloc" id="c-donnees">
+    <div class="chip"><b>La région</b> · Ce que font les élèves</div>
+    <div class="trois">
+      <div class="d"><div class="i" style="background-image:url('images/chik/site-climat.png')"></div><div class="t"><div class="q">Le climat</div><div class="o">ERA5-Land, Copernicus</div><div class="p">température et pluie, jour par jour, depuis 1951</div></div></div>
+      <div class="d"><div class="i" style="background-image:url('images/chik/ecdc-carte-aedes-juin-2025.png')"></div><div class="t"><div class="q">Le moustique</div><div class="o">Cartes de l'ECDC</div><div class="p">où Aedes albopictus est établi, en Europe</div></div></div>
+      <div class="d"><div class="i" style="background-image:url('images/chik/site-cas.png')"></div><div class="t"><div class="q">Les cas</div><div class="o">Santé publique France</div><div class="p">cas importés et cas autochtones</div></div></div>
+    </div>
+    <div class="bandeau">Sans capteur : un ordinateur, un tableur et trois sources de données en ligne.</div>
+  </section>
+
+  <section class="slide bloc" id="c-enigme">
+    <div class="chip"><b>La région</b> · Trois villes en 2025</div>
+    <table class="enigme">
+      <thead><tr>
+        <th class="coin"></th>
+        <th data-step="1"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M160 64c-26.5 0-48 21.5-48 48V276.5c0 17.3-7.1 31.9-15.3 42.5C86.2 332.6 80 349.5 80 368c0 44.2 35.8 80 80 80s80-35.8 80-80c0-18.5-6.2-35.4-16.7-48.9c-8.2-10.6-15.3-25.2-15.3-42.5V112c0-26.5-21.5-48-48-48zM48 112C48 50.2 98.1 0 160 0s112 50.1 112 112V276.5c0 .1 .1 .3 .2 .6c.2 .6 .8 1.6 1.7 2.8c18.9 24.4 30.1 55 30.1 88.1c0 79.5-64.5 144-144 144S16 447.5 16 368c0-33.2 11.2-63.8 30.1-88.1c.9-1.2 1.5-2.2 1.7-2.8c.1-.3 .2-.5 .2-.6V112zM208 368c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-20.9 13.4-38.7 32-45.3V208c0-8.8 7.2-16 16-16s16 7.2 16 16V322.7c18.6 6.6 32 24.4 32 45.3z"/></svg></div>Jours favorables<span>mai à octobre 2025, sur 184</span></th>
+        <th data-step="2"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M463.7 505.9c9.8-8.9 10.7-24.3 2.1-34.3l-42.1-49 0-54.7c0-5.5-1.8-10.8-5.1-15.1L352 266.3l0-.3L485.4 387.8C542.4 447.6 640 405.2 640 320.6c0-47.9-34-88.3-79.4-94.2l-153-23.9 40.8-40.9c7.8-7.8 9.4-20.1 3.9-29.8L428.5 90.1l38.2-50.9c8-10.6 6.1-25.9-4.3-34.1s-25.2-6.3-33.2 4.4l-48 63.9c-5.9 7.9-6.6 18.6-1.7 27.2L402.2 140 352 190.3l0-38.2c0-14.9-10.2-27.4-24-31l0-57.2c0-4.4-3.6-8-8-8s-8 3.6-8 8l0 57.2c-13.8 3.6-24 16.1-24 31l0 38.1L237.8 140l22.6-39.5c4.9-8.6 4.2-19.3-1.7-27.2l-48-63.9c-8-10.6-22.8-12.6-33.2-4.4s-12.2 23.5-4.3 34.1l38.2 50.9-23.9 41.7c-5.5 9.7-3.9 22 3.9 29.8l40.8 40.9-153 23.9C34 232.3 0 272.7 0 320.6c0 84.6 97.6 127 154.6 67.1L288 266l0 .3-66.5 86.4c-3.3 4.3-5.1 9.6-5.1 15.1l0 54.7-42.1 49c-8.6 10.1-7.7 25.5 2.1 34.3s24.7 7.9 33.4-2.1l48-55.9c3.8-4.4 5.9-10.2 5.9-16.1l0-55.4L288 344.7l0 63.1c0 17.7 14.3 32 32 32s32-14.3 32-32l0-63.1 24.3 31.6 0 55.4c0 5.9 2.1 11.7 5.9 16.1l48 55.9c8.6 10.1 23.6 11 33.4 2.1z"/></svg></div>Aedes albopictus<span>carte ECDC, juin 2025</span></th>
+        <th data-step="3"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M.3 166.9L0 68C0 57.7 9.5 50.1 19.5 52.3l35.6 7.9c10.6 2.3 19.2 9.9 23 20L96 128l127.3 37.6L181.8 20.4C178.9 10.2 186.6 0 197.2 0h40.1c11.6 0 22.2 6.2 27.9 16.3l109 193.8 107.2 31.7c15.9 4.7 30.8 12.5 43.7 22.8l34.4 27.6c24 19.2 18.1 57.3-10.7 68.2c-41.2 15.6-86.2 18.1-128.8 7L121.7 289.8c-11.1-2.9-21.2-8.7-29.3-16.9L9.5 189.4c-5.9-6-9.3-14.1-9.3-22.5zM32 448H608c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32zm96-80a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm128-16a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg></div>Cas importés<span>2025</span></th>
+        <th data-step="4"><div class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c.2 35.5-28.5 64.3-64 64.3H128.1c-35.3 0-64-28.7-64-64V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24zM352 224a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zm-96 96c-44.2 0-80 35.8-80 80c0 8.8 7.2 16 16 16H384c8.8 0 16-7.2 16-16c0-44.2-35.8-80-80-80H256z"/></svg></div>Cas autochtones<span>2025</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><th>Antibes<span>France</span></th>
+          <td class="chaud" data-step="1"><div class="v">174</div><div class="tr">case ERA5-Land d'Antibes</div></td>
+          <td class="chaud" data-step="2"><div class="v">établi</div><div class="tr">Alpes-Maritimes</div></td>
+          <td class="chaud" data-step="3"><div class="v">102</div><div class="tr">cas importés en Paca</div></td>
+          <td class="rouge" data-step="4"><div class="v">144</div><div class="tr">épisode d'Antibes</div></td></tr>
+        <tr><th>Barcelone<span>Espagne</span></th>
+          <td class="chaud" data-step="1"><div class="v">175</div><div class="tr">case ERA5-Land de Barcelone</div></td>
+          <td class="chaud" data-step="2"><div class="v">établi</div><div class="tr">Catalogne</div></td>
+          <td class="chaud" data-step="3"><div class="v">84</div><div class="tr">cas importés en Catalogne</div></td>
+          <td class="froid" data-step="4"><div class="v">0</div><div class="tr">Espagne entière</div></td></tr>
+        <tr><th>Londres<span>Royaume-Uni</span></th>
+          <td class="tiede" data-step="1"><div class="v">99</div><div class="tr">case ERA5-Land de Londres</div></td>
+          <td class="froid" data-step="2"><div class="v">non établi</div><div class="tr">Angleterre</div></td>
+          <td class="chaud" data-step="3"><div class="v">160</div><div class="tr">cas importés, Angleterre, pays de Galles, Irlande du Nord</div></td>
+          <td class="froid" data-step="4"><div class="v">0</div><div class="tr">Angleterre, pays de Galles, Irlande du Nord</div></td></tr>
+      </tbody>
+    </table>
+    <div class="question" data-step="5">À votre avis, pourquoi aucun cas autochtone n'a été détecté en Espagne ?</div>
+    <div class="src">Jour favorable : température moyenne entre 16,2 et 31,6 °C (Mordecai et al., 2017). Sources : Copernicus ERA5-Land (via Open-Meteo), ECDC et EFSA, Santé publique France, RENAVE (Espagne), UKHSA. Données consultées le 13/11/2026. Icônes : Font Awesome Free, CC BY 4.0.</div>
+  </section>
+
+  <section class="slide bloc" id="c-formule">
+    <div class="chip"><b>La région</b> · La réponse de la ressource</div>
+    <div class="f">Conditions climatiques favorables<br>+ Vecteur présent <span class="ne">≠</span> Chikungunya</div>
+    <div class="ref">« Chikungunya, le climat change la donne », p. 8</div>
+  </section>
+
+  <section class="slide bloc" id="c-courbe">
+    <div class="chip"><b>La région</b> · Le climat change quand même la donne</div>
+    <img src="images/chik/jours-favorables-1951-2025.png" alt="Nombre de jours favorables par an, 1951 à 2025">
+    <div class="chiffres">
+      <div class="c"><div class="l">Antibes</div><div class="v">146,5 → 172</div><div class="u">jours favorables par an, moyennes 1951-1980 puis 2016-2025</div></div>
+      <div class="c"><div class="l">Londres</div><div class="v">50 → 88,3</div><div class="u">mêmes périodes</div></div>
+    </div>
+    <div class="src">Données ERA5-Land (Copernicus, via Open-Meteo). Jour favorable : température moyenne journalière entre 16,2 et 31,6 °C. Graphique retracé à partir des données utilisées dans l'activité.</div>
+  </section>
+
+  <section class="slide bloc" id="c-fiab">
+    <div class="chip"><b>La région</b> · Fiabilité et échelles</div>
+    <div class="titre">Le même article donne deux plages de température, et Londres passe de 99 à 166 jours favorables.</div>
+    <div class="barres">
+      <div class="ligne"><div class="nom">Antibes</div><div><div class="b k" style="width:calc(174/184*100%)">174</div><div class="b v" style="width:calc(171/184*100%)">171</div></div></div>
+      <div class="ligne"><div class="nom">Barcelone</div><div><div class="b k" style="width:calc(175/184*100%)">175</div><div class="b v" style="width:calc(174/184*100%)">174</div></div></div>
+      <div class="ligne"><div class="nom">Londres</div><div><div class="b k" style="width:calc(99/184*100%)">99</div><div class="b v" style="width:calc(166/184*100%)">166</div></div></div>
+    </div>
+    <div class="legende"><span><i style="background:var(--nuit)"></i>16,2 à 31,6 °C, température constante</span><span><i style="background:var(--vert)"></i>11,9 à 28,3 °C, avec 8 °C d'écart dans la journée</span></div>
+    <div class="echelle">
+      <div class="a">Une case de données climatiques</div><div class="v">8 km × 11 km</div>
+      <div class="a">Le capteur posé dans une cour</div><div class="v">un point</div>
+    </div>
+    <div class="src">Jours favorables de mai à octobre 2025, sur 184. Plages : Mordecai et al., 2017, PLoS Neglected Tropical Diseases 11(4): e0005568. Case ERA5-Land à la latitude d'Antibes.</div>
+  </section>
+
+  <section class="slide bloc" id="c-bulletin">
+    <div class="chip"><b>La région</b> · Agir</div>
+    <div class="extraits">
+      <div class="ext-label">Extraits du bulletin de veille écrit en faisant l'activité comme un élève (Barcelone)</div>
+      <div class="ext niveau"><div class="petit">Niveau de vigilance proposé pour la saison 2026</div><div class="v">ÉLEVÉ de juin à octobre</div><div>MODÉRÉ en mai et en novembre. En 2025, le climat et le moustique étaient favorables de juin à octobre et des cas importés sont arrivés, sans transmission locale détectée.</div></div>
+      <div class="ext reco"><div class="h">Recommandations</div><ul>
+        <li>Signaler sans délai, de mai à novembre, tout cas importé et traiter contre les moustiques autour de chaque malade encore virémique.</li>
+        <li>Vider chaque semaine les récipients d'eau stagnante (soucoupes, seaux, gouttières) chez soi et dans les lieux publics.</li>
+        <li>Rappeler aux voyageurs de retour de zones touchées (Cuba, océan Indien) de se protéger des piqûres et de consulter en cas de fièvre avec douleurs articulaires.</li>
+      </ul></div>
+    </div>
+    <div class="alerte"><b>ALERTE</b>Plusieurs cas importés de chikungunya viennent d'être signalés dans votre territoire. Les conditions climatiques actuelles permettent-elles une transmission locale ?<span>« Chikungunya, le climat change la donne », p. 15</span></div>
+    <div class="role">Les groupes deviennent des cellules de veille sanitaire : climatologue, entomologiste, épidémiologiste, spécialiste des données, professionnel de santé, chargé de prévention.</div>
+  </section>
+
+  <section class="slide" id="g-chik"></section>
+
+  <!-- ===================== BLOC VIBRIO (7 min) ===================== -->
+  <section class="slide bloc" id="v-question">
+    <div class="chip"><b>La mer</b> · Le risque Vibrio</div>
+    <div class="gauche">
+      <div class="lab">La question de la ressource</div>
+      <div class="q">« Et si quelques degrés supplémentaires dans l'eau de mer suffisaient à faire apparaître de nouveaux risques sanitaires ? »<span>« Le risque Vibrio », p. 1</span></div>
+      <div class="hyp">Une hypothèse que les élèves examinent avec des données réelles.</div>
+    </div>
+    <div class="pb"><b>La problématique de la ressource</b>Comment les modifications des écosystèmes marins liées au changement climatique influencent-elles la répartition des agents pathogènes émergents ?</div>
+    <img src="images/zoom/s206.jpg" alt="Image satellite de l'Atlantique et de la Méditerranée occidentale">
+    <div class="credit">EOxCloudless by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024)</div>
+  </section>
+
+  <section class="slide bloc" id="v-donnees">
+    <div class="chip"><b>La mer</b> · Ce que font les élèves</div>
+    <div class="trois">
+      <div class="d"><div class="i" style="background-image:url('images/vibrio/ecdc-europe-15-mai-2025.png'); background-position: 65% 30%"></div><div class="t"><div class="q">L'indice</div><div class="o">Vibrio Viewer, ECDC</div><div class="p">favorabilité aux Vibrio, jour par jour, mers d'Europe</div></div></div>
+      <div class="d"><div class="i" style="background-image:url('images/vibrio/myocean-ouverture.png'); background-position: 60% 40%"></div><div class="t"><div class="q">La mer</div><div class="o">Copernicus Marine</div><div class="p">données de surface, modèles de 2 à 4 km</div></div></div>
+      <div class="d"><div class="i" style="background-image:url('images/vibrio/atlas-thau.png'); background-position: 70% 50%"></div><div class="t"><div class="q">Les coquillages</div><div class="o">Atlas sanitaire des coquillages</div><div class="p">zones de production et leur classement</div></div></div>
+    </div>
+    <div class="bandeau">Dans l'activité faite pas à pas : 5 points de côte, 7 dates en 2025, 35 lignes de tableur.</div>
+  </section>
+
+  <section class="slide bloc" id="v-enigme">
+    <div class="chip"><b>La mer</b> · La carte de l'ECDC, 15 août 2025</div>
+    <img src="images/vibrio/ecdc-europe-15-aout-2025.png" alt="Vibrio Viewer de l'ECDC, 15 août 2025 : la Baltique et la mer Noire sont colorées, la Méditerranée est vide">
+    <div class="pts">
+      <div class="pt colore" data-step="1"><div class="l">Baie de Gdańsk<span>Baltique, Pologne</span></div><div class="v">20,8 °C</div><div class="e">colorée sur la carte</div></div>
+      <div class="pt vide" data-step="2"><div class="l">Sète, côté mer<span>Méditerranée, France</span></div><div class="v">24,7 °C</div><div class="e">vide sur la carte</div></div>
+    </div>
+    <div class="question" data-step="3">Gdańsk, à 20,8 °C, se colore. Sète, à 24,7 °C, reste vide.<br>À votre avis, pourquoi ?</div>
+  </section>
+
+  <section class="slide bloc" id="v-reponse">
+    <div class="chip"><b>La mer</b> · La règle du modèle</div>
+    <div class="titre">Le modèle ne calcule un indice que si l'eau atteint au moins 18 °C et si sa salinité reste sous 26.</div>
+    <div class="tab">
+      <div class="h" style="background:none"></div>
+      <div class="h">Baie de Gdańsk<span>Baltique</span></div>
+      <div class="h">Estuaire de la Gironde<span>Atlantique</span></div>
+      <div class="h">Sète, côté mer<span>Méditerranée</span></div>
+      <div class="r">Température<span>au moins 18 °C</span></div>
+      <div class="ok">20,8 °C</div><div class="ok">22,8 °C</div><div class="ok">24,7 °C</div>
+      <div class="r">Salinité<span>moins de 26</span></div>
+      <div class="ok">6,7</div><div class="ok">19,5</div><div class="no">37,6</div>
+      <div class="r">Indice calculé<span>15 août 2025</span></div>
+      <div class="ok">7,7<small>« Low »</small></div><div class="ok">13,4<small>« High »</small></div><div class="no">aucun<small>case vide</small></div>
+    </div>
+    <div class="ecdc" data-step="1"><b>Ce que dit l'ECDC</b>« Les seuils (T ≥ 18 °C, S &lt; 26) ont été calibrés pour la mer Baltique. Leur transposition à la Méditerranée, à la mer Noire et aux côtes atlantiques n'a pas été validée de façon indépendante. »<span>Vibrio Viewer v2, page « About », traduit de l'anglais</span></div>
+    <div class="bandeau" data-step="1">Une case vide veut dire : pas d'indice calculé. Elle ne dit rien de la présence des Vibrio.</div>
+  </section>
+
+  <section class="slide bloc" id="v-nuage">
+    <div class="chip"><b>La mer</b> · Un R² presque parfait</div>
+    <img src="images/vibrio/nuage-sst-indice.png" alt="Nuage de points température de surface et indice Vibrio, 5 zones, avril à octobre 2025">
+    <div class="droite">
+      <div class="r2"><div class="v">R² = 0,99998</div><div class="u">sur les 10 points où l'indice existe</div></div>
+      <div class="txt">
+        <p>L'indice est calculé à partir de la température : indice ≈ 2,8 × (température − 18).</p>
+        <p>Le graphique retrouve la règle du modèle. Il ne mesure pas l'abondance des bactéries.</p>
+        <p>La ressource le demande p. 11 : distinguer corrélation et causalité.</p>
+      </div>
+    </div>
+    <div class="src">Activité faite pas à pas : 5 points, le 15 de chaque mois d'avril à octobre 2025. Température du modèle Copernicus Marine, indice du Vibrio Viewer (ECDC). Graphique retracé à partir des données utilisées dans l'activité.</div>
+  </section>
+
+  <section class="slide bloc" id="v-echelles">
+    <div class="chip"><b>La mer</b> · Les échelles</div>
+    <div class="titre">Dans la lagune de Thau, ni le Vibrio Viewer ni Copernicus Marine ne fournissent de valeur.</div>
+    <div class="deux">
+      <div><img src="images/vibrio/ecdc-thau-pas-de-donnee.png" alt="Vibrio Viewer, lagune de Thau : No data available at this location"><div class="cap">Vibrio Viewer de l'ECDC, 15 août 2025 : « No data available at this location ». Le modèle Copernicus de Méditerranée (maille de 4,2 km) n'a aucun point dans la lagune.</div></div>
+      <div><img src="images/vibrio/atlas-thau.png" alt="Atlas sanitaire des coquillages, lagune de Thau"><div class="cap">Atlas sanitaire des coquillages : les zones de production de la lagune, dont la zone 34.39.01 (Bouzigues-Loupian, classée B). Ce classement repose sur la bactérie <i>E.&nbsp;coli</i>, pas sur les Vibrio.</div></div>
+    </div>
+    <div class="bandeau">Satellite → région / littoral → station locale → cas sanitaire individuel<span>Les échelles de la ressource, p. 8</span></div>
+  </section>
+
+  <section class="slide bloc" id="v-bulletin">
+    <div class="chip"><b>La mer</b> · Agir</div>
+    <div class="extraits">
+      <div class="ext-label">Extraits du bulletin « Vibrio Alert » écrit en faisant l'activité comme un élève (littoral français, 15 août 2025)</div>
+      <div class="ext niv">
+        <div class="z">Estuaire de la Gironde</div><div class="n eleve">ÉLEVÉ</div><div class="d">Indice ECDC 13,4 (« High »). Eau à 22,8 °C, salinité 19,5.</div>
+        <div class="z">Sète, côté mer</div><div class="n ne">NON ÉVALUÉ</div><div class="d">Indice non calculé : eau à 24,7 °C, mais salinité 37,6, au-dessus du seuil de 26.</div>
+        <div class="z">Lagune de Thau</div><div class="n ne">NON ÉVALUÉ</div><div class="d">La lagune n'est couverte par aucun des outils européens utilisés.</div>
+      </div>
+      <div class="ext reco"><div class="h">Recommandations</div><ul>
+        <li>Gironde : les personnes qui ont une plaie ou une maladie chronique évitent de se baigner dans l'estuaire et protègent leurs plaies ; pas de pêche à pied dans la zone interdite 17.14.</li>
+        <li>Thau : demander des mesures locales de température, de salinité et de Vibrio dans la lagune.</li>
+        <li>Partout : bien cuire les coquillages pour les personnes fragiles.</li>
+      </ul></div>
+    </div>
+    <div class="crise"><b>CELLULE DE CRISE</b>Les groupes jouent des acteurs : scientifiques, agence sanitaire, collectivité territoriale, professionnels de la mer, équipe de télédétection. Ils reçoivent les données jour après jour et décident du niveau de vigilance : faible, modéré, élevé ou très élevé.<span>« Le risque Vibrio », p. 12</span></div>
+    <div class="jours">Dans l'activité, l'indice de l'estuaire de la Gironde de J-3 à aujourd'hui :
+      <div class="row"><div><b>12,18</b>J-3, 12/08</div><div><b>12,25</b>J-2, 13/08</div><div><b>12,47</b>J-1, 14/08</div><div><b>13,38</b>15/08</div></div>
+    </div>
+  </section>
+
+  <section class="slide" id="g-vibrio"></section>
+
+  <!-- ===================== CLÔTURE (3 min) ===================== -->
+  <section class="slide" id="f-grille"></section>
+
+  <section class="slide" id="f-action">
+    <div class="chip"><b>Et maintenant</b></div>
+    <h2>À vous de tester</h2>
+    <div class="sous">Choisissez une ressource et testez-la en classe, de novembre à mai.</div>
+    <div class="res">
+      <div class="r"><div class="t"><div class="ech">La rue</div><div class="nom">Respirer autour de l'établissement</div><div class="tags"><span class="terrain">Capteurs sur le terrain</span><span>Collège, prolongements lycée</span><span>4 à 5 h</span></div></div><div class="qr">QR code<br>à venir</div></div>
+      <div class="r"><div class="t"><div class="ech">La région</div><div class="nom">Chikungunya, le climat change la donne</div><div class="tags"><span>Données en ligne</span><span>Lycée</span><span>3 à 4 h</span></div></div><div class="qr">QR code<br>à venir</div></div>
+      <div class="r"><div class="t"><div class="ech">La mer</div><div class="nom">Le risque Vibrio</div><div class="tags"><span>Données en ligne</span><span>Lycée</span><span>3 à 4 h</span></div></div><div class="qr">QR code<br>à venir</div></div>
+    </div>
+    <div class="retours" data-step="1">
+      <div class="h">Après le test, renvoyez-nous :</div>
+      <div class="l">
+        <div>Les productions d'élèves<span>bulletins, graphiques, tableaux</span></div>
+        <div>La durée réelle<span>en heures et en séances</span></div>
+        <div>Ce qui a bloqué<span>sites, comptes, consignes, matériel</span></div>
+        <div>Vos adaptations<span>niveau, durée, supports</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="f-fin">
+    <img class="logo" src="images/logo-ease.png" alt="EASE">
+    <img class="ue" src="images/cofinance-ue.png" alt="Cofinancé par l'Union européenne">
+    <div class="chaine">
+      <div class="e">Conception</div><div class="fl">→</div>
+      <div class="e vous">Expérimentation</div><div class="fl">→</div>
+      <div class="e vous">Retours</div><div class="fl">→</div>
+      <div class="e">Amélioration</div><div class="fl">→</div>
+      <div class="e">Diffusion</div>
+    </div>
+    <div class="part">Votre part, de novembre à mai</div>
+    <div class="noms"><b>Dimitri Garcia</b>, Université Côte d'Azur · <b>Cédric Bordi</b>, lycée Masséna, Nice</div>
+  </section>
+
+</div>
+
+<div id="pres">
+  <div class="bar"><span class="where" id="p-where"></span><span class="timer" id="p-timer">00:00</span></div>
+  <div class="plan" id="p-plan"></div>
+  <div class="prog"><div id="p-prog"></div></div>
+  <div class="note" id="p-note"></div>
+  <div class="read" id="p-read"></div>
+  <div class="next" id="p-next"></div>
+  <div class="keys">→ / espace / PageDown : avancer · ← / PageUp : reculer · R : remettre le chrono à zéro · dans la fenêtre principale : L ouvre cette fenêtre, F met en plein écran</div>
+</div>
+
+<script>
+/* ===================== déroulé ===================== */
+const TOTAL = 30 * 60;
+const SLIDES = [
+  { id: 's-titre', label: 'Titre', sec: 0, steps: 1,
+    note: 'Reste à l\'écran pendant que les équipes s\'installent, hors des 30 minutes. Le chrono démarre au premier appui.' },
+  { id: 's-accroche', label: 'Accroche : le capteur dans la salle', sec: 30, steps: 1,
+    note: 'Afficher l\'écran du téléphone (recopie). Si la recopie échoue, rester sur cette diapo : elle montre la capture de secours prise avant la rotation.' },
+  { id: 's-zoom', label: 'One Health : le zoom jusqu\'à la salle', sec: 60, steps: 7,
+    note: 'Chaque appui avance d\'un arrêt : la Terre, l\'Europe, la Côte d\'Azur, Sophia Antipolis vue par satellite, le même cadre vu d\'avion, autour de l\'IPMC, l\'IPMC.' },
+  { id: 's-ressources', label: 'Les trois ressources, chacune son échelle', sec: 60, steps: 1, note: '' },
+  { id: 's-grille', label: 'La grille', sec: 30, steps: 1,
+    note: 'Elle se remplira colonne par colonne, à la fin de chaque ressource.' },
+  { id: 'k-boitier', label: 'Capteurs : le boîtier', sec: 60, steps: 1,
+    note: 'Revenir au boîtier de l\'accroche. Trois capteurs : BMV080 (Bosch) pour les particules, BME280 (Bosch) pour la température, l\'humidité et la pression, SGP41 (Sensirion) pour l\'indice NOx. La pression s\'affiche mais n\'est pas dans le fichier CSV. Relais vers le Chikungunya : la température et l\'humidité mesurées ici sont celles qui comptent pour le moustique.' },
+  { id: 'k-protocole', label: 'Capteurs : quatre lieux, deux passages', sec: 60, steps: 1,
+    note: 'Le protocole de la ressource. Pour P4, point de demi-tour, les deux arrêts se suivent : le second est un contrôle de répétabilité, pas un second passage. Phrase sur l\'égalité : qui porte le capteur ? un élève tiré au sort, et le rôle tourne à chaque arrêt, comme tous les autres rôles.' },
+  { id: 'k-boucle', label: 'Capteurs : une boucle mesurée', sec: 75, steps: 1,
+    note: 'Emplacement réservé au graphique de la boucle faite avec le boîtier actuel. Ne montrer que des mesures réelles.' },
+  { id: 'k-critere', label: 'Capteurs : un écart est-il réel ?', sec: 75, steps: 1,
+    note: 'Critère de la ressource, bloc Analyser. Phrase validée : « Ce critère compare des écarts mesurés avec le même appareil et le même protocole. Il permet de voir si la différence entre deux lieux dépasse les variations observées entre nos deux passages. Mais il ne garantit ni l\'exactitude des concentrations, ni que le lieu explique à lui seul l\'écart. » Un écart non discernable ne veut pas dire absence de différence. Les ±10 µg/m³ du BMV080 sont une précision typique en conditions d\'essai, pas une marge garantie sur chaque mesure : ne pas les annoncer comme telle.' },
+  { id: 'k-fiabilite', label: 'Capteurs : ce que mesure chaque capteur', sec: 60, steps: 1,
+    note: 'Précision typique du BMV080 : ±10 µg/m³ entre 0 et 100 µg/m³, dans des conditions d\'essai (fiche technique Bosch ; même valeur chez DFRobot et Mouser). Mouser indique une plage de fonctionnement à partir de +15 °C. La ressource parle de dioxyde d\'azote : avec ce boîtier, on a un indice NOx. Indice NOx (note Sensirion) : référence glissante sur environ 24 h, la valeur 1 correspond aux conditions habituelles du capteur ; un redémarrage du boîtier peut remettre cet historique à zéro. L\'analyse chiffrée de la boucle porte sur les PM2,5 ; l\'indice NOx sert d\'exemple de limite de l\'instrument.' },
+  { id: 'k-echelles', label: 'Capteurs : trois sources, trois échelles', sec: 90, steps: 1,
+    note: 'La station la plus proche n\'est pas forcément la plus représentative du lieu étudié : distinguer une station de fond d\'une station sous influence du trafic. Comparer seulement les PM2,5 : l\'indice NOx ne se compare pas. Une proximité entre les sources ne prouve pas que le capteur est juste, une divergence ne prouve pas qu\'il est faux. Heures : la station Geod\'air est en UTC, la sortie en heure locale.' },
+  { id: 'k-jeu', label: 'Capteurs : le jeu de la source adaptée', sec: 75, steps: 2,
+    note: 'Deux questions, environ 15 secondes de réponse chacune. Réponses : 1, le capteur porté, avec la boucle aller-retour ; 2, aucune source ne permet de répondre, le risque sanitaire est hors de portée. La question sur le niveau régional est laissée de côté : la diapo précédente montre déjà la maille CAMS.' },
+  { id: 'k-tri', label: 'Capteurs : trier avant d\'écrire', sec: 75, steps: 1,
+    note: 'Le tri se fait avant la note et ne se corrige que pour une erreur de calcul ou de lecture. Chaque affirmation « établie » porte la mention « dans les conditions de cette campagne ».' },
+  { id: 'g-capteurs', label: 'La grille : colonne de la rue', sec: 30, steps: 1,
+    note: 'Les mots de chaque case restent à choisir.' },
+  { id: 'c-antibes', label: 'Chikungunya : Antibes 2025', sec: 45, steps: 1,
+    note: '144 cas autochtones pour l\'épisode d\'Antibes (bilan final). La ressource donne 103 au 22 septembre : ne pas mélanger les deux.' },
+  { id: 'c-donnees', label: 'Chikungunya : ce que font les élèves', sec: 45, steps: 1, note: '' },
+  { id: 'c-enigme', label: 'Chikungunya : l\'énigme des trois villes', sec: 90, steps: 6,
+    note: 'Un appui par colonne : jours favorables, moustique, cas importés, cas autochtones. Dernier appui : la question à la salle, 30 secondes d\'hypothèses. Dire « presque autant de jours favorables », jamais « le même climat ».' },
+  { id: 'c-formule', label: 'Chikungunya : la réponse de la ressource', sec: 60, steps: 1, note: '' },
+  { id: 'c-courbe', label: 'Chikungunya : les jours favorables depuis 1951', sec: 60, steps: 1, note: '' },
+  { id: 'c-fiab', label: 'Chikungunya : fiabilité et échelles', sec: 45, steps: 1,
+    note: 'Les deux plages viennent du même article (Mordecai et al. 2017), vérifiées le 14/11. Les nombres de jours viennent de l\'activité faite en élève. Écart moyen entre minimale et maximale, de mai à octobre 2025, dans les cases ERA5-Land : 7,3 °C à Antibes, 6,5 °C à Barcelone, 8,3 °C à Londres, proches des 8 °C de l\'article. Cet écart varie d\'un jour à l\'autre (de 0,9 à 12,9 °C à Antibes, de 2,5 à 17,7 °C à Londres) : l\'approche reste simplifiée.' },
+  { id: 'c-bulletin', label: 'Chikungunya : le bulletin de veille', sec: 45, steps: 1,
+    note: 'Bulletin écrit lors de l\'activité faite en élève, pour Barcelone. L\'alerte est celle de la ressource, p. 15. Le niveau de vigilance est une proposition d\'élève, pas une alerte officielle. Une phrase sur les limites : les élèves justifient leur niveau et écrivent eux-mêmes les limites de leur analyse (plage tirée d\'un modèle, cases climatiques de 8 à 25 km, cas importés comptés sur toute la Catalogne).' },
+  { id: 'g-chik', label: 'La grille : colonne de la région', sec: 30, steps: 1,
+    note: 'Les mots de chaque case restent à choisir.' },
+  { id: 'v-question', label: 'Vibrio : la question de la ressource', sec: 45, steps: 1,
+    note: 'Présenter la phrase comme une hypothèse à examiner. Citation p. 1, problématique p. 6. Image : Sentinel-2 (EOxCloudless 2024), de l\'Atlantique à la Méditerranée occidentale : on y voit l\'estuaire de la Gironde et le golfe du Lion.' },
+  { id: 'v-donnees', label: 'Vibrio : ce que font les élèves', sec: 45, steps: 1,
+    note: 'Le Viewer calcule son indice à partir des modèles Copernicus Marine, pas directement de satellites. MyOcean Pro s\'ouvre sans compte ; exporter les valeurs demande un compte gratuit. Constanța : Roumanie, pays partenaire d\'EASE.' },
+  { id: 'v-enigme', label: 'Vibrio : l\'énigme de la carte vide', sec: 90, steps: 4,
+    note: 'Appui 1 : Gdańsk. Appui 2 : Sète. Appui 3 : la question, 20 à 30 secondes d\'hypothèses. Ne pas montrer la salinité avant la diapo suivante. La température seule n\'explique pas la couleur, sans être écartée pour autant. La fiche 1 de la ressource propose une zone « en Méditerranée occidentale » : une classe de Sète ou de Montpellier obtient une carte vide sur sa côte.' },
+  { id: 'v-reponse', label: 'Vibrio : la règle du modèle', sec: 60, steps: 2,
+    note: 'Seuils de l\'ECDC (Baker-Austin et al. 2013, Semenza et al. 2017). La Gironde se colore parce que l\'estuaire est peu salé (apports du fleuve). Appui 1 : l\'avertissement de l\'ECDC et le bandeau. Une case vide veut dire pas d\'indice calculé, pas absence de Vibrio.' },
+  { id: 'v-nuage', label: 'Vibrio : un R² presque parfait', sec: 60, steps: 1,
+    note: 'Droite : indice = 2,81 × SST − 50,6, R² = 0,99998, sur les 10 points d\'indice positif ; elle coupe l\'axe à 18,0 °C. Sous le nuage, la bande « indice non calculé » range les 18 relevés sans indice : 13 avec une eau sous 18 °C, 5 de Sète entre 18,2 et 24,7 °C avec une salinité autour de 38. Les 7 relevés de Thau n\'ont aucune donnée. À Constanța le 15/08 : 2,8 × (25,5 − 18) = 21,0, le Viewer affiche 20,99.' },
+  { id: 'v-echelles', label: 'Vibrio : les échelles', sec: 45, steps: 1,
+    note: 'Thau : « No data » dans le Viewer, aucun point de grille du modèle Copernicus de Méditerranée (4,2 km), pas de valeur non plus dans la température satellite de Copernicus Marine (maille d\'environ 1 km). L\'Atlas donne bien des informations sur la lagune, mais rien sur la présence ou l\'absence de Vibrio. L\'Atlas des coquillages descend à l\'échelle des zones de production. La ressource parle de « données locales » sans en donner la source.' },
+  { id: 'v-bulletin', label: 'Vibrio : le bulletin Vibrio Alert', sec: 45, steps: 1,
+    note: 'Bulletin écrit lors de l\'activité faite en élève. Les niveaux sont des propositions d\'élève ; ÉLEVÉ pour la Gironde désigne une favorabilité calculée élevée, pas une alerte officielle. Sète et Thau sont NON ÉVALUÉ pour deux raisons : à Sète, les données existent mais le seuil de salinité bloque le calcul de l\'indice ; à Thau, les outils européens n\'ont pas de données. Cellule de crise : ressource p. 12.' },
+  { id: 'g-vibrio', label: 'La grille : colonne de la mer', sec: 30, steps: 1,
+    note: 'Les mots de chaque case restent à choisir.' },
+  { id: 'f-grille', label: 'Clôture : la grille complète', sec: 60, steps: 1,
+    note: 'Les six démarches dans les trois ressources. Les mots des cases restent à choisir : tant qu\'ils manquent, cette diapo montre la même grille que la précédente.' },
+  { id: 'f-action', label: 'Clôture : à vous de tester', sec: 90, steps: 2,
+    note: 'Appui 1 : ce qu\'on demande de renvoyer. Les QR codes attendent les liens définitifs : les liens Calaméo reçus contiennent une clé d\'accès privée (authid), à voir avec Fatima. À qui envoyer les retours : à préciser. Rappeler que les productions d\'élèves transmises doivent être anonymisées.' },
+  { id: 'f-fin', label: 'Clôture : et après', sec: 30, steps: 1,
+    note: 'Le fil du briefing : conception, expérimentation, retours, amélioration, diffusion. Les équipes portent l\'expérimentation et les retours.' },
+];
+/* grilles remplies : copie de la grille vide, colonnes cochées */
+function buildGrid(id, cols, anim = true) {
+  const sec = document.getElementById(id);
+  const tbl = document.querySelector('#s-grille table').cloneNode(true);
+  tbl.querySelectorAll('tbody tr').forEach(tr => {
+    tr.querySelectorAll('td').forEach((td, c) => {
+      if (c < cols) { td.className = 'ok' + (anim && c === cols - 1 ? ' neuf' : ''); td.textContent = '✓'; }
+    });
+  });
+  sec.appendChild(tbl);
+  sec.style.background = 'linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 75%)';
+}
+buildGrid('g-capteurs', 1);
+buildGrid('g-chik', 2);
+buildGrid('g-vibrio', 3);
+buildGrid('f-grille', 3, false);
+const ORAL = {   // texte oral validé, diapo par diapo
+  's-titre': `<p class="qui">Dimitri · pendant l'installation, hors chrono</p>
+    <p>Bonjour à tous. Installez-vous, nous commençons dans un instant.</p>`,
+  's-accroche': `<p class="qui">Dimitri</p>
+    <p>Depuis que vous êtes entrés dans cette salle, ce petit boîtier mesure l'air que vous respirez, et je vais vous montrer ce qu'il voit en ce moment.</p>
+    <p class="jeu">[Afficher la page du boîtier.]</p>
+    <p>Pour les particules fines, il affiche [valeur] microgrammes par mètre cube en PM2,5 et [valeur] en PM10. Ces valeurs décrivent l'air de cette pièce, à l'endroit où le boîtier est posé.</p>`,
+  's-zoom': `<p class="qui">Dimitri</p>
+    <p><span class="ap">Appui 1</span> Cette photo de la Terre a été prise par un satellite de la NASA, à un million et demi de kilomètres. Le point blanc marque l'endroit où nous sommes.</p>
+    <p><span class="ap">Appui 2</span> Voici l'Europe, vue par le satellite Sentinel-2 du programme Copernicus.</p>
+    <p><span class="ap">Appuis 3 et 4</span> <span class="jeu">(silence, les images avancent)</span></p>
+    <p><span class="ap">Appui 5</span> Voici le même cadre photographié d'avion par l'IGN, avec vingt centimètres par pixel au lieu de dix mètres.</p>
+    <p><span class="ap">Appui 6</span> <span class="jeu">(silence)</span></p>
+    <p><span class="ap">Appui 7</span> Nous voici dans ce bâtiment. L'approche One Health relie la santé des personnes, celle des animaux et celle des milieux, à toutes ces échelles.</p>`,
+  's-ressources': `<p class="qui">Dimitri</p>
+    <p>Les trois ressources suivent ce changement d'échelle. Avec « Respirer autour de l'établissement », les élèves mesurent eux-mêmes les particules fines dans la rue. « Chikungunya, le climat change la donne » se joue à l'échelle de la région, avec le moustique tigre, le climat et les cas de la maladie. « Le risque Vibrio » regarde la mer, avec des données de température et de salinité qui permettent d'évaluer des conditions favorables aux Vibrio.</p>
+    <p>Cédric et moi avons conçu la première. Les deux autres viennent d'autres équipes du projet EASE. Nous avons réalisé leurs activités pas à pas, en nous mettant à la place d'un élève, pour voir ce qu'elles permettent de faire.</p>`,
+  's-grille': `<p class="qui">Dimitri</p>
+    <p>Pour comparer les trois ressources, nous remplirons ce tableau. Chaque ligne est une démarche que les élèves pratiquent, de « comprendre ce que mesure la source » à « formuler une recommandation ». Nous commençons par la rue.</p>`,
+  'k-boitier': `<p class="qui">Dimitri</p>
+    <p>Revenons au boîtier de tout à l'heure. Il contient trois capteurs. Le premier mesure les particules en suspension et estime les concentrations de PM2,5 et de PM10, en microgrammes par mètre cube. Le deuxième mesure la température, l'humidité et la pression. Le troisième fournit un indice NOx, sans unité, et nous verrons ce que cela change.</p>
+    <p>Le boîtier crée son propre réseau Wi-Fi ou se branche en USB, et sa page s'ouvre dans un navigateur, sur un téléphone ou un ordinateur, sans application à installer.</p>`,
+  'k-protocole': `<p class="qui">Dimitri</p>
+    <p>Le protocole de la ressource repose sur quatre lieux autour de l'établissement : l'entrée, un axe circulé, un espace calme et un espace végétalisé. La classe fait la boucle à l'aller, puis au retour dans l'ordre inverse, et s'arrête trois minutes à chaque lieu, capteur immobile à hauteur de respiration. Avant chaque arrêt, on touche le bouton du lieu sur la page.</p>
+    <p>Le boîtier est porté par un élève tiré au sort, et ce rôle tourne à chaque arrêt, comme le comptage des véhicules, le carnet et la sécurité.</p>`,
+  'k-boucle': `<p class="qui">Dimitri</p>
+    <p>Voici la boucle que j'ai faite avec ce boîtier le <span class="trou">[date]</span>, autour de <span class="trou">[lieu]</span>. Chaque barre est la moyenne des PM2,5 pendant un arrêt de trois minutes, avec l'aller et le retour côte à côte pour chaque lieu.</p>
+    <p class="trou">[Ce que montre le graphique : le lieu le plus chargé, et si l'ordre des lieux se retrouve au retour.]</p>
+    <p>Les élèves construisent ce même graphique dans leur tableur, à partir d'un tableau d'une ligne par arrêt.</p>`,
+  'k-critere': `<p class="qui">Dimitri</p>
+    <p>Pour savoir si un écart entre deux lieux mérite d'être retenu, la ressource donne aux élèves un critère simple. On compare l'écart entre les deux lieux à la différence entre l'aller et le retour de chacun d'eux, et on ne le retient que s'il est plus grand.</p>
+    <p class="trou">[Exemple tiré du tableau de la boucle : l'écart entre P2 et P3 dépasse, ou non, la variation aller-retour.]</p>
+    <p>Ce critère compare des écarts mesurés avec le même appareil et le même protocole. Il permet de voir si la différence entre deux lieux dépasse les variations observées entre nos deux passages. Mais il ne garantit ni l'exactitude des concentrations, ni que le lieu explique à lui seul l'écart.</p>`,
+  'k-fiabilite': `<p class="qui">Dimitri</p>
+    <p>Avant de comparer ces mesures à d'autres sources, il faut savoir ce que chaque capteur fournit. Pour les PM2,5 et les PM10, le fabricant annonce une précision typique établie dans des conditions d'essai, mais nous n'avons pas comparé notre boîtier à une station sur place.</p>
+    <p>L'indice NOx est calculé par rapport à ce que le capteur a mesuré dans les dernières vingt-quatre heures, et la page du boîtier écrit elle-même qu'il ne s'agit pas d'une concentration de dioxyde d'azote. Pour les élèves, c'est un bon exemple de source à comprendre avant de s'en servir.</p>`,
+  'k-echelles': `<p class="qui">Dimitri</p>
+    <p>Les élèves mettent ensuite leurs mesures en regard de deux sources publiques. La première est la station réglementaire la plus proche qui mesure les PM2,5. Elle fournit une mesure contrôlée en un point fixe, et les élèves relèvent sa distance, sa typologie et son influence, de fond ou de trafic. La seconde, le produit CAMS de Copernicus, est une estimation calculée par un modèle pour une maille de plusieurs kilomètres.</p>
+    <p class="trou">[Valeurs de la boucle : le boîtier donnait [x] µg/m³ en moyenne, la station [y] et CAMS [z] pour la période étudiée, en précisant les horaires et les durées représentés par chaque source.]</p>
+    <p>Si ces chiffres sont proches, cela ne prouve pas que le capteur soit juste, et un écart ne prouve pas qu'il soit faux, car ils ne décrivent ni le même espace ni la même durée.</p>`,
+  'k-jeu': `<p class="qui">Dimitri · avec la salle</p>
+    <p>Faisons le jeu de la ressource. Pour chaque question, choisissez une carte et dites pourquoi.</p>
+    <p>Première question : l'entrée est-elle plus chargée en PM2,5 que l'espace calme ? <span class="jeu">(un choix, une justification)</span> Le capteur porté, avec la boucle aller-retour.</p>
+    <p><span class="ap">Appui 1</span> Deuxième question : les élèves respirent-ils un air dangereux pour leur santé ? <span class="jeu">(un choix, une justification)</span> Aucune source, parce que le risque dépend de l'exposition réelle de chaque élève, que personne n'a mesurée.</p>
+    <p>Les élèves justifient leur choix par l'échelle et la durée que représente chaque source.</p>`,
+  'k-tri': `<p class="qui">Dimitri</p>
+    <p>Pour finir, les élèves écrivent une note d'une page au chef d'établissement ou à un autre responsable nommé. Avant d'écrire, ils rangent chaque phrase possible dans trois colonnes. La colonne « établi » reçoit les écarts discernables selon le critère aller-retour, dans les conditions de cette campagne. La colonne « suggéré » reçoit une tendance vue une seule fois ou qui a plusieurs explications. La colonne « hors de portée » reçoit ce que le protocole ne permet pas de dire, comme l'exposition réelle ou le risque pour la santé.</p>
+    <p class="trou">[Un exemple tiré de la boucle pour chaque colonne.]</p>
+    <p>Si les données ne suffisent pas, la note peut recommander une nouvelle campagne, et elle compte alors comme une production complète.</p>`,
+  'g-capteurs': `<p class="qui">Dimitri · puis passage de parole à Cédric</p>
+    <p>La colonne de la rue se remplit avec les six démarches. Le boîtier mesure aussi la température, en un point. Dans la ressource suivante, Cédric va vous montrer comment les élèves étudient le climat favorable à la transmission du chikungunya, à l'échelle de régions entières.</p>`,
+  'c-antibes': `<p class="qui">Cédric</p>
+    <p>Merci Dimitri. À l'été 2025, l'épisode d'Antibes a compté 144 cas autochtones de chikungunya, c'est-à-dire des personnes infectées sur place, sans avoir voyagé. Santé publique France parle d'un épisode hors norme.</p>
+    <p>La ressource « Chikungunya, le climat change la donne », écrite par une autre équipe du projet EASE, part de cette situation pour poser sa question : dans quelle mesure l'évolution du climat peut-elle favoriser le moustique tigre et l'émergence de la maladie en Europe ?</p>`,
+  'c-donnees': `<p class="qui">Cédric</p>
+    <p>Pour y répondre, les élèves n'ont besoin d'aucun capteur. Ils travaillent sur ordinateur, avec un tableur et trois sources en ligne : les températures jour par jour depuis 1951, fournies par Copernicus, la carte de l'ECDC qui indique où le moustique tigre est établi en Europe, et les cas importés et autochtones publiés par Santé publique France et ses équivalents espagnol et britannique.</p>`,
+  'c-enigme': `<p class="qui">Cédric · avec la salle</p>
+    <p><span class="ap">Appui 1</span> Un jour favorable a une température moyenne dans la plage où l'article de Mordecai, publié en 2017, estime une transmission possible. De mai à octobre 2025, Barcelone en comptait 175, contre 174 à Antibes, et Londres seulement 99.</p>
+    <p><span class="ap">Appui 2</span> Le moustique tigre est établi dans les Alpes-Maritimes et en Catalogne, pas en Angleterre.</p>
+    <p><span class="ap">Appui 3</span> On compte 102 cas importés en Paca, 84 en Catalogne et 160 en Angleterre, au pays de Galles et en Irlande du Nord.</p>
+    <p><span class="ap">Appui 4</span> L'épisode d'Antibes compte 144 cas autochtones, alors qu'aucun n'a été déclaré en Espagne ni dans les données britanniques.</p>
+    <p><span class="ap">Appui 5</span> À votre avis, pourquoi aucun cas autochtone n'a été détecté en Espagne ? <span class="jeu">(30 secondes d'hypothèses)</span></p>`,
+  'c-formule': `<p class="qui">Cédric</p>
+    <p>La ressource répond avec cette formule : des conditions climatiques favorables et un vecteur présent ne suffisent pas à faire apparaître le chikungunya. Elle ajoute deux conditions, l'arrivée du virus avec une personne malade et l'exposition des habitants aux piqûres.</p>
+    <p>Les données de l'activité ne permettent pas de savoir pourquoi aucune transmission locale n'a été détectée en Espagne. Des cas importés ont bien été recensés en Catalogne, mais nous ne savons pas dans quelles conditions ces personnes ont pu être en contact avec des moustiques vecteurs. La question reste donc ouverte, et elle donne de quoi discuter avec les élèves.</p>`,
+  'c-courbe': `<p class="qui">Cédric</p>
+    <p>Le climat change quand même la donne. Depuis 1951, le nombre de jours favorables augmente aux trois endroits. À Antibes, il est passé de 146,5 par an en moyenne entre 1951 et 1980 à 172 entre 2016 et 2025. À Londres, il est passé de 50 à 88. Ces jours respectent le critère de température retenu, ce qui ne veut pas dire que le virus ait circulé ces jours-là.</p>`,
+  'c-fiab': `<p class="qui">Cédric</p>
+    <p>Les élèves rencontrent aussi une limite de méthode. Le même article donne deux plages de température, l'une à température constante, l'autre avec huit degrés d'écart dans la journée. Avec la seconde, Londres passe de 99 à 166 jours favorables de mai à octobre 2025, alors qu'Antibes et Barcelone bougent à peine. Et une maille de réanalyse climatique couvre environ 8 kilomètres sur 11, alors que le boîtier de Dimitri mesure la température en un point.</p>`,
+  'c-bulletin': `<p class="qui">Cédric</p>
+    <p>La production finale est un bulletin de veille, que les élèves écrivent à partir de l'alerte de la ressource, qui annonce plusieurs cas importés et demande si le climat permet une transmission locale. Les groupes jouent des rôles, du climatologue à l'épidémiologiste.</p>
+    <p>Voici des extraits du bulletin que nous avons écrit en faisant l'activité, pour Barcelone. Le niveau de vigilance y est une proposition d'élève, et les élèves écrivent aussi les limites de leur analyse.</p>`,
+  'g-chik': `<p class="qui">Cédric</p>
+    <p>La colonne de la région se remplit à son tour. La ressource suivante suit la même démarche, de l'observation à l'action, en passant de la région à la mer.</p>`,
+  'v-question': `<p class="qui">Cédric</p>
+    <p>La ressource « Le risque Vibrio », elle aussi écrite par une autre équipe du projet, part de cette question : et si quelques degrés supplémentaires dans l'eau de mer suffisaient à faire apparaître de nouveaux risques sanitaires ?</p>
+    <p>Les Vibrio sont des bactéries marines, et certaines provoquent des infections, parfois graves chez les personnes fragiles. La ressource présente cette idée comme une hypothèse, que les élèves examinent avec des données réelles.</p>`,
+  'v-donnees': `<p class="qui">Cédric</p>
+    <p>Comme pour le chikungunya, tout se fait sur ordinateur. Les élèves lisent l'indice du Vibrio Viewer de l'ECDC, relèvent des données de surface de la mer sur Copernicus Marine et consultent l'Atlas sanitaire des coquillages pour les zones de production. Dans notre essai, nous avons suivi cinq points de côte à sept dates de 2025, ce qui fait 35 lignes de tableur.</p>`,
+  'v-enigme': `<p class="qui">Cédric · avec la salle</p>
+    <p><span class="ap">À l'arrivée</span> Voici la carte de l'indice le 15 août 2025. La Baltique et la mer Noire sont colorées, alors que la Méditerranée reste vide.</p>
+    <p><span class="ap">Appui 1</span> Dans la baie de Gdańsk, en Pologne, l'eau est à 20,8 degrés, et la zone est colorée.</p>
+    <p><span class="ap">Appui 2</span> Devant Sète, l'eau est à 24,7 degrés, et la carte reste vide.</p>
+    <p><span class="ap">Appui 3</span> Gdańsk, à 20,8 degrés, se colore. Sète, à 24,7 degrés, reste vide. À votre avis, pourquoi ? <span class="jeu">(20 à 30 secondes d'hypothèses ; ne pas parler de salinité avant la diapo suivante)</span></p>`,
+  'v-reponse': `<p class="qui">Cédric</p>
+    <p><span class="ap">À l'arrivée</span> La réponse tient à la règle du modèle. L'ECDC ne calcule un indice que si l'eau atteint au moins 18 degrés et si sa salinité reste sous 26. Dans la baie de Gdańsk, la salinité est de 6,7. Dans l'estuaire de la Gironde, elle est de 19,5, sous l'influence de l'eau douce du fleuve. Devant Sète, elle atteint 37,6, et le modèle ne calcule pas d'indice.</p>
+    <p><span class="ap">Appui 1</span> L'ECDC prévient lui-même que ces seuils ont été calibrés pour la Baltique et n'ont pas été validés en Méditerranée. Une case vide veut donc dire qu'aucun indice n'a été calculé, et elle ne dit rien de la présence des Vibrio.</p>`,
+  'v-nuage': `<p class="qui">Cédric</p>
+    <p>Les élèves tracent ensuite l'indice en fonction de la température, comme le demande la ressource. Les dix relevés qui ont un indice s'alignent sur une droite, avec un R² de 0,99998. Sous l'axe, les relevés sans indice rappellent les deux raisons possibles, une eau sous 18 degrés ou une salinité au-dessus de 26.</p>
+    <p>Cette corrélation presque parfaite résulte du calcul de l'indice, que le modèle fait à partir de la température. Elle ne constitue pas une preuve indépendante de la présence des bactéries ni de leur abondance.</p>`,
+  'v-echelles': `<p class="qui">Cédric</p>
+    <p>Les élèves descendent ensuite à l'échelle d'une lagune, celle de Thau, voisine de Sète, où l'on élève des coquillages. Ni le Vibrio Viewer ni Copernicus Marine n'y fournissent de valeur, car le modèle de Méditerranée n'a aucun point dans la lagune. L'Atlas des coquillages décrit bien les zones de production, mais son classement repose sur la bactérie <i>E. coli</i>, pas sur les Vibrio.</p>`,
+  'v-bulletin': `<p class="qui">Cédric</p>
+    <p>Les élèves terminent en écrivant un bulletin « Vibrio Alert » et en jouant une cellule de crise, où ils reçoivent les données jour après jour. Dans notre bulletin, l'estuaire de la Gironde est classé « élevé », au sens d'une favorabilité calculée par le modèle.</p>
+    <p>À Sète, le seuil de salinité empêche le calcul de l'indice. Dans la lagune de Thau, le Viewer et les produits Copernicus consultés ne fournissent pas de valeur. L'Atlas donne des informations sur les coquillages, mais pas sur les Vibrio.</p>`,
+  'g-vibrio': `<p class="qui">Cédric · puis passage de parole à Dimitri</p>
+    <p>La colonne de la mer se remplit, et le tableau est complet. Je laisse Dimitri conclure.</p>`,
+  'f-grille': `<p class="qui">Dimitri</p>
+    <p>Merci Cédric. Les trois ressources font pratiquer les six mêmes démarches, avec un capteur dans la rue, des données climatiques pour la région et des modèles océaniques pour la mer. Vous pouvez donc choisir une ressource selon le niveau de vos élèves et le matériel dont vous disposez, sans renoncer à aucune de ces démarches.</p>
+    <p class="trou">[Quand les mots des cases seront choisis : une phrase sur une ou deux cases.]</p>`,
+  'f-action': `<p class="qui">Dimitri</p>
+    <p><span class="ap">À l'arrivée</span> Voici les trois ressources, avec pour chacune son niveau, sa durée et son matériel. <span class="trou">[Les QR codes, le jour même.]</span> Chaque équipe peut en choisir une et la tester en classe entre novembre et mai. La ressource sur l'air demande un capteur et une sortie, et les deux autres se font entièrement sur ordinateur.</p>
+    <p><span class="ap">Appui 1</span> Après le test, nous avons besoin de quatre retours. Envoyez-nous des productions d'élèves anonymisées, comme des bulletins, des graphiques ou des tableaux. Dites-nous combien de temps l'activité a réellement pris, en heures et en séances, ce qui a bloqué, que ce soit un site, un compte, une consigne ou le matériel, et ce que vous avez adapté. <span class="trou">[Adresse où envoyer les retours, à préciser.]</span></p>`,
+  'f-fin': `<p class="qui">Dimitri</p>
+    <p>Le projet EASE suit ces cinq étapes, de la conception à la diffusion. Les ressources sont prêtes. À partir de novembre, vous allez en expérimenter une avec vos élèves et nous transmettre vos retours. Ils permettront à l'équipe qui a écrit chaque ressource de l'améliorer avant sa diffusion. Merci de votre attention. Nous avons maintenant dix minutes pour vos questions.</p>`,
+};
+
+/* ===================== mise à l'échelle ===================== */
+const stage = document.getElementById('stage');
+let SCALE = 1;
+function fit() {
+  SCALE = Math.min(innerWidth / 1600, innerHeight / 900);
+  stage.style.transform = `translate(-50%, -50%) scale(${SCALE})`;
+  sizeCanvas();
+}
+
+/* ===================== zoom ===================== */
+const zc = document.getElementById('zc');
+const ctx = zc.getContext('2d');
+function sizeCanvas() {
+  const k = SCALE * (window.devicePixelRatio || 1);
+  zc.width = Math.round(1600 * k); zc.height = Math.round(900 * k);
+  ctx.setTransform(k, 0, 0, k, 0, 0);
+  ctx.imageSmoothingQuality = 'high';
+}
+const EARTH = { file: 'images/zoom/terre.jpg', disk: [538.95, 537.89], R: 437.70, ipmc: [570.61, 349.63], kmpx: 14.63 };
+const W5 = 5666.44;                       // largeur du cadre z5, en km
+const IMG = {};
+function load(key, src) { const im = new Image(); im.src = src; IMG[key] = im; }
+load('terre', EARTH.file);
+for (let z = 5; z <= 14; z++) load('s2' + z, `images/zoom/s2${String(z).padStart(2, '0')}.jpg`);
+for (let z = 14; z <= 19; z++) load('ign' + z, `images/zoom/ign${String(z).padStart(2, '0')}.jpg`);
+const ok = k => IMG[k] && IMG[k].complete && IMG[k].naturalWidth > 0;
+
+const STOPS = [
+  { p: 0,  name: 'La Terre', sub: 'photographiée à 1,5 million de kilomètres' },
+  { p: 1,  name: 'L\'Europe', sub: '' },
+  { p: 5,  name: 'La Côte d\'Azur', sub: '' },
+  { p: 10, name: 'Sophia Antipolis', sub: 'vue par le satellite Sentinel-2' },
+  { p: 11, name: 'Sophia Antipolis', sub: 'le même cadre, photographié d\'avion' },
+  { p: 13, name: 'Autour de l\'IPMC', sub: '' },
+  { p: 16, name: 'L\'IPMC', sub: 'le bâtiment où nous sommes' },
+];
+const E0 = 820 / (2 * EARTH.R), E1 = EARTH.kmpx / (W5 / 1600);
+const eScale = p => E0 * Math.pow(E1 / E0, p);
+const smooth = t => t * t * (3 - 2 * t);
+function zOf(p) { return p <= 10 ? 4 + p : (p <= 11 ? 14 : 3 + p); }
+function widthKm(p) { return p < 1 ? 1600 * EARTH.kmpx / eScale(p) : W5 / Math.pow(2, zOf(p) - 5); }
+function ipmcScreen(p) {
+  if (p >= 1) return [800, 450];
+  const t = smooth(p), e = eScale(p);
+  const c = [EARTH.disk[0] + (EARTH.ipmc[0] - EARTH.disk[0]) * t, EARTH.disk[1] + (EARTH.ipmc[1] - EARTH.disk[1]) * t];
+  return [800 + (EARTH.ipmc[0] - c[0]) * e, 450 + (EARTH.ipmc[1] - c[1]) * e];
+}
+function layer(key, s, x, y, a) {
+  if (!ok(key) || a <= 0) return;
+  ctx.globalAlpha = Math.min(1, a);
+  const w = 1600 * s, h = 900 * s;
+  ctx.drawImage(IMG[key], x - w / 2, y - h / 2, w, h);
+  ctx.globalAlpha = 1;
+}
+function pyramid(prefix, zmin, zmax, Z, a) {
+  const k = Math.max(zmin, Math.min(zmax, Math.floor(Z + 1e-9)));
+  const f = Math.pow(2, Z - k);
+  layer(prefix + k, f, 800, 450, a);
+  if (k + 1 <= zmax) layer(prefix + (k + 1), f / 2, 800, 450, a);
+}
+let zp = 0, zStop = 0, anim = null, boxAlpha = 0;
+function drawZoom(now) {
+  ctx.globalAlpha = 1; ctx.fillStyle = '#000'; ctx.fillRect(0, 0, 1600, 900);
+  const p = zp;
+  if (p < 1) {
+    const t = smooth(p), e = eScale(p);
+    const c = [EARTH.disk[0] + (EARTH.ipmc[0] - EARTH.disk[0]) * t, EARTH.disk[1] + (EARTH.ipmc[1] - EARTH.disk[1]) * t];
+    if (ok('terre')) ctx.drawImage(IMG.terre, 800 - c[0] * e, 450 - c[1] * e, 1080 * e, 1080 * e);
+    if (p > 0.55) { const [x, y] = ipmcScreen(p); layer('s25', e / E1, x, y, smooth((p - 0.55) / 0.45)); }
+  } else if (p <= 10) {
+    pyramid('s2', 5, 14, zOf(p), 1);
+  } else if (p < 11) {
+    pyramid('s2', 5, 14, 14, 1);
+    layer('ign14', 1, 800, 450, smooth(p - 10));
+  } else {
+    pyramid('ign', 14, 19, zOf(p), 1);
+  }
+  // cadre de la zone où l'on va entrer
+  const nxt = STOPS[zStop + 1];
+  const target = anim ? anim.to : (nxt && !(STOPS[zStop].p === 10 && nxt.p === 11) ? nxt.p : null);
+  if (target !== null && target > p + 1e-6 && !(Math.floor(p) === 10 && target === 11)) {
+    const r = widthKm(target) / widthKm(p);
+    const [x, y] = ipmcScreen(p);
+    const w = 1600 * r, h = 900 * r;
+    const a = anim ? Math.max(0, 1 - Math.pow((anim.t || 0), 3)) : 1;
+    if (r < 0.98 && r > 0.035 && a > 0.02) {
+      ctx.save(); ctx.globalAlpha = a; ctx.lineWidth = 3; ctx.strokeStyle = '#FFFFFF';
+      ctx.shadowColor = 'rgba(0,0,0,.7)'; ctx.shadowBlur = 8;
+      ctx.strokeRect(x - w / 2, y - h / 2, w, h); ctx.restore();
+    }
+  }
+  // réticule sur l'IPMC
+  const [rx, ry] = ipmcScreen(p);
+  const rr = 13 + 1.8 * Math.sin((now || 0) / 320);
+  ctx.save(); ctx.lineWidth = 2.5; ctx.strokeStyle = '#FFFFFF'; ctx.fillStyle = '#FFFFFF';
+  ctx.shadowColor = 'rgba(0,0,0,.75)'; ctx.shadowBlur = 6;
+  ctx.beginPath(); ctx.arc(rx, ry, rr, 0, 2 * Math.PI); ctx.stroke();
+  for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+    ctx.beginPath(); ctx.moveTo(rx + dx * (rr + 4), ry + dy * (rr + 4)); ctx.lineTo(rx + dx * (rr + 13), ry + dy * (rr + 13)); ctx.stroke();
+  }
+  ctx.beginPath(); ctx.arc(rx, ry, 3.5, 0, 2 * Math.PI); ctx.fill(); ctx.restore();
+  zLabels(p);
+}
+function fmtWidth(km) {
+  if (km >= 1000) return (Math.round(km / 100) * 100).toLocaleString('fr-FR') + ' km';
+  if (km >= 100) return (Math.round(km / 10) * 10).toLocaleString('fr-FR') + ' km';
+  if (km >= 10) return Math.round(km).toLocaleString('fr-FR') + ' km';
+  if (km >= 1) return (Math.round(km * 10) / 10).toLocaleString('fr-FR') + ' km';
+  return (Math.round(km * 100) * 10).toLocaleString('fr-FR') + ' m';
+}
+const zInstr = document.getElementById('z-instr'), zCredit = document.getElementById('z-credit');
+const zWidth = document.getElementById('z-width'), zPlace = document.getElementById('z-place'), zSwitch = document.getElementById('z-switch');
+let lastSrc = '';
+function zLabels(p) {
+  const src = p < 0.8 ? 'epic' : (p < 10.5 ? 's2' : 'ign');
+  if (src !== lastSrc) {
+    lastSrc = src;
+    zInstr.innerHTML = src === 'epic' ? '<b>Caméra EPIC</b>, satellite DSCOVR (NASA)<br><span>21 juin 2025</span>'
+                     : src === 's2' ? '<b>Satellite Sentinel-2</b>, programme Copernicus<br><span>10 m par pixel</span>'
+                     : '<b>Photographie aérienne</b>, IGN<br><span>20 cm par pixel</span>';
+    zCredit.textContent = src === 'epic' ? 'Image : NASA EPIC Team'
+                        : src === 's2' ? 'EOxCloudless by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2024)'
+                        : 'Photographies aériennes : IGN, BD ORTHO, Licence Ouverte';
+  }
+  zWidth.innerHTML = p < 0.15 ? 'Diamètre de la Terre : 12 742 km' : '<i></i>Largeur de l\'image : ' + fmtWidth(widthKm(p));
+  zSwitch.style.opacity = (p > 10.05 && p <= 11.001) ? 1 : 0;
+}
+function setPlace(k, show) {
+  zPlace.querySelector('.n').textContent = STOPS[k].name;
+  zPlace.querySelector('.s').textContent = STOPS[k].sub;
+  zPlace.style.opacity = show ? 1 : 0;
+}
+function zoomTo(k, animate) {
+  k = Math.max(0, Math.min(STOPS.length - 1, k));
+  if (anim) { zp = anim.to; anim = null; }
+  if (!animate || k === zStop) { zStop = k; zp = STOPS[k].p; setPlace(k, true); return; }
+  const from = zp, to = STOPS[k].p;
+  const dz = Math.abs(to - from);
+  const dur = Math.min(4800, 900 + 520 * dz);
+  zPlace.style.opacity = 0;
+  anim = { from, to, t0: performance.now(), dur, t: 0, k };
+}
+function loop(now) {
+  if (SLIDES[i].id === 's-zoom' && !isPresenter) {
+    if (anim) {
+      const t = Math.min(1, (now - anim.t0) / anim.dur);
+      anim.t = t;
+      const e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      zp = anim.from + (anim.to - anim.from) * e;
+      if (t >= 1) { zp = anim.to; zStop = anim.k; anim = null; setPlace(zStop, true); }
+    }
+    drawZoom(now);
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ===================== diapos ===================== */
+const isPresenter = location.hash === '#presenter';
+let i = 0, b = 0, t0 = null;
+function render(animate) {
+  SLIDES.forEach((s, k) => document.getElementById(s.id).classList.toggle('active', k === i));
+  document.getElementById(SLIDES[i].id).querySelectorAll('[data-step]').forEach(el => el.classList.toggle('on', b >= +el.dataset.step));
+  if (SLIDES[i].id === 's-zoom') zoomTo(b, animate);
+  if (isPresenter) renderPres();
+}
+function go(n, nb, fromPeer) {
+  n = Math.max(0, Math.min(SLIDES.length - 1, n));
+  nb = Math.max(0, Math.min(SLIDES[n].steps - 1, nb || 0));
+  if (t0 === null && (n > 0 || nb > 0)) t0 = Date.now();
+  const animate = (n === i && nb !== b);
+  i = n; b = nb;
+  render(animate);
+  if (!fromPeer) send({ type: 'goto', i, b });
+}
+function next() { if (b < SLIDES[i].steps - 1) go(i, b + 1); else if (i < SLIDES.length - 1) go(i + 1, 0); }
+function prev() { if (b > 0) go(i, b - 1); else if (i > 0) go(i - 1, SLIDES[i - 1].steps - 1); }
+
+/* ===================== fenêtre du texte (touche L) ===================== */
+let presWin = null;
+function send(msg) {
+  try { if (isPresenter && window.opener) window.opener.postMessage(msg, '*'); } catch (e) {}
+  try { if (!isPresenter && presWin && !presWin.closed) presWin.postMessage(msg, '*'); } catch (e) {}
+}
+window.addEventListener('message', ev => {
+  const m = ev.data || {};
+  if (m.type === 'goto') { if (isPresenter) { t0 = m.t0 !== undefined ? m.t0 : t0; } go(m.i, m.b, true); }
+  if (m.type === 'hello' && !isPresenter) { presWin = ev.source; presWin.postMessage({ type: 'goto', i, b, t0 }, '*'); }
+});
+const mmss = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+function cumul(n) { return SLIDES.slice(0, n + 1).reduce((a, s) => a + s.sec, 0); }
+function renderPres() {
+  const s = SLIDES[i];
+  document.getElementById('p-where').textContent = (i + 1) + ' / ' + SLIDES.length + ' · ' + s.label + (s.steps > 1 ? ' (' + (b + 1) + '/' + s.steps + ')' : '');
+  document.getElementById('p-plan').innerHTML = 'Temps prévu pour cette diapo : <b>' + mmss(s.sec) + '</b> &nbsp;·&nbsp; Repère à la fin de la diapo : <b id="p-rep">' + mmss(cumul(i)) + '</b> sur ' + mmss(TOTAL);
+  document.getElementById('p-prog').style.width = (100 * cumul(i) / TOTAL) + '%';
+  const note = document.getElementById('p-note');
+  note.style.display = s.note ? 'block' : 'none'; note.textContent = s.note;
+  document.getElementById('p-read').innerHTML = ORAL[s.id] || '<span class="vide">Texte oral à écrire ensemble.</span>';
+  const nx = SLIDES[i + 1];
+  document.getElementById('p-next').innerHTML = nx ? 'Ensuite : <b>' + nx.label + '</b>' : 'Fin des diapos construites';
+}
+setInterval(() => {
+  if (!isPresenter) return;
+  const el = document.getElementById('p-timer');
+  const s = t0 === null ? 0 : (Date.now() - t0) / 1000;
+  el.textContent = mmss(s);
+  const rep = document.getElementById('p-rep');
+  if (rep) rep.className = (t0 !== null && s > cumul(i)) ? 'late' : '';
+}, 500);
+
+document.addEventListener('keydown', e => {
+  const k = e.key;
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { e.preventDefault(); next(); }
+  else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); prev(); }
+  else if (k === 'Home') go(0, 0);
+  else if (k === 'End') go(SLIDES.length - 1, 0);
+  else if ((k === 'l' || k === 'L') && !isPresenter) {
+    presWin = window.open(location.href.split('#')[0] + '#presenter', 'texte-oral', 'width=1100,height=850');
+  }
+  else if ((k === 'f' || k === 'F') && !isPresenter) {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen();
+  }
+  else if ((k === 'r' || k === 'R') && isPresenter) { t0 = null; send({ type: 'goto', i, b, t0: null }); }
+});
+
+/* capture de secours */
+const sec = document.getElementById('secours');
+sec.addEventListener('error', () => { sec.style.display = 'none'; document.getElementById('manque').style.display = 'block'; });
+
+/* démarrage : #3 ou #3.2 ouvre directement une diapo (numérotée à partir de 1) */
+if (isPresenter) {
+  document.body.classList.add('presenter');
+  document.title = 'Texte oral : EASE';
+  try { window.opener && window.opener.postMessage({ type: 'hello' }, '*'); } catch (e) {}
+} else {
+  const m = location.hash.match(/^#(\d+)(?:\.(\d+))?$/);
+  if (m) { i = Math.max(0, Math.min(SLIDES.length - 1, +m[1] - 1)); b = m[2] ? +m[2] - 1 : 0; }
+}
+window.addEventListener('resize', fit);
+document.body.classList.add('instant');
+fit();
+render(false);
+setTimeout(() => document.body.classList.remove('instant'), 150);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

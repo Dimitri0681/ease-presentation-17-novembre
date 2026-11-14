@@ -1,0 +1,162 @@
+{
+ "center": {
+  "lat": 43.6187228,
+  "lon": 7.0529465
+ },
+ "frame": [
+  1600,
+  900
+ ],
+ "levels": [
+  {
+   "z": 5,
+   "src": "s2",
+   "file": "s205.jpg",
+   "m_per_px": 3541.524288466214,
+   "width_km": 5666.438861545942,
+   "missing_tiles": 0
+  },
+  {
+   "z": 6,
+   "src": "s2",
+   "file": "s206.jpg",
+   "m_per_px": 1770.762144233107,
+   "width_km": 2833.219430772971,
+   "missing_tiles": 0
+  },
+  {
+   "z": 7,
+   "src": "s2",
+   "file": "s207.jpg",
+   "m_per_px": 885.3810721165535,
+   "width_km": 1416.6097153864855,
+   "missing_tiles": 0
+  },
+  {
+   "z": 8,
+   "src": "s2",
+   "file": "s208.jpg",
+   "m_per_px": 442.69053605827673,
+   "width_km": 708.3048576932428,
+   "missing_tiles": 0
+  },
+  {
+   "z": 9,
+   "src": "s2",
+   "file": "s209.jpg",
+   "m_per_px": 221.34526802913837,
+   "width_km": 354.1524288466214,
+   "missing_tiles": 0
+  },
+  {
+   "z": 10,
+   "src": "s2",
+   "file": "s210.jpg",
+   "m_per_px": 110.67263401456918,
+   "width_km": 177.0762144233107,
+   "missing_tiles": 0
+  },
+  {
+   "z": 11,
+   "src": "s2",
+   "file": "s211.jpg",
+   "m_per_px": 55.33631700728459,
+   "width_km": 88.53810721165534,
+   "missing_tiles": 0
+  },
+  {
+   "z": 12,
+   "src": "s2",
+   "file": "s212.jpg",
+   "m_per_px": 27.668158503642296,
+   "width_km": 44.26905360582767,
+   "missing_tiles": 0
+  },
+  {
+   "z": 13,
+   "src": "s2",
+   "file": "s213.jpg",
+   "m_per_px": 13.834079251821148,
+   "width_km": 22.134526802913836,
+   "missing_tiles": 0
+  },
+  {
+   "z": 14,
+   "src": "s2",
+   "file": "s214.jpg",
+   "m_per_px": 6.917039625910574,
+   "width_km": 11.067263401456918,
+   "missing_tiles": 0
+  },
+  {
+   "z": 14,
+   "src": "ign",
+   "file": "ign14.jpg",
+   "m_per_px": 6.917039625910574,
+   "width_km": 11.067263401456918,
+   "missing_tiles": 0
+  },
+  {
+   "z": 15,
+   "src": "ign",
+   "file": "ign15.jpg",
+   "m_per_px": 3.458519812955287,
+   "width_km": 5.533631700728459,
+   "missing_tiles": 0
+  },
+  {
+   "z": 16,
+   "src": "ign",
+   "file": "ign16.jpg",
+   "m_per_px": 1.7292599064776435,
+   "width_km": 2.7668158503642295,
+   "missing_tiles": 0
+  },
+  {
+   "z": 17,
+   "src": "ign",
+   "file": "ign17.jpg",
+   "m_per_px": 0.8646299532388217,
+   "width_km": 1.3834079251821148,
+   "missing_tiles": 0
+  },
+  {
+   "z": 18,
+   "src": "ign",
+   "file": "ign18.jpg",
+   "m_per_px": 0.4323149766194109,
+   "width_km": 0.6917039625910574,
+   "missing_tiles": 0
+  },
+  {
+   "z": 19,
+   "src": "ign",
+   "file": "ign19.jpg",
+   "m_per_px": 0.21615748830970544,
+   "width_km": 0.3458519812955287,
+   "missing_tiles": 0
+  }
+ ],
+ "terre": {
+  "file": "terre.jpg",
+  "image": "epic_1b_20250621114029",
+  "size": [
+   1080,
+   1080
+  ],
+  "disk_center": [
+   538.9453125,
+   537.890625
+  ],
+  "radius_px": 437.6953125,
+  "km_per_px_center": 14.55578759482374,
+  "ipmc_px": [
+   570.6068915557796,
+   349.62862911580146
+  ],
+  "centroid": [
+   18.215332,
+   1.318359
+  ]
+ }
+}
