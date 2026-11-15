@@ -89,6 +89,20 @@
   .carte .titre { font-size: 27px; font-weight: 600; margin-top: 10px; line-height: 1.25; }
   .carte .sujet { font-size: 23px; color: var(--gris); margin-top: 10px; }
 
+  /* ---------- clôture : synthèse ---------- */
+  #f-synthese { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 75%); }
+  #f-synthese .cartes { top: 122px; bottom: auto; height: 430px; }
+  #f-synthese.active .carte { opacity: 1; transform: none; }
+  #f-synthese.active .carte:nth-child(2) { transition-delay: .35s; }
+  #f-synthese.active .carte:nth-child(3) { transition-delay: .7s; }
+  #f-synthese .carte .img { height: 270px; }
+  #f-synthese .carte .txt { padding: 24px 32px; }
+  #f-synthese .carte .echelle { font-size: 44px; }
+  #f-synthese .carte .action { font-size: 33px; font-weight: 700; color: var(--nuit); margin-top: 8px; line-height: 1.2; }
+  #f-synthese .message { position: absolute; left: 70px; right: 70px; top: 602px; padding: 30px 36px; border-radius: 24px; text-align: center; background: linear-gradient(90deg, #DCEBF6, #F3F8FC); }
+  #f-synthese .message .m1 { font-size: 54px; font-weight: 700; color: var(--nuit); letter-spacing: -.01em; line-height: 1.15; }
+  #f-synthese .message .m2 { font-size: 30px; font-weight: 600; color: var(--gris); margin-top: 14px; }
+
   /* ---------- grille ---------- */
   #s-grille { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 75%); }
   table.grille { position: absolute; left: 60px; right: 60px; top: 50px; width: 1480px; border-collapse: separate; border-spacing: 10px 8px; table-layout: fixed; }
@@ -841,7 +855,23 @@
   <section class="slide" id="g-vibrio"></section>
 
   <!-- ===================== CLÔTURE (3 min) ===================== -->
-  <section class="slide" id="f-grille"></section>
+  <section class="slide" id="f-synthese">
+    <div class="cartes">
+      <div class="carte">
+        <div class="img" style="background-image:url('images/zoom/ign18.jpg')"></div>
+        <div class="txt"><div class="echelle">La rue</div><div class="action">Mesurer sur le terrain</div></div>
+      </div>
+      <div class="carte">
+        <div class="img" style="background-image:url('images/zoom/s209.jpg')"></div>
+        <div class="txt"><div class="echelle">La région</div><div class="action">Croiser les données</div></div>
+      </div>
+      <div class="carte">
+        <div class="img" style="background-image:url('images/zoom/s205.jpg')"></div>
+        <div class="txt"><div class="echelle">La mer</div><div class="action">Interroger les modèles</div></div>
+      </div>
+    </div>
+    <div class="message" data-step="1"><div class="m1">Trois échelles, une même démarche scientifique</div><div class="m2">Des données à une recommandation argumentée</div></div>
+  </section>
 
   <section class="slide" id="f-action">
     <div class="chip"><b>Et maintenant</b></div>
@@ -953,8 +983,8 @@ const SLIDES = [
     note: 'Bulletin écrit lors de l\'activité faite en élève. Les niveaux sont des propositions d\'élève ; ÉLEVÉ pour la Gironde désigne une favorabilité calculée élevée, pas une alerte officielle. Sète et Thau sont NON ÉVALUÉ pour deux raisons : à Sète, les données existent mais le seuil de salinité bloque le calcul de l\'indice ; à Thau, les outils européens n\'ont pas de données. Cellule de crise : ressource p. 12.' },
   { id: 'g-vibrio', label: 'La grille : colonne de la mer', sec: 30, steps: 1,
     note: 'Les mots de chaque case sont choisis ; la ligne « Caractériser un événement » a été supprimée.' },
-  { id: 'f-grille', label: 'Clôture : la grille complète', sec: 60, steps: 1,
-    note: 'Les cinq démarches dans les trois ressources.' },
+  { id: 'f-synthese', label: 'Clôture : trois échelles, une même démarche', sec: 60, steps: 2,
+    note: 'Les trois cartes apparaissent à l\'arrivée. Appui 1 sur « Mais derrière ces différences » : le message apparaît. La grille complète reste sur la diapo précédente.' },
   { id: 'f-action', label: 'Clôture : à vous de tester', sec: 90, steps: 2,
     note: 'Appui 1 : ce qu\'on demande de renvoyer. Les QR codes attendent les liens définitifs : les liens Calaméo reçus contiennent une clé d\'accès privée (authid), à voir avec Fatima. À qui envoyer les retours : à préciser. Rappeler que les productions d\'élèves transmises doivent être anonymisées.' },
   { id: 'f-fin', label: 'Clôture : et après', sec: 30, steps: 1,
@@ -984,7 +1014,6 @@ function buildGrid(id, cols, anim = true) {
 buildGrid('g-capteurs', 1);
 buildGrid('g-chik', 2);
 buildGrid('g-vibrio', 3);
-buildGrid('f-grille', 3, false);
 const ORAL = {   // texte oral validé, diapo par diapo
   's-titre': `<p class="qui">Dimitri · pendant l'installation, hors chrono</p>
     <p>Bonjour à tous. Installez-vous, nous commençons dans un instant.</p>`,
@@ -1086,9 +1115,9 @@ const ORAL = {   // texte oral validé, diapo par diapo
     <p>À Sète, le seuil de salinité empêche le calcul de l'indice. Dans la lagune de Thau, le Viewer et les produits Copernicus consultés ne fournissent pas de valeur. L'Atlas donne des informations sur les coquillages, mais pas sur les Vibrio.</p>`,
   'g-vibrio': `<p class="qui">Cédric · puis passage de parole à Dimitri</p>
     <p>La colonne de la mer se remplit, et le tableau est complet. Je laisse Dimitri conclure.</p>`,
-  'f-grille': `<p class="qui">Dimitri</p>
-    <p>Merci Cédric. Les trois ressources font pratiquer les cinq mêmes démarches, avec un capteur dans la rue, des données climatiques pour la région et des modèles océaniques pour la mer. Vous pouvez donc choisir une ressource selon le niveau de vos élèves et le matériel dont vous disposez, sans renoncer à aucune de ces démarches.</p>
-    <p class="trou">[Quand les mots des cases seront choisis : une phrase sur une ou deux cases.]</p>`,
+  'f-synthese': `<p class="qui">Dimitri</p>
+    <p><span class="ap">À l'arrivée</span> Merci Cédric. Nous venons de parcourir trois milieux, avec trois façons différentes de travailler. Dans la rue, les élèves réalisent leurs propres mesures. À l'échelle régionale, ils croisent des données climatiques, entomologiques et sanitaires. En mer, ils interrogent un modèle et découvrent les limites de ses résultats.</p>
+    <p><span class="ap">Appui 1</span> Mais derrière ces différences, la démarche scientifique reste la même : comprendre les données, comparer, discuter leur fiabilité, changer d'échelle et formuler une recommandation. C'est ce fil conducteur qui relie nos trois ressources, malgré des outils et des situations très différents.</p>`,
   'f-action': `<p class="qui">Dimitri</p>
     <p><span class="ap">À l'arrivée</span> Voici les trois ressources, avec pour chacune son niveau, sa durée et son matériel. <span class="trou">[Les QR codes, le jour même.]</span> Chaque équipe peut en choisir une et la tester en classe entre novembre et mai. La ressource sur l'air demande un capteur et une sortie, et les deux autres se font entièrement sur ordinateur.</p>
     <p><span class="ap">Appui 1</span> Après le test, nous avons besoin de quatre retours. Envoyez-nous des productions d'élèves anonymisées, comme des bulletins, des graphiques ou des tableaux. Dites-nous combien de temps l'activité a réellement pris, en heures et en séances, ce qui a bloqué, que ce soit un site, un compte, une consigne ou le matériel, et ce que vous avez adapté. <span class="trou">[Adresse où envoyer les retours, à préciser.]</span></p>`,
