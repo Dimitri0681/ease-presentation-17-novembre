@@ -482,11 +482,6 @@
     <div class="partenaires">Projet Erasmus+ porté par l'académie de Nice et l'INSPÉ de Nice, la Richard-Hallmann-Schule (Allemagne) et l'Institut national de physique de la Terre (Roumanie), avec l'appui de Météo-France, du CNES (Calisph'Air) et de Thales Alenia Space.</div>
   </section>
 
-  <section class="slide" id="s-accroche">
-    <img id="secours" src="images/secours-appli.jpg" alt="Capture de l'application du capteur">
-    <div class="manque" id="manque">Capture de secours à déposer avant chaque rotation :<br><code>images/secours-appli.jpg</code><br>Elle s'affiche ici si la recopie de l'écran du téléphone échoue.</div>
-  </section>
-
   <section class="slide" id="s-zoom">
     <canvas id="zc"></canvas>
     <div class="zlab" id="z-instr"></div>
@@ -494,6 +489,11 @@
     <div class="zlab" id="z-place"><div class="n"></div><div class="s"></div></div>
     <div class="zlab" id="z-width"></div>
     <div class="zlab" id="z-credit"></div>
+  </section>
+
+  <section class="slide" id="s-accroche">
+    <img id="secours" src="images/secours-appli.jpg" alt="Capture de l'application du capteur">
+    <div class="manque" id="manque">Capture de secours à déposer avant chaque rotation :<br><code>images/secours-appli.jpg</code><br>Elle s'affiche ici si la recopie de l'écran du téléphone échoue.</div>
   </section>
 
   <section class="slide" id="s-sante">
@@ -924,10 +924,10 @@ const TOTAL = 30 * 60;
 const SLIDES = [
   { id: 's-titre', label: 'Titre', sec: 0, steps: 1,
     note: 'Reste à l\'écran pendant que les équipes s\'installent, hors des 30 minutes. Le chrono démarre au premier appui.' },
-  { id: 's-accroche', label: 'Accroche : le capteur dans la salle', sec: 30, steps: 1,
-    note: 'Afficher l\'écran du téléphone (recopie). Si la recopie échoue, rester sur cette diapo : elle montre la capture de secours prise avant la rotation.' },
   { id: 's-zoom', label: 'One Health : le zoom jusqu\'à la salle', sec: 60, steps: 7,
     note: 'Chaque appui avance d\'un arrêt : la Terre, l\'Europe, la Côte d\'Azur, Sophia Antipolis vue par satellite, le même cadre vu d\'avion, autour de l\'IPMC, l\'IPMC.' },
+  { id: 's-accroche', label: 'Accroche : le capteur dans la salle', sec: 30, steps: 1,
+    note: 'Afficher l\'écran du téléphone (recopie). Si la recopie échoue, rester sur cette diapo : elle montre la capture de secours prise avant la rotation.' },
   { id: 's-sante', label: 'Santé environnementale : deux familles de risques', sec: 30, steps: 1,
     note: 'Ajoutée le 15/11 à la demande de Cédric. Les données régionales viennent de modèles (CAMS, ERA5-Land, Viewer de l\'ECDC) : ne pas dire « données satellitaires ».' },
   { id: 's-ressources', label: 'Les trois ressources, chacune son échelle', sec: 30, steps: 1, note: '' },
