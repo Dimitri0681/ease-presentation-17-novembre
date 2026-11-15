@@ -34,6 +34,19 @@
   #s-titre .auteurs b { color: var(--nuit); font-weight: 600; }
   #s-titre .partenaires { position: absolute; left: 110px; right: 110px; bottom: 50px; padding-top: 22px; border-top: 1px solid #C9D9E6; font-size: 19px; line-height: 1.5; color: var(--gris); }
 
+
+  /* ---------- santé environnementale ---------- */
+  #s-sante { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 70%); }
+  #s-sante h2 { position: absolute; left: 80px; top: 90px; margin: 0; font-size: 54px; font-weight: 700; color: var(--nuit); letter-spacing: -.01em; }
+  #s-sante .fam { position: absolute; left: 80px; right: 80px; top: 230px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  #s-sante .f { padding: 34px 38px; border-radius: 24px; background: #fff; box-shadow: 0 16px 44px rgba(9,48,113,.14); }
+  #s-sante .f .icos { display: flex; gap: 14px; margin-bottom: 22px; }
+  #s-sante .f .icos span { width: 78px; height: 78px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(90deg, var(--nuit), var(--bleu)); }
+  #s-sante .f.air .icos span { background: linear-gradient(90deg, #48596C, #7A8794); }
+  #s-sante .f .icos svg { width: 42px; height: 42px; fill: #fff; }
+  #s-sante .f .t { font-size: 38px; font-weight: 700; color: var(--nuit); }
+  #s-sante .f .d { font-size: 28px; color: var(--gris); margin-top: 10px; line-height: 1.4; }
+  #s-sante .src { left: 80px; }
   /* ---------- accroche ---------- */
   #s-accroche { background: radial-gradient(ellipse at 30% 40%, #12408F 0%, var(--nuit) 70%); color: #fff; }
   #s-accroche .live { position: absolute; left: 70px; top: 60px; display: flex; align-items: center; gap: 14px; font-size: 24px; font-weight: 700; letter-spacing: .14em; }
@@ -112,6 +125,13 @@
   .p3 { background: linear-gradient(90deg, #FDEFD9, #FEF7EC); color: #A8650A; }
   .p4 { background: linear-gradient(90deg, #EADCF7, #F4EDFB); color: #7B3FB8; }
 
+
+  /* Capteurs 0 : pourquoi sortir mesurer */
+  #k-pourquoi .deux { position: absolute; left: 60px; right: 60px; top: 120px; display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
+  #k-pourquoi .deux img { width: 100%; height: 430px; object-fit: cover; object-position: 50% 50%; border-radius: 12px; box-shadow: 0 14px 40px rgba(9,48,113,.15); display: block; background: #fff; }
+  #k-pourquoi .deux .cap { font-size: 21px; color: var(--nuit); margin-top: 12px; line-height: 1.35; }
+  #k-pourquoi .deux .cap b { color: var(--bleu); }
+  #k-pourquoi .question { white-space: normal; text-align: center; width: 1280px; font-size: 32px; line-height: 1.3; bottom: 40px; }
   /* Capteurs 1 : le boîtier */
   #k-boitier .capts { position: absolute; left: 60px; top: 130px; width: 900px; }
   #k-boitier .cp { display: grid; grid-template-columns: 200px 1fr; align-items: center; padding: 22px 26px; border-radius: 18px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); margin-bottom: 20px; }
@@ -450,6 +470,16 @@
     <div class="zlab" id="z-credit"></div>
   </section>
 
+  <section class="slide" id="s-sante">
+    <h2>Santé environnementale : deux familles de risques</h2>
+    <div class="fam">
+      <div class="f air"><div class="icos"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M32 144c0 79.5 64.5 144 144 144H299.3c22.6 19.9 52.2 32 84.7 32s62.1-12.1 84.7-32H496c61.9 0 112-50.1 112-112s-50.1-112-112-112c-10.7 0-21 1.5-30.8 4.3C443.8 27.7 401.1 0 352 0c-32.6 0-62.4 12.2-85.1 32.3C242.1 12.1 210.5 0 176 0C96.5 0 32 64.5 32 144zM616 368H280c-13.3 0-24 10.7-24 24s10.7 24 24 24H616c13.3 0 24-10.7 24-24s-10.7-24-24-24zm-64 96H440c-13.3 0-24 10.7-24 24s10.7 24 24 24H552c13.3 0 24-10.7 24-24s-10.7-24-24-24zm-192 0H24c-13.3 0-24 10.7-24 24s10.7 24 24 24H360c13.3 0 24-10.7 24-24s-10.7-24-24-24zM224 392c0-13.3-10.7-24-24-24H96c-13.3 0-24 10.7-24 24s10.7 24 24 24H200c13.3 0 24-10.7 24-24z"/></svg></span></div><div class="t">Polluants de l'air</div><div class="d">Les particules fines</div></div>
+      <div class="f"><div class="icos"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V43.5c0 49.9-60.3 74.9-95.6 39.6L120.2 75C107.7 62.5 87.5 62.5 75 75s-12.5 32.8 0 45.3l8.2 8.2C118.4 163.7 93.4 224 43.5 224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H43.5c49.9 0 74.9 60.3 39.6 95.6L75 391.8c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l8.2-8.2c35.3-35.3 95.6-10.3 95.6 39.6V480c0 17.7 14.3 32 32 32s32-14.3 32-32V468.5c0-49.9 60.3-74.9 95.6-39.6l8.2 8.2c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-8.2-8.2c-35.3-35.3-10.3-95.6 39.6-95.6H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H468.5c-49.9 0-74.9-60.3-39.6-95.6l8.2-8.2c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-8.2 8.2C348.3 118.4 288 93.4 288 43.5V32zM176 224a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm128 56a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg></span><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M463.7 505.9c9.8-8.9 10.7-24.3 2.1-34.3l-42.1-49 0-54.7c0-5.5-1.8-10.8-5.1-15.1L352 266.3l0-.3L485.4 387.8C542.4 447.6 640 405.2 640 320.6c0-47.9-34-88.3-79.4-94.2l-153-23.9 40.8-40.9c7.8-7.8 9.4-20.1 3.9-29.8L428.5 90.1l38.2-50.9c8-10.6 6.1-25.9-4.3-34.1s-25.2-6.3-33.2 4.4l-48 63.9c-5.9 7.9-6.6 18.6-1.7 27.2L402.2 140 352 190.3l0-38.2c0-14.9-10.2-27.4-24-31l0-57.2c0-4.4-3.6-8-8-8s-8 3.6-8 8l0 57.2c-13.8 3.6-24 16.1-24 31l0 38.1L237.8 140l22.6-39.5c4.9-8.6 4.2-19.3-1.7-27.2l-48-63.9c-8-10.6-22.8-12.6-33.2-4.4s-12.2 23.5-4.3 34.1l38.2 50.9-23.9 41.7c-5.5 9.7-3.9 22 3.9 29.8l40.8 40.9-153 23.9C34 232.3 0 272.7 0 320.6c0 84.6 97.6 127 154.6 67.1L288 266l0 .3-66.5 86.4c-3.3 4.3-5.1 9.6-5.1 15.1l0 54.7-42.1 49c-8.6 10.1-7.7 25.5 2.1 34.3s24.7 7.9 33.4-2.1l48-55.9c3.8-4.4 5.9-10.2 5.9-16.1l0-55.4L288 344.7l0 63.1c0 17.7 14.3 32 32 32s32-14.3 32-32l0-63.1 24.3 31.6 0 55.4c0 5.9 2.1 11.7 5.9 16.1l48 55.9c8.6 10.1 23.6 11 33.4 2.1z"/></svg></span><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M304.9 .7c-9.6-2.7-19.5 2.8-22.3 12.4l-4.3 15.2c-8.3-.6-16.8 0-25.2 1.9c-7.3 1.7-14.3 3.5-21.1 5.5l-5.5-12.7c-3.9-9.1-14.5-13.4-23.6-9.5s-13.4 14.5-9.5 23.6l4.4 10.4c-16.6 6.7-31.7 14.4-45.4 22.8L147 62c-5.5-8.3-16.7-10.5-25-5s-10.5 16.7-5 25l6 9c-13.7 11-25.5 22.8-35.8 34.9l-10-8c-7.8-6.2-19.1-5-25.3 2.8s-5 19.1 2.8 25.3L65.9 155c-1.8 2.8-3.5 5.7-5.1 8.5c-6.6 11.4-11.8 22.6-16 33l-8-3.2c-9.2-3.7-19.7 .8-23.4 10s.8 19.7 10 23.4l10.4 4.2c-.2 .8-.4 1.5-.5 2.3c-2.2 9.3-3.4 17.3-4.1 23.4c-.4 3.1-.6 5.7-.8 7.8c-.1 1.1-.1 2-.2 2.8l-.1 1.1 0 .5 0 .2 0 .1c0 0 0 .1 29.1 1l-.1 0L28 269.3c-.1 3.1 0 6.1 .2 9.1l-15.2 4.3C3.5 285.4-2 295.4 .7 304.9s12.7 15.1 22.3 12.4l15.6-4.5c7.6 13.6 18.9 25 32.6 32.6L66.7 361c-2.7 9.6 2.8 19.5 12.4 22.3s19.5-2.8 22.3-12.4l4.3-15.2c1.2 .1 2.4 .2 3.6 .2c15.6 .5 30.3-3.3 43-10.2l9 9c7 7 18.4 7 25.5 0s7-18.4 0-25.5l-7.2-7.2c9.3-12.6 15.2-27.8 16.3-44.5l7.1 3c9.1 3.9 19.7-.3 23.6-9.5s-.3-19.7-9.5-23.6l-8.6-3.7c6.4-9.9 17.3-22.4 36.9-33.3l1.3 4.4c2.7 9.6 12.7 15.1 22.3 12.4s15.1-12.7 12.4-22.3l-2.3-8.1c3.8-1.1 7.7-2.1 11.9-3.1c11.6-2.7 22.1-7.7 31.1-14.4l7.2 7.2c7 7 18.4 7 25.5 0s7-18.4 0-25.5l-9-9c7.6-13.9 11.3-30.1 10.1-46.6l15.2-4.3c9.6-2.7 15.1-12.7 12.4-22.3S370.6 64 361 66.7l-15.6 4.5c-7.7-13.9-19.1-25.1-32.6-32.6l4.5-15.6c2.7-9.6-2.8-19.5-12.4-22.3zM112 272l-48-1.5 0 0c11.7 .4 27.3 .9 48 1.6zm16-80a32 32 0 1 1 0 64 32 32 0 1 1 0-64zm64-48a16 16 0 1 1 32 0 16 16 0 1 1 -32 0zM322.7 489c-2.7 9.6 2.8 19.5 12.4 22.3s19.5-2.8 22.2-12.4l4.3-15.2c8.3 .6 16.8 0 25.2-1.9c7.3-1.7 14.3-3.5 21.1-5.5l5.5 12.7c3.9 9.1 14.5 13.4 23.6 9.5s13.4-14.5 9.5-23.6l-4.4-10.4c16.6-6.7 31.7-14.4 45.4-22.8L493 450c5.5 8.3 16.7 10.5 25 5s10.5-16.7 5-25l-6-9c13.7-11 25.5-22.8 35.8-34.9l10 8c7.8 6.2 19.1 5 25.3-2.8s5-19.1-2.8-25.3L574.1 357c1.8-2.8 3.5-5.7 5.1-8.5c6.6-11.4 11.8-22.6 16-33l8 3.2c9.2 3.7 19.7-.8 23.4-10s-.8-19.7-10-23.4l-10.4-4.2c.2-.8 .4-1.5 .5-2.3c2.2-9.3 3.4-17.3 4.1-23.4c.4-3.1 .6-5.7 .8-7.8c.1-1.1 .1-2 .2-2.8l.1-1.1 0-.5 0-.2 0-.1c0 0 0-.1-29.1-1l.1 0 29.1 .9c.1-3.1 0-6.1-.2-9.1l15.2-4.3c9.6-2.7 15.1-12.7 12.4-22.3s-12.7-15.1-22.3-12.4l-15.6 4.5c-7.6-13.6-18.9-25-32.6-32.6l4.5-15.6c2.7-9.6-2.8-19.5-12.4-22.3s-19.5 2.8-22.3 12.4l-4.3 15.2c-1.2-.1-2.4-.2-3.6-.2c-15.6-.5-30.3 3.3-43 10.2l-9-9c-7-7-18.4-7-25.5 0s-7 18.4 0 25.5l7.2 7.2c-9.3 12.6-15.2 27.8-16.3 44.5l-7.1-3c-9.1-3.9-19.7 .3-23.6 9.5s.3 19.7 9.5 23.6l8.6 3.7c-6.4 9.9-17.3 22.4-36.9 33.3l-1.3-4.4c-2.7-9.6-12.7-15.1-22.3-12.4s-15.1 12.7-12.4 22.3l2.3 8.1c-3.8 1.1-7.7 2.1-11.9 3.1c-11.6 2.7-22.1 7.7-31.1 14.4l-7.2-7.2c-7-7-18.4-7-25.5 0s-7 18.4 0 25.5l9 9c-7.6 13.9-11.3 30.1-10.1 46.6l-15.2 4.3c-9.6 2.7-15.1 12.7-12.4 22.2s12.7 15.1 22.3 12.4l15.6-4.5c7.7 13.9 19.1 25.1 32.6 32.6L322.7 489zM576 241.5l0 0c-11.7-.4-27.3-.9-48-1.6l48 1.5zM448 384a32 32 0 1 1 -64 0 32 32 0 1 1 64 0z"/></svg></span></div><div class="t">Agents infectieux</div><div class="d">Le virus du chikungunya, transmis par le moustique tigre, et les bactéries Vibrio</div></div>
+    </div>
+    <div class="question">Comment les étudier, avec quelles données et à quelle échelle ?</div>
+    <div class="src">Icônes : Font Awesome Free, CC BY 4.0.</div>
+  </section>
+
   <section class="slide" id="s-ressources">
     <div class="cartes">
       <div class="carte">
@@ -487,6 +517,15 @@
   </section>
 
   <!-- ===================== BLOC CAPTEURS (10 min) ===================== -->
+  <section class="slide bloc" id="k-pourquoi">
+    <div class="chip"><b>La rue</b> · Pourquoi sortir mesurer ?</div>
+    <div class="deux">
+      <div><img src="images/capteurs/cams-carte-pm25.png" alt="CAMS, prévision horaire des PM2,5 en Europe"><div class="cap"><b>CAMS, Copernicus</b> : une estimation des PM2,5 calculée par un modèle, pour des mailles de plusieurs kilomètres</div></div>
+      <div><img src="images/capteurs/geodair-stations-pm25.png" alt="Geod'air, stations de mesure des Alpes-Maritimes"><div class="cap"><b>Geod'air</b> : les stations réglementaires des Alpes-Maritimes, chacune en un point fixe</div></div>
+    </div>
+    <div class="question">Les concentrations de particules fines sont-elles différentes entre les lieux autour de notre établissement ?</div>
+  </section>
+
   <section class="slide bloc" id="k-boitier">
     <div class="chip"><b>La rue</b> · Le boîtier</div>
     <div class="capts">
@@ -843,12 +882,16 @@ const SLIDES = [
     note: 'Afficher l\'écran du téléphone (recopie). Si la recopie échoue, rester sur cette diapo : elle montre la capture de secours prise avant la rotation.' },
   { id: 's-zoom', label: 'One Health : le zoom jusqu\'à la salle', sec: 60, steps: 7,
     note: 'Chaque appui avance d\'un arrêt : la Terre, l\'Europe, la Côte d\'Azur, Sophia Antipolis vue par satellite, le même cadre vu d\'avion, autour de l\'IPMC, l\'IPMC.' },
-  { id: 's-ressources', label: 'Les trois ressources, chacune son échelle', sec: 60, steps: 1, note: '' },
+  { id: 's-sante', label: 'Santé environnementale : deux familles de risques', sec: 30, steps: 1,
+    note: 'Ajoutée le 15/11 à la demande de Cédric. Les données régionales viennent de modèles (CAMS, ERA5-Land, Viewer de l\'ECDC) : ne pas dire « données satellitaires ».' },
+  { id: 's-ressources', label: 'Les trois ressources, chacune son échelle', sec: 30, steps: 1, note: '' },
   { id: 's-grille', label: 'La grille', sec: 30, steps: 1,
     note: 'Elle se remplira colonne par colonne, à la fin de chaque ressource.' },
-  { id: 'k-boitier', label: 'Capteurs : le boîtier', sec: 60, steps: 1,
+  { id: 'k-pourquoi', label: 'Capteurs : pourquoi sortir mesurer ?', sec: 40, steps: 1,
+    note: 'Ajoutée le 15/11 à la demande de Cédric. Ne pas anticiper la diapo des trois sources : ici on dit seulement pourquoi mesurer sur le terrain. Captures : carte CAMS des PM2,5 (3 septembre 2026) et stations Geod\'air des Alpes-Maritimes.' },
+  { id: 'k-boitier', label: 'Capteurs : le boîtier', sec: 45, steps: 1,
     note: 'Revenir au boîtier de l\'accroche. Trois capteurs : BMV080 (Bosch) pour les particules, BME280 (Bosch) pour la température, l\'humidité et la pression, SGP41 (Sensirion) pour l\'indice NOx. La pression s\'affiche mais n\'est pas dans le fichier CSV. Relais vers le Chikungunya : la température et l\'humidité mesurées ici sont celles qui comptent pour le moustique.' },
-  { id: 'k-protocole', label: 'Capteurs : quatre lieux, deux passages', sec: 60, steps: 1,
+  { id: 'k-protocole', label: 'Capteurs : quatre lieux, deux passages', sec: 50, steps: 1,
     note: 'Le protocole de la ressource. Pour P4, point de demi-tour, les deux arrêts se suivent : le second est un contrôle de répétabilité, pas un second passage. Phrase sur l\'égalité : qui porte le capteur ? un élève tiré au sort, et le rôle tourne à chaque arrêt, comme tous les autres rôles.' },
   { id: 'k-boucle', label: 'Capteurs : une boucle mesurée', sec: 75, steps: 1,
     note: 'Emplacement réservé au graphique de la boucle faite avec le boîtier actuel. Ne montrer que des mesures réelles.' },
@@ -856,7 +899,7 @@ const SLIDES = [
     note: 'Critère de la ressource, bloc Analyser. Phrase validée : « Ce critère compare des écarts mesurés avec le même appareil et le même protocole. Il permet de voir si la différence entre deux lieux dépasse les variations observées entre nos deux passages. Mais il ne garantit ni l\'exactitude des concentrations, ni que le lieu explique à lui seul l\'écart. » Un écart non discernable ne veut pas dire absence de différence. Les ±10 µg/m³ du BMV080 sont une précision typique en conditions d\'essai, pas une marge garantie sur chaque mesure : ne pas les annoncer comme telle.' },
   { id: 'k-fiabilite', label: 'Capteurs : ce que mesure chaque capteur', sec: 60, steps: 1,
     note: 'Précision typique du BMV080 : ±10 µg/m³ entre 0 et 100 µg/m³, dans des conditions d\'essai (fiche technique Bosch ; même valeur chez DFRobot et Mouser). Mouser indique une plage de fonctionnement à partir de +15 °C. La ressource parle de dioxyde d\'azote : avec ce boîtier, on a un indice NOx. Indice NOx (note Sensirion) : référence glissante sur environ 24 h, la valeur 1 correspond aux conditions habituelles du capteur ; un redémarrage du boîtier peut remettre cet historique à zéro. L\'analyse chiffrée de la boucle porte sur les PM2,5 ; l\'indice NOx sert d\'exemple de limite de l\'instrument.' },
-  { id: 'k-echelles', label: 'Capteurs : trois sources, trois échelles', sec: 90, steps: 1,
+  { id: 'k-echelles', label: 'Capteurs : trois sources, trois échelles', sec: 75, steps: 1,
     note: 'La station la plus proche n\'est pas forcément la plus représentative du lieu étudié : distinguer une station de fond d\'une station sous influence du trafic. Comparer seulement les PM2,5 : l\'indice NOx ne se compare pas. Une proximité entre les sources ne prouve pas que le capteur est juste, une divergence ne prouve pas qu\'il est faux. Heures : la station Geod\'air est en UTC, la sortie en heure locale.' },
   { id: 'k-jeu', label: 'Capteurs : le jeu de la source adaptée', sec: 75, steps: 2,
     note: 'Deux questions, environ 15 secondes de réponse chacune. Réponses : 1, le capteur porté, avec la boucle aller-retour ; 2, aucune source ne permet de répondre, le risque sanitaire est hors de portée. La question sur le niveau régional est laissée de côté : la diapo précédente montre déjà la maille CAMS.' },
@@ -930,13 +973,17 @@ const ORAL = {   // texte oral validé, diapo par diapo
     <p><span class="ap">Appui 5</span> Voici le même cadre photographié d'avion par l'IGN, avec vingt centimètres par pixel au lieu de dix mètres.</p>
     <p><span class="ap">Appui 6</span> <span class="jeu">(silence)</span></p>
     <p><span class="ap">Appui 7</span> Nous voici dans ce bâtiment. L'approche One Health relie la santé des personnes, celle des animaux et celle des milieux, à toutes ces échelles.</p>`,
+  's-sante': `<p class="qui">Dimitri</p>
+    <p>Notre santé peut être affectée par des polluants présents dans l'air, et aussi par des agents infectieux dont la présence ou la transmission dépend en partie de l'environnement. Pour étudier ces situations, nous disposons de mesures locales et de données issues de modèles qui couvrent de vastes territoires. Ces sources ne renseignent pas sur les mêmes espaces. Que permettent-elles réellement de comprendre ?</p>`,
   's-ressources': `<p class="qui">Dimitri</p>
-    <p>Les trois ressources suivent ce changement d'échelle. Avec « Respirer autour de l'établissement », les élèves mesurent eux-mêmes les particules fines dans la rue. « Chikungunya, le climat change la donne » se joue à l'échelle de la région, avec le moustique tigre, le climat et les cas de la maladie. « Le risque Vibrio » regarde la mer, avec des données de température et de salinité qui permettent d'évaluer des conditions favorables aux Vibrio.</p>
-    <p>Cédric et moi avons conçu la première. Les deux autres viennent d'autres équipes du projet EASE. Nous avons réalisé leurs activités pas à pas, en nous mettant à la place d'un élève, pour voir ce qu'elles permettent de faire.</p>`,
+    <p>Les trois ressources abordent cette question à trois échelles : la rue, avec « Respirer autour de l'établissement », la région, avec « Chikungunya, le climat change la donne », et la mer, avec « Le risque Vibrio ».</p>
+    <p>Cédric et moi avons conçu la première. Les deux autres viennent d'autres équipes du projet EASE, et nous avons réalisé leurs activités pas à pas, en nous mettant à la place d'un élève.</p>`,
   's-grille': `<p class="qui">Dimitri</p>
     <p>Pour comparer les trois ressources, nous remplirons ce tableau. Chaque ligne est une démarche que les élèves pratiquent, de « comprendre ce que mesure la source » à « formuler une recommandation ». Nous commençons par la rue.</p>`,
+  'k-pourquoi': `<p class="qui">Dimitri</p>
+    <p>Nous disposons déjà de données sur la qualité de l'air. Copernicus estime les concentrations de particules fines sur des mailles de plusieurs kilomètres, et les stations réglementaires mesurent l'air en des points fixes. Mais aucune de ces sources ne nous dit précisément ce qui se passe devant l'entrée de l'établissement, dans la rue passante ou dans un espace plus calme. Pour comparer ces lieux, les élèves vont réaliser leurs propres mesures. C'est là qu'intervient notre boîtier.</p>`,
   'k-boitier': `<p class="qui">Dimitri</p>
-    <p>Revenons au boîtier de tout à l'heure. Il contient trois capteurs. Le premier mesure les particules en suspension et estime les concentrations de PM2,5 et de PM10, en microgrammes par mètre cube. Le deuxième mesure la température, l'humidité et la pression. Le troisième fournit un indice NOx, sans unité, et nous verrons ce que cela change.</p>
+    <p>Revenons au boîtier de tout à l'heure. Il contient trois capteurs. Le premier mesure les particules en suspension et estime les concentrations de PM2,5 et de PM10, en microgrammes par mètre cube. Le deuxième mesure la température, l'humidité et la pression. Le troisième fournit un indice NOx, sans unité.</p>
     <p>Le boîtier crée son propre réseau Wi-Fi ou se branche en USB, et sa page s'ouvre dans un navigateur, sur un téléphone ou un ordinateur, sans application à installer.</p>`,
   'k-protocole': `<p class="qui">Dimitri</p>
     <p>Le protocole de la ressource repose sur quatre lieux autour de l'établissement : l'entrée, un axe circulé, un espace calme et un espace végétalisé. La classe fait la boucle à l'aller, puis au retour dans l'ordre inverse, et s'arrête trois minutes à chaque lieu, capteur immobile à hauteur de respiration. Avant chaque arrêt, on touche le bouton du lieu sur la page.</p>
