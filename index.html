@@ -99,7 +99,7 @@
   .grille thead .tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
   .grille thead .tags span { font-size: 16px; font-weight: 600; padding: 5px 12px; border-radius: 20px; background: rgba(255,255,255,.18); }
   .grille thead .tags span.terrain { background: var(--vert); }
-  .grille tbody th { text-align: left; font-size: 25px; font-weight: 600; padding: 0 22px; height: 82px; border-radius: 14px; background: linear-gradient(90deg, #DCEBF6, #F3F8FC); color: var(--nuit); }
+  .grille tbody th { text-align: left; font-size: 25px; font-weight: 600; padding: 0 22px; height: 100px; border-radius: 14px; background: linear-gradient(90deg, #DCEBF6, #F3F8FC); color: var(--nuit); }
   .grille tbody td { border-radius: 14px; border: 2px dashed #C3D6E6; background: rgba(255,255,255,.6); }
 
   /* ---------- éléments communs des blocs ---------- */
@@ -129,6 +129,7 @@
   /* Capteurs 0 : pourquoi sortir mesurer */
   #k-pourquoi .deux { position: absolute; left: 60px; right: 60px; top: 120px; display: grid; grid-template-columns: 1fr 1fr; gap: 34px; }
   #k-pourquoi .deux img { width: 100%; height: 430px; object-fit: cover; object-position: 50% 50%; border-radius: 12px; box-shadow: 0 14px 40px rgba(9,48,113,.15); display: block; background: #fff; }
+  #k-pourquoi .deux img[src*="geodair"] { object-fit: contain; background: #E3F2F9; }
   #k-pourquoi .deux .cap { font-size: 21px; color: var(--nuit); margin-top: 12px; line-height: 1.35; }
   #k-pourquoi .deux .cap b { color: var(--bleu); }
   #k-pourquoi .question { white-space: normal; text-align: center; width: 1280px; font-size: 32px; line-height: 1.3; bottom: 40px; }
@@ -229,6 +230,17 @@
   .trois .d .q { font-size: 34px; font-weight: 700; color: var(--bleu); }
   .trois .d .o { font-size: 22px; font-weight: 600; margin-top: 4px; }
   .trois .d .p { font-size: 18px; color: var(--gris); margin-top: 6px; }
+  #v-donnees .contam { position: absolute; left: 60px; right: 60px; top: 104px; display: flex; align-items: center; gap: 36px; padding: 14px 32px; border-radius: 20px; background: linear-gradient(90deg, #FDF0D9, #FFFAF0); color: var(--nuit); }
+  #v-donnees .trois { top: 254px; }
+  #v-donnees .trois .d .i { height: 280px; }
+  #v-donnees .bandeau { top: 722px; }
+  #v-donnees .contam .intro { flex: 1; font-size: 24px; line-height: 1.35; font-weight: 500; }
+  #v-donnees .contam .intro b { color: #B65A00; }
+  #v-donnees .contam .voie { display: flex; align-items: center; gap: 14px; }
+  #v-donnees .contam .voie svg { width: 78px; height: 78px; flex: none; background: #fff; border-radius: 50%; padding: 8px; box-sizing: border-box; box-shadow: 0 6px 18px rgba(9,48,113,.12); }
+  #v-donnees .contam .voie img { width: 78px; height: 78px; flex: none; border-radius: 50%; background: #fff; padding: 9px; box-sizing: border-box; object-fit: contain; box-shadow: 0 6px 18px rgba(9,48,113,.12); }
+  #v-donnees .contam .voie b { display: block; font-size: 24px; font-weight: 700; }
+  #v-donnees .contam .voie span { display: block; font-size: 17px; color: var(--gris); margin-top: 2px; }
   .bandeau { position: absolute; left: 60px; right: 60px; top: 640px; padding: 22px 30px; border-radius: 18px; background: linear-gradient(90deg, rgba(16,132,84,.16), rgba(16,132,84,.04)); font-size: 28px; font-weight: 600; color: var(--vert); }
 
   /* Chikungunya 3 : l'énigme */
@@ -409,6 +421,7 @@
 
   /* grilles remplies */
   .grille td.ok { border: none; background: linear-gradient(90deg, #DDF3E7, #F4FBF7); text-align: center; font-size: 34px; color: var(--vert); font-weight: 700; }
+  .grille td.ok.txt { font-size: 21px; font-weight: 600; color: var(--nuit); text-align: left; padding: 6px 16px; line-height: 1.25; vertical-align: middle; }
   .slide.active .grille td.ok.neuf { animation: apparait .6s ease both; }
   .slide.active .grille tr:nth-child(2) td.ok.neuf { animation-delay: .15s; }
   .slide.active .grille tr:nth-child(3) td.ok.neuf { animation-delay: .3s; }
@@ -508,7 +521,6 @@
       <tbody>
         <tr><th>Comprendre ce que mesure la source</th><td></td><td></td><td></td></tr>
         <tr><th>Comparer des situations</th><td></td><td></td><td></td></tr>
-        <tr><th>Caractériser un événement</th><td></td><td></td><td></td></tr>
         <tr><th>Discuter la fiabilité</th><td></td><td></td><td></td></tr>
         <tr><th>Mettre en regard les échelles</th><td></td><td></td><td></td></tr>
         <tr><th>Formuler une recommandation</th><td></td><td></td><td></td></tr>
@@ -521,7 +533,7 @@
     <div class="chip"><b>La rue</b> · Pourquoi sortir mesurer ?</div>
     <div class="deux">
       <div><img src="images/capteurs/cams-carte-pm25.png" alt="CAMS, prévision horaire des PM2,5 en Europe"><div class="cap"><b>CAMS, Copernicus</b> : une estimation des PM2,5 calculée par un modèle, pour des mailles de plusieurs kilomètres</div></div>
-      <div><img src="images/capteurs/geodair-stations-pm25.png" alt="Geod'air, stations de mesure des Alpes-Maritimes"><div class="cap"><b>Geod'air</b> : les stations réglementaires des Alpes-Maritimes, chacune en un point fixe</div></div>
+      <div><img src="images/capteurs/geodair-stations-nice.png" alt="Geod'air, stations de mesure autour de Nice (station Nice Promenade sélectionnée)"><div class="cap"><b>Geod'air</b> : les stations réglementaires des Alpes-Maritimes, chacune en un point fixe</div></div>
     </div>
     <div class="question">Les concentrations de particules fines sont-elles différentes entre les lieux autour de notre établissement ?</div>
   </section>
@@ -693,7 +705,7 @@
 
   <section class="slide bloc" id="c-fiab">
     <div class="chip"><b>La région</b> · Fiabilité et échelles</div>
-    <div class="titre">Le même article donne deux plages de température, et Londres passe de 99 à 166 jours favorables.</div>
+    <div class="titre">Le même article donne deux modélisations différentes, et Londres passe de 99 à 166 jours favorables.</div>
     <div class="barres">
       <div class="ligne"><div class="nom">Antibes</div><div><div class="b k" style="width:calc(174/184*100%)">174</div><div class="b v" style="width:calc(171/184*100%)">171</div></div></div>
       <div class="ligne"><div class="nom">Barcelone</div><div><div class="b k" style="width:calc(175/184*100%)">175</div><div class="b v" style="width:calc(174/184*100%)">174</div></div></div>
@@ -711,7 +723,7 @@
     <div class="chip"><b>La région</b> · Agir</div>
     <div class="extraits">
       <div class="ext-label">Extraits du bulletin de veille écrit en faisant l'activité comme un élève (Barcelone)</div>
-      <div class="ext niveau"><div class="petit">Niveau de vigilance proposé pour la saison 2026</div><div class="v">ÉLEVÉ de juin à octobre</div><div>MODÉRÉ en mai et en novembre. En 2025, le climat et le moustique étaient favorables de juin à octobre et des cas importés sont arrivés, sans transmission locale détectée.</div></div>
+      <div class="ext niveau"><div class="petit">Niveau de vigilance proposé pour la saison 2026</div><div class="v">ÉLEVÉ de juin à octobre</div><div>MODÉRÉ en mai et en novembre. En 2025, le climat et la présence avérée du moustique étaient favorables de juin à octobre et des cas importés sont arrivés, sans transmission locale détectée.</div></div>
       <div class="ext reco"><div class="h">Recommandations</div><ul>
         <li>Signaler sans délai, de mai à novembre, tout cas importé et traiter contre les moustiques autour de chaque malade encore virémique.</li>
         <li>Vider chaque semaine les récipients d'eau stagnante (soucoupes, seaux, gouttières) chez soi et dans les lieux publics.</li>
@@ -739,12 +751,31 @@
 
   <section class="slide bloc" id="v-donnees">
     <div class="chip"><b>La mer</b> · Ce que font les élèves</div>
+    <div class="contam">
+      <div class="intro"><b>Les Vibrio</b> : certains sont des agents infectieux, qui contaminent par les plaies ou par ingestion d'aliments crus.</div>
+      <div class="voie"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="24" cy="24" r="6" fill="#093071"/><path d="M31 28 C38 18 47 20 51 29" fill="none" stroke="#093071" stroke-width="4" stroke-linecap="round"/><path d="M10 33 L22 31" fill="none" stroke="#093071" stroke-width="4" stroke-linecap="round"/><path d="M5 43 q6 -6 12 0 t12 0 t12 0 t12 0" fill="none" stroke="#0068DC" stroke-width="3.5" stroke-linecap="round"/><path d="M5 53 q6 -6 12 0 t12 0 t12 0 t12 0" fill="none" stroke="#0068DC" stroke-width="3.5" stroke-linecap="round"/></svg><div><b>Baignade</b><span>plaie en contact avec l'eau de mer</span></div></div>
+      <div class="voie"><img src="images/vibrio/icone-huitre.png" alt=""><div><b>Produits de la mer</b><span>consommés crus</span></div></div>
+    </div>
     <div class="trois">
       <div class="d"><div class="i" style="background-image:url('images/vibrio/ecdc-europe-15-mai-2025.png'); background-position: 65% 30%"></div><div class="t"><div class="q">L'indice</div><div class="o">Vibrio Viewer, ECDC</div><div class="p">favorabilité aux Vibrio, jour par jour, mers d'Europe</div></div></div>
       <div class="d"><div class="i" style="background-image:url('images/vibrio/myocean-ouverture.png'); background-position: 60% 40%"></div><div class="t"><div class="q">La mer</div><div class="o">Copernicus Marine</div><div class="p">données de surface, modèles de 2 à 4 km</div></div></div>
       <div class="d"><div class="i" style="background-image:url('images/vibrio/atlas-thau.png'); background-position: 70% 50%"></div><div class="t"><div class="q">Les coquillages</div><div class="o">Atlas sanitaire des coquillages</div><div class="p">zones de production et leur classement</div></div></div>
     </div>
     <div class="bandeau">Dans l'activité faite pas à pas : 5 points de côte, 7 dates en 2025, 35 lignes de tableur.</div>
+  </section>
+
+  <section class="slide bloc" id="v-nuage">
+    <div class="chip"><b>La mer</b> · Un R² presque parfait</div>
+    <img src="images/vibrio/nuage-sst-indice.png" alt="Nuage de points température de surface et indice Vibrio, 5 zones, avril à octobre 2025">
+    <div class="droite">
+      <div class="r2"><div class="v">R² = 0,99998</div><div class="u">sur les 10 points où l'indice existe</div></div>
+      <div class="txt">
+        <p>L'indice est calculé à partir de la température : indice ≈ 2,8 × (température − 18).</p>
+        <p>Le graphique retrouve la règle du modèle. Il ne mesure pas l'abondance des bactéries.</p>
+        <p><b>Corrélation ou causalité ?</b></p>
+      </div>
+    </div>
+    <div class="src">Activité faite pas à pas : 5 points, le 15 de chaque mois d'avril à octobre 2025. Température du modèle Copernicus Marine, indice du Vibrio Viewer (ECDC). Graphique retracé à partir des données utilisées dans l'activité.</div>
   </section>
 
   <section class="slide bloc" id="v-enigme">
@@ -759,7 +790,7 @@
 
   <section class="slide bloc" id="v-reponse">
     <div class="chip"><b>La mer</b> · La règle du modèle</div>
-    <div class="titre">Le modèle ne calcule un indice que si l'eau atteint au moins 18 °C et si sa salinité reste sous 26.</div>
+    <div class="titre">Le modèle ne calcule un indice que si l'eau atteint au moins 18 °C et si sa salinité reste sous 26 ‰.</div>
     <div class="tab">
       <div class="h" style="background:none"></div>
       <div class="h">Baie de Gdańsk<span>Baltique</span></div>
@@ -767,27 +798,13 @@
       <div class="h">Sète, côté mer<span>Méditerranée</span></div>
       <div class="r">Température<span>au moins 18 °C</span></div>
       <div class="ok">20,8 °C</div><div class="ok">22,8 °C</div><div class="ok">24,7 °C</div>
-      <div class="r">Salinité<span>moins de 26</span></div>
-      <div class="ok">6,7</div><div class="ok">19,5</div><div class="no">37,6</div>
+      <div class="r">Salinité<span>moins de 26 ‰</span></div>
+      <div class="ok">6,7 ‰</div><div class="ok">19,5 ‰</div><div class="no">37,6 ‰</div>
       <div class="r">Indice calculé<span>15 août 2025</span></div>
       <div class="ok">7,7<small>« Low »</small></div><div class="ok">13,4<small>« High »</small></div><div class="no">aucun<small>case vide</small></div>
     </div>
     <div class="ecdc" data-step="1"><b>Ce que dit l'ECDC</b>« Les seuils (T ≥ 18 °C, S &lt; 26) ont été calibrés pour la mer Baltique. Leur transposition à la Méditerranée, à la mer Noire et aux côtes atlantiques n'a pas été validée de façon indépendante. »<span>Vibrio Viewer v2, page « About », traduit de l'anglais</span></div>
     <div class="bandeau" data-step="1">Une case vide veut dire : pas d'indice calculé. Elle ne dit rien de la présence des Vibrio.</div>
-  </section>
-
-  <section class="slide bloc" id="v-nuage">
-    <div class="chip"><b>La mer</b> · Un R² presque parfait</div>
-    <img src="images/vibrio/nuage-sst-indice.png" alt="Nuage de points température de surface et indice Vibrio, 5 zones, avril à octobre 2025">
-    <div class="droite">
-      <div class="r2"><div class="v">R² = 0,99998</div><div class="u">sur les 10 points où l'indice existe</div></div>
-      <div class="txt">
-        <p>L'indice est calculé à partir de la température : indice ≈ 2,8 × (température − 18).</p>
-        <p>Le graphique retrouve la règle du modèle. Il ne mesure pas l'abondance des bactéries.</p>
-        <p>La ressource le demande p. 11 : distinguer corrélation et causalité.</p>
-      </div>
-    </div>
-    <div class="src">Activité faite pas à pas : 5 points, le 15 de chaque mois d'avril à octobre 2025. Température du modèle Copernicus Marine, indice du Vibrio Viewer (ECDC). Graphique retracé à partir des données utilisées dans l'activité.</div>
   </section>
 
   <section class="slide bloc" id="v-echelles">
@@ -805,8 +822,8 @@
     <div class="extraits">
       <div class="ext-label">Extraits du bulletin « Vibrio Alert » écrit en faisant l'activité comme un élève (littoral français, 15 août 2025)</div>
       <div class="ext niv">
-        <div class="z">Estuaire de la Gironde</div><div class="n eleve">ÉLEVÉ</div><div class="d">Indice ECDC 13,4 (« High »). Eau à 22,8 °C, salinité 19,5.</div>
-        <div class="z">Sète, côté mer</div><div class="n ne">NON ÉVALUÉ</div><div class="d">Indice non calculé : eau à 24,7 °C, mais salinité 37,6, au-dessus du seuil de 26.</div>
+        <div class="z">Estuaire de la Gironde</div><div class="n eleve">ÉLEVÉ</div><div class="d">Indice ECDC 13,4 (« High »). Eau à 22,8 °C, salinité 19,5 ‰.</div>
+        <div class="z">Sète, côté mer</div><div class="n ne">NON ÉVALUÉ</div><div class="d">Indice non calculé : eau à 24,7 °C, mais salinité 37,6 ‰, au-dessus du seuil de 26 ‰.</div>
         <div class="z">Lagune de Thau</div><div class="n ne">NON ÉVALUÉ</div><div class="d">La lagune n'est couverte par aucun des outils européens utilisés.</div>
       </div>
       <div class="ext reco"><div class="h">Recommandations</div><ul>
@@ -906,7 +923,7 @@ const SLIDES = [
   { id: 'k-tri', label: 'Capteurs : trier avant d\'écrire', sec: 75, steps: 1,
     note: 'Le tri se fait avant la note et ne se corrige que pour une erreur de calcul ou de lecture. Chaque affirmation « établie » porte la mention « dans les conditions de cette campagne ».' },
   { id: 'g-capteurs', label: 'La grille : colonne de la rue', sec: 30, steps: 1,
-    note: 'Les mots de chaque case restent à choisir.' },
+    note: 'Les mots de chaque case sont choisis ; la ligne « Caractériser un événement » a été supprimée.' },
   { id: 'c-antibes', label: 'Chikungunya : Antibes 2025', sec: 45, steps: 1,
     note: '144 cas autochtones pour l\'épisode d\'Antibes (bilan final). La ressource donne 103 au 22 septembre : ne pas mélanger les deux.' },
   { id: 'c-donnees', label: 'Chikungunya : ce que font les élèves', sec: 45, steps: 1, note: '' },
@@ -919,37 +936,46 @@ const SLIDES = [
   { id: 'c-bulletin', label: 'Chikungunya : le bulletin de veille', sec: 45, steps: 1,
     note: 'Bulletin écrit lors de l\'activité faite en élève, pour Barcelone. L\'alerte est celle de la ressource, p. 15. Le niveau de vigilance est une proposition d\'élève, pas une alerte officielle. Une phrase sur les limites : les élèves justifient leur niveau et écrivent eux-mêmes les limites de leur analyse (plage tirée d\'un modèle, cases climatiques de 8 à 25 km, cas importés comptés sur toute la Catalogne).' },
   { id: 'g-chik', label: 'La grille : colonne de la région', sec: 30, steps: 1,
-    note: 'Les mots de chaque case restent à choisir.' },
+    note: 'Les mots de chaque case sont choisis ; la ligne « Caractériser un événement » a été supprimée.' },
   { id: 'v-question', label: 'Vibrio : la question de la ressource', sec: 45, steps: 1,
     note: 'Présenter la phrase comme une hypothèse à examiner. Citation p. 1, problématique p. 6. Image : Sentinel-2 (EOxCloudless 2024), de l\'Atlantique à la Méditerranée occidentale : on y voit l\'estuaire de la Gironde et le golfe du Lion.' },
   { id: 'v-donnees', label: 'Vibrio : ce que font les élèves', sec: 45, steps: 1,
     note: 'Le Viewer calcule son indice à partir des modèles Copernicus Marine, pas directement de satellites. MyOcean Pro s\'ouvre sans compte ; exporter les valeurs demande un compte gratuit. Constanța : Roumanie, pays partenaire d\'EASE.' },
-  { id: 'v-enigme', label: 'Vibrio : l\'énigme de la carte vide', sec: 90, steps: 4,
+  { id: 'v-nuage', label: 'Vibrio : un R² presque parfait', sec: 60, steps: 1,
+    note: 'Droite : indice = 2,81 × SST − 50,6, R² = 0,99998, sur les 10 points d\'indice positif ; elle coupe l\'axe à 18,0 °C. Sous le nuage, la bande « indice non calculé » range les 18 relevés sans indice : 13 avec une eau sous 18 °C, 5 de Sète entre 18,2 et 24,7 °C avec une salinité autour de 38. Les 7 relevés de Thau n\'ont aucune donnée. À Constanța le 15/08 : 2,8 × (25,5 − 18) = 21,0, le Viewer affiche 20,99.' },
+  { id: 'v-enigme', label: 'Vibrio : l\'énigme de la carte vide', sec: 75, steps: 4,
     note: 'Appui 1 : Gdańsk. Appui 2 : Sète. Appui 3 : la question, 20 à 30 secondes d\'hypothèses. Ne pas montrer la salinité avant la diapo suivante. La température seule n\'explique pas la couleur, sans être écartée pour autant. La fiche 1 de la ressource propose une zone « en Méditerranée occidentale » : une classe de Sète ou de Montpellier obtient une carte vide sur sa côte.' },
   { id: 'v-reponse', label: 'Vibrio : la règle du modèle', sec: 60, steps: 2,
     note: 'Seuils de l\'ECDC (Baker-Austin et al. 2013, Semenza et al. 2017). La Gironde se colore parce que l\'estuaire est peu salé (apports du fleuve). Appui 1 : l\'avertissement de l\'ECDC et le bandeau. Une case vide veut dire pas d\'indice calculé, pas absence de Vibrio.' },
-  { id: 'v-nuage', label: 'Vibrio : un R² presque parfait', sec: 60, steps: 1,
-    note: 'Droite : indice = 2,81 × SST − 50,6, R² = 0,99998, sur les 10 points d\'indice positif ; elle coupe l\'axe à 18,0 °C. Sous le nuage, la bande « indice non calculé » range les 18 relevés sans indice : 13 avec une eau sous 18 °C, 5 de Sète entre 18,2 et 24,7 °C avec une salinité autour de 38. Les 7 relevés de Thau n\'ont aucune donnée. À Constanța le 15/08 : 2,8 × (25,5 − 18) = 21,0, le Viewer affiche 20,99.' },
-  { id: 'v-echelles', label: 'Vibrio : les échelles', sec: 45, steps: 1,
+  { id: 'v-echelles', label: 'Vibrio : les échelles', sec: 60, steps: 1,
     note: 'Thau : « No data » dans le Viewer, aucun point de grille du modèle Copernicus de Méditerranée (4,2 km), pas de valeur non plus dans la température satellite de Copernicus Marine (maille d\'environ 1 km). L\'Atlas donne bien des informations sur la lagune, mais rien sur la présence ou l\'absence de Vibrio. L\'Atlas des coquillages descend à l\'échelle des zones de production. La ressource parle de « données locales » sans en donner la source.' },
   { id: 'v-bulletin', label: 'Vibrio : le bulletin Vibrio Alert', sec: 45, steps: 1,
     note: 'Bulletin écrit lors de l\'activité faite en élève. Les niveaux sont des propositions d\'élève ; ÉLEVÉ pour la Gironde désigne une favorabilité calculée élevée, pas une alerte officielle. Sète et Thau sont NON ÉVALUÉ pour deux raisons : à Sète, les données existent mais le seuil de salinité bloque le calcul de l\'indice ; à Thau, les outils européens n\'ont pas de données. Cellule de crise : ressource p. 12.' },
   { id: 'g-vibrio', label: 'La grille : colonne de la mer', sec: 30, steps: 1,
-    note: 'Les mots de chaque case restent à choisir.' },
+    note: 'Les mots de chaque case sont choisis ; la ligne « Caractériser un événement » a été supprimée.' },
   { id: 'f-grille', label: 'Clôture : la grille complète', sec: 60, steps: 1,
-    note: 'Les six démarches dans les trois ressources. Les mots des cases restent à choisir : tant qu\'ils manquent, cette diapo montre la même grille que la précédente.' },
+    note: 'Les cinq démarches dans les trois ressources.' },
   { id: 'f-action', label: 'Clôture : à vous de tester', sec: 90, steps: 2,
     note: 'Appui 1 : ce qu\'on demande de renvoyer. Les QR codes attendent les liens définitifs : les liens Calaméo reçus contiennent une clé d\'accès privée (authid), à voir avec Fatima. À qui envoyer les retours : à préciser. Rappeler que les productions d\'élèves transmises doivent être anonymisées.' },
   { id: 'f-fin', label: 'Clôture : et après', sec: 30, steps: 1,
     note: 'Le fil du briefing : conception, expérimentation, retours, amélioration, diffusion. Les équipes portent l\'expérimentation et les retours.' },
 ];
-/* grilles remplies : copie de la grille vide, colonnes cochées */
+/* texte des cases, ligne par ligne (rue, région, mer) ; '' = case laissée vide */
+const GRILLE = [
+  ['PM2,5 et PM10 mesurées ; NOx : un indice, pas une concentration', '« Jour favorable » : température dans une plage tirée d\'un article', 'Indice = favorabilité calculée, pas un risque sanitaire'],
+  ['Quatre lieux, aller et retour', 'Villes différentes ou périodes différentes. Ex : Antibes, Barcelone, Londres', 'Cinq points de côte, sept dates en 2025'],
+  ['Précision du fabricant, non vérifiée sur place', 'Résultats variables selon modélisation', 'Seuils calibrés pour la Baltique ; case vide ≠ absence de Vibrio'],
+  ['Boîtier (un point) ↔ station fixe ↔ maille CAMS', 'Maille de 8 × 11 km ↔ une ville', 'Mer → lagune → zone plus réduite si besoin'],
+  ['Note : établi, suggéré, hors de portée', 'Bulletin de veille, vigilance argumentée', 'Bulletin « Vibrio Alert », niveau et limites'],
+];
+/* grilles remplies : copie de la grille vide, colonnes remplies */
 function buildGrid(id, cols, anim = true) {
   const sec = document.getElementById(id);
   const tbl = document.querySelector('#s-grille table').cloneNode(true);
-  tbl.querySelectorAll('tbody tr').forEach(tr => {
+  tbl.querySelectorAll('tbody tr').forEach((tr, r) => {
     tr.querySelectorAll('td').forEach((td, c) => {
-      if (c < cols) { td.className = 'ok' + (anim && c === cols - 1 ? ' neuf' : ''); td.textContent = '✓'; }
+      const txt = GRILLE[r][c];
+      if (c < cols && txt) { td.className = 'ok txt' + (anim && c === cols - 1 ? ' neuf' : ''); td.textContent = txt; }
     });
   });
   sec.appendChild(tbl);
@@ -1013,7 +1039,7 @@ const ORAL = {   // texte oral validé, diapo par diapo
     <p class="trou">[Un exemple tiré de la boucle pour chaque colonne.]</p>
     <p>Si les données ne suffisent pas, la note peut recommander une nouvelle campagne, et elle compte alors comme une production complète.</p>`,
   'g-capteurs': `<p class="qui">Dimitri · puis passage de parole à Cédric</p>
-    <p>La colonne de la rue se remplit avec les six démarches. Le boîtier mesure aussi la température, en un point. Dans la ressource suivante, Cédric va vous montrer comment les élèves étudient le climat favorable à la transmission du chikungunya, à l'échelle de régions entières.</p>`,
+    <p>La colonne de la rue se remplit avec les cinq démarches. Le boîtier mesure aussi la température, en un point. Dans la ressource suivante, Cédric va vous montrer comment les élèves étudient le climat favorable à la transmission du chikungunya, à l'échelle de régions entières.</p>`,
   'c-antibes': `<p class="qui">Cédric</p>
     <p>Merci Dimitri. À l'été 2025, l'épisode d'Antibes a compté 144 cas autochtones de chikungunya, c'est-à-dire des personnes infectées sur place, sans avoir voyagé. Santé publique France parle d'un épisode hors norme.</p>
     <p>La ressource « Chikungunya, le climat change la donne », écrite par une autre équipe du projet EASE, part de cette situation pour poser sa question : dans quelle mesure l'évolution du climat peut-elle favoriser le moustique tigre et l'émergence de la maladie en Europe ?</p>`,
@@ -1029,39 +1055,39 @@ const ORAL = {   // texte oral validé, diapo par diapo
     <p>La ressource répond avec cette formule : des conditions climatiques favorables et un vecteur présent ne suffisent pas à faire apparaître le chikungunya. Elle ajoute deux conditions, l'arrivée du virus avec une personne malade et l'exposition des habitants aux piqûres.</p>
     <p>Les données de l'activité ne permettent pas de savoir pourquoi aucune transmission locale n'a été détectée en Espagne. Des cas importés ont bien été recensés en Catalogne, mais nous ne savons pas dans quelles conditions ces personnes ont pu être en contact avec des moustiques vecteurs. La question reste donc ouverte, et elle donne de quoi discuter avec les élèves.</p>`,
   'c-courbe': `<p class="qui">Cédric</p>
-    <p>Le climat change quand même la donne. Depuis 1951, le nombre de jours favorables augmente aux trois endroits. À Antibes, il est passé de 146,5 par an en moyenne entre 1951 et 1980 à 172 entre 2016 et 2025. À Londres, il est passé de 50 à 88. Ces jours respectent le critère de température retenu, ce qui ne veut pas dire que le virus ait circulé ces jours-là.</p>`,
+    <p>Le climat change quand même la donne. Depuis 1951, le nombre de jours favorables augmente aux trois endroits. À Antibes, il est passé de 146,5 par an en moyenne entre 1951 et 1980 à 172 entre 2016 et 2025. À Londres, il est passé de 50 à 88. Si cela ne veut pas dire que le virus circule plus, cela signifie que la probabilité d'obtenir des conditions favorables à l'apparition de cas autochtones augmente avec le changement climatique.</p>`,
   'c-fiab': `<p class="qui">Cédric</p>
-    <p>Les élèves rencontrent aussi une limite de méthode. Le même article donne deux plages de température, l'une à température constante, l'autre avec huit degrés d'écart dans la journée. Avec la seconde, Londres passe de 99 à 166 jours favorables de mai à octobre 2025, alors qu'Antibes et Barcelone bougent à peine. Et une maille de réanalyse climatique couvre environ 8 kilomètres sur 11, alors que le boîtier de Dimitri mesure la température en un point.</p>`,
+    <p>Les élèves rencontrent aussi une limite de méthode. Le même article donne deux modélisations différentes, l'une à température constante, l'autre avec huit degrés d'écart dans la journée. Avec la seconde, Londres passe de 99 à 166 jours favorables de mai à octobre 2025, alors que cela ne change rien de manière significative pour Antibes et Barcelone. Et une maille de réanalyse climatique couvre environ 8 kilomètres sur 11, alors que le boîtier de Dimitri mesure la température en un point. L'approche est simplifiée.</p>`,
   'c-bulletin': `<p class="qui">Cédric</p>
-    <p>La production finale est un bulletin de veille, que les élèves écrivent à partir de l'alerte de la ressource, qui annonce plusieurs cas importés et demande si le climat permet une transmission locale. Les groupes jouent des rôles, du climatologue à l'épidémiologiste.</p>
-    <p>Voici des extraits du bulletin que nous avons écrit en faisant l'activité, pour Barcelone. Le niveau de vigilance y est une proposition d'élève, et les élèves écrivent aussi les limites de leur analyse.</p>`,
+    <p>À l'issue de leurs analyses, la production finale proposée est un bulletin de veille, que les élèves écrivent à partir de l'alerte de la ressource, qui annonce plusieurs cas importés et demande si le climat permet une transmission locale. Les groupes jouent des rôles, du climatologue à l'épidémiologiste.</p>
+    <p>Voici des extraits du bulletin que nous avons écrit en faisant l'activité, pour Barcelone. Le niveau de vigilance y est une proposition d'élève, et les élèves peuvent écrire aussi les limites de leur analyse.</p>`,
   'g-chik': `<p class="qui">Cédric</p>
     <p>La colonne de la région se remplit à son tour. La ressource suivante suit la même démarche, de l'observation à l'action, en passant de la région à la mer.</p>`,
   'v-question': `<p class="qui">Cédric</p>
     <p>La ressource « Le risque Vibrio », elle aussi écrite par une autre équipe du projet, part de cette question : et si quelques degrés supplémentaires dans l'eau de mer suffisaient à faire apparaître de nouveaux risques sanitaires ?</p>
     <p>Les Vibrio sont des bactéries marines, et certaines provoquent des infections, parfois graves chez les personnes fragiles. La ressource présente cette idée comme une hypothèse, que les élèves examinent avec des données réelles.</p>`,
   'v-donnees': `<p class="qui">Cédric</p>
-    <p>Comme pour le chikungunya, tout se fait sur ordinateur. Les élèves lisent l'indice du Vibrio Viewer de l'ECDC, relèvent des données de surface de la mer sur Copernicus Marine et consultent l'Atlas sanitaire des coquillages pour les zones de production. Dans notre essai, nous avons suivi cinq points de côte à sept dates de 2025, ce qui fait 35 lignes de tableur.</p>`,
+    <p>On peut faire réfléchir les élèves sur les sources de contamination pour arriver à l'utilisation de différentes données. Comme pour le chikungunya, tout se fait sur ordinateur. Les élèves lisent l'indice du Vibrio Viewer de l'ECDC, relèvent des données de surface de la mer sur Copernicus Marine et consultent l'Atlas sanitaire des coquillages pour les zones de production. Dans notre essai, nous avons suivi cinq points de côte à sept dates de 2025, ce qui fait 35 lignes de tableur.</p>`,
   'v-enigme': `<p class="qui">Cédric · avec la salle</p>
-    <p><span class="ap">À l'arrivée</span> Voici la carte de l'indice le 15 août 2025. La Baltique et la mer Noire sont colorées, alors que la Méditerranée reste vide.</p>
+    <p><span class="ap">À l'arrivée</span> Testons le modèle avec la carte de l'indice et les données de température. Voici la carte de l'indice le 15 août 2025. La Baltique et la mer Noire sont colorées, alors que la Méditerranée reste vide.</p>
     <p><span class="ap">Appui 1</span> Dans la baie de Gdańsk, en Pologne, l'eau est à 20,8 degrés, et la zone est colorée.</p>
     <p><span class="ap">Appui 2</span> Devant Sète, l'eau est à 24,7 degrés, et la carte reste vide.</p>
     <p><span class="ap">Appui 3</span> Gdańsk, à 20,8 degrés, se colore. Sète, à 24,7 degrés, reste vide. À votre avis, pourquoi ? <span class="jeu">(20 à 30 secondes d'hypothèses ; ne pas parler de salinité avant la diapo suivante)</span></p>`,
   'v-reponse': `<p class="qui">Cédric</p>
-    <p><span class="ap">À l'arrivée</span> La réponse tient à la règle du modèle. L'ECDC ne calcule un indice que si l'eau atteint au moins 18 degrés et si sa salinité reste sous 26. Dans la baie de Gdańsk, la salinité est de 6,7. Dans l'estuaire de la Gironde, elle est de 19,5, sous l'influence de l'eau douce du fleuve. Devant Sète, elle atteint 37,6, et le modèle ne calcule pas d'indice.</p>
+    <p><span class="ap">À l'arrivée</span> La réponse tient à la règle du modèle. L'ECDC ne calcule un indice que si l'eau atteint au moins 18 degrés et si sa salinité reste sous 26 pour mille. Dans la baie de Gdańsk, la salinité est de 6,7 pour mille. Dans l'estuaire de la Gironde, elle est de 19,5 pour mille, sous l'influence de l'eau douce du fleuve. Devant Sète, elle atteint 37,6 pour mille, et le modèle ne calcule pas d'indice.</p>
     <p><span class="ap">Appui 1</span> L'ECDC prévient lui-même que ces seuils ont été calibrés pour la Baltique et n'ont pas été validés en Méditerranée. Une case vide veut donc dire qu'aucun indice n'a été calculé, et elle ne dit rien de la présence des Vibrio.</p>`,
   'v-nuage': `<p class="qui">Cédric</p>
-    <p>Les élèves tracent ensuite l'indice en fonction de la température, comme le demande la ressource. Les dix relevés qui ont un indice s'alignent sur une droite, avec un R² de 0,99998. Sous l'axe, les relevés sans indice rappellent les deux raisons possibles, une eau sous 18 degrés ou une salinité au-dessus de 26.</p>
+    <p>Les élèves tracent l'indice en fonction de la température. Les dix relevés qui ont un indice s'alignent sur une droite, avec un R² de 0,99998. Sous l'axe, on trouve les relevés pour lesquels aucun indice n'est calculé.</p>
     <p>Cette corrélation presque parfaite résulte du calcul de l'indice, que le modèle fait à partir de la température. Elle ne constitue pas une preuve indépendante de la présence des bactéries ni de leur abondance.</p>`,
   'v-echelles': `<p class="qui">Cédric</p>
-    <p>Les élèves descendent ensuite à l'échelle d'une lagune, celle de Thau, voisine de Sète, où l'on élève des coquillages. Ni le Vibrio Viewer ni Copernicus Marine n'y fournissent de valeur, car le modèle de Méditerranée n'a aucun point dans la lagune. L'Atlas des coquillages décrit bien les zones de production, mais son classement repose sur la bactérie <i>E. coli</i>, pas sur les Vibrio.</p>`,
+    <p>On a une corrélation entre la température et l'indice de favorabilité calculé, mais elle ne prouve pas la présence des Vibrio. Le risque ne se limite pas à la baignade : les élèves peuvent prendre en compte les élevages de produits de la mer, par exemple à l'échelle de la lagune de Thau, voisine de Sète. Ni le Vibrio Viewer ni Copernicus Marine n'y fournissent de valeur, car le modèle de Méditerranée n'a aucun point dans la lagune. L'Atlas des coquillages décrit bien les zones de production, mais son classement repose sur la bactérie <i>E. coli</i>, pas sur les Vibrio.</p>`,
   'v-bulletin': `<p class="qui">Cédric</p>
     <p>Les élèves terminent en écrivant un bulletin « Vibrio Alert » et en jouant une cellule de crise, où ils reçoivent les données jour après jour. Dans notre bulletin, l'estuaire de la Gironde est classé « élevé », au sens d'une favorabilité calculée par le modèle.</p>
     <p>À Sète, le seuil de salinité empêche le calcul de l'indice. Dans la lagune de Thau, le Viewer et les produits Copernicus consultés ne fournissent pas de valeur. L'Atlas donne des informations sur les coquillages, mais pas sur les Vibrio.</p>`,
   'g-vibrio': `<p class="qui">Cédric · puis passage de parole à Dimitri</p>
     <p>La colonne de la mer se remplit, et le tableau est complet. Je laisse Dimitri conclure.</p>`,
   'f-grille': `<p class="qui">Dimitri</p>
-    <p>Merci Cédric. Les trois ressources font pratiquer les six mêmes démarches, avec un capteur dans la rue, des données climatiques pour la région et des modèles océaniques pour la mer. Vous pouvez donc choisir une ressource selon le niveau de vos élèves et le matériel dont vous disposez, sans renoncer à aucune de ces démarches.</p>
+    <p>Merci Cédric. Les trois ressources font pratiquer les cinq mêmes démarches, avec un capteur dans la rue, des données climatiques pour la région et des modèles océaniques pour la mer. Vous pouvez donc choisir une ressource selon le niveau de vos élèves et le matériel dont vous disposez, sans renoncer à aucune de ces démarches.</p>
     <p class="trou">[Quand les mots des cases seront choisis : une phrase sur une ou deux cases.]</p>`,
   'f-action': `<p class="qui">Dimitri</p>
     <p><span class="ap">À l'arrivée</span> Voici les trois ressources, avec pour chacune son niveau, sa durée et son matériel. <span class="trou">[Les QR codes, le jour même.]</span> Chaque équipe peut en choisir une et la tester en classe entre novembre et mai. La ressource sur l'air demande un capteur et une sortie, et les deux autres se font entièrement sur ordinateur.</p>

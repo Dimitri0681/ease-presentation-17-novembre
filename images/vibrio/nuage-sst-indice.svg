@@ -58,7 +58,6 @@
 <circle cx="699.7" cy="706.0" r="9" fill="#fff" stroke="#D62728" stroke-width="3.5"/>
 <circle cx="908.1" cy="706.0" r="9" fill="#fff" stroke="#D62728" stroke-width="3.5"/>
 <text x="896" y="626" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="bold" fill="#3A4652">eau sous 18 °C</text>
-<text x="924" y="626" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="bold" fill="#1F77B4">salinité au-dessus de 26</text>
 <line x1="245.0" x2="245.0" y1="800" y2="810" stroke="#3A4652" stroke-width="2"/>
 <text x="245.0" y="838" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="24" fill="#3A4652">7,5</text>
 <line x1="403.3" x2="403.3" y1="800" y2="810" stroke="#3A4652" stroke-width="2"/>
