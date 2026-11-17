@@ -1098,7 +1098,7 @@ const SLIDES = [
   { id: 's-titre', label: 'Titre', sec: 0, steps: 1,
     note: 'Reste à l\'écran pendant que les équipes s\'installent, hors des 30 minutes. Le chrono démarre au premier appui.' },
   { id: 's-zoom', label: 'One Health : le zoom jusqu\'à la salle', sec: 60, steps: 7,
-    note: 'Chaque appui avance d\'un arrêt : la Terre, l\'Europe, la Côte d\'Azur, Sophia Antipolis vue par satellite, le même cadre vu d\'avion, autour de l\'IPMC, l\'IPMC. Trois repères apparaissent en haut à droite : sur la Terre (étudier l\'environnement à différentes échelles), au passage aux photographies IGN (se rapprocher pour observer davantage de détails) et sur l\'IPMC (quelles données pouvons-nous mesurer ?).' },
+    note: 'Chaque appui avance d\'un arrêt : la Terre, l\'Europe, la Côte d\'Azur, Sophia Antipolis vue par satellite, le même cadre vu d\'avion, autour de l\'IPMC, l\'IPMC. Deux repères apparaissent en haut à droite : sur la Terre (étudier l\'environnement à différentes échelles) et au passage aux photographies IGN (se rapprocher pour observer davantage de détails).' },
   { id: 's-accroche', label: 'Accroche : le capteur dans la salle', sec: 30, steps: 1,
     note: 'Afficher l\'écran du téléphone (recopie). Si la recopie échoue, rester sur cette diapo : elle montre la capture de secours prise avant la rotation.' },
   { id: 's-sante', label: 'Santé environnementale : deux familles de risques', sec: 30, steps: 1,
@@ -1437,7 +1437,7 @@ function fmtWidth(km) {
 const zInstr = document.getElementById('z-instr'), zCredit = document.getElementById('z-credit');
 const zWidth = document.getElementById('z-width'), zPlace = document.getElementById('z-place'), zSwitch = document.getElementById('z-switch');
 const zCle = document.getElementById('z-cle');
-const Z_CLES = ['Étudier l\'environnement à différentes échelles', 'Se rapprocher pour observer davantage de détails', 'Et ici, quelles données pouvons-nous mesurer ?'];
+const Z_CLES = ['Étudier l\'environnement à différentes échelles', 'Se rapprocher pour observer davantage de détails'];
 let zCleVue = -1;
 let lastSrc = '';
 function zLabels(p) {
@@ -1453,7 +1453,7 @@ function zLabels(p) {
   }
   zWidth.innerHTML = p < 0.15 ? 'Diamètre de la Terre : 12 742 km' : '<i></i>Largeur de l\'image : ' + fmtWidth(widthKm(p));
   zSwitch.style.opacity = (p > 10.05 && p <= 11.001) ? 1 : 0;
-  const cle = p < 0.02 ? 0 : Math.abs(p - 11) < 0.02 ? 1 : p > 15.98 ? 2 : -1;
+  const cle = p < 0.02 ? 0 : Math.abs(p - 11) < 0.02 ? 1 : -1;
   if (cle >= 0 && cle !== zCleVue) { zCle.textContent = Z_CLES[cle]; zCleVue = cle; }
   zCle.style.opacity = cle >= 0 ? 1 : 0;
 }
