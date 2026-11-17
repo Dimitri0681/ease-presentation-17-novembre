@@ -74,7 +74,7 @@
   #z-width i::before, #z-width i::after { content: ""; position: absolute; top: -9px; height: 15px; border-left: 3px solid #fff; }
   #z-width i::before { left: 0; } #z-width i::after { right: 0; }
   #z-switch { left: 50%; top: 120px; transform: translateX(-50%); padding: 16px 30px; border-radius: 16px; background: linear-gradient(90deg, rgba(16,132,84,.92), rgba(16,132,84,.65)); text-shadow: none; font-size: 30px; font-weight: 600; opacity: 0; transition: opacity .5s; white-space: nowrap; }
-  #z-air { left: 50%; top: 120px; transform: translateX(-50%); padding: 16px 30px; border-radius: 16px; background: linear-gradient(90deg, rgba(9,48,113,.92), rgba(0,104,220,.70)); text-shadow: none; font-size: 30px; font-weight: 600; opacity: 0; transition: opacity .6s; white-space: nowrap; }
+  #z-cle { right: 50px; top: 44px; padding: 14px 26px; border-radius: 40px; background: linear-gradient(90deg, rgba(9,48,113,.88), rgba(0,104,220,.62)); text-shadow: none; font-size: 26px; font-weight: 700; opacity: 0; transition: opacity .6s; white-space: nowrap; }
   #z-credit { right: 24px; bottom: 16px; font-size: 14px; opacity: .8; max-width: 900px; text-align: right; }
 
   /* ---------- trois ressources ---------- */
@@ -613,7 +613,7 @@
     <canvas id="zc"></canvas>
     <div class="zlab" id="z-instr"></div>
     <div class="zlab" id="z-switch">Même cadre : 10 m par pixel, puis 20 cm par pixel</div>
-    <div class="zlab" id="z-air">Air : une valeur Copernicus pour environ 11&nbsp;×&nbsp;8&nbsp;km</div>
+    <div class="zlab" id="z-cle"></div>
     <div class="zlab" id="z-place"><div class="n"></div><div class="s"></div></div>
     <div class="zlab" id="z-width"></div>
     <div class="zlab" id="z-credit"></div>
@@ -1098,7 +1098,7 @@ const SLIDES = [
   { id: 's-titre', label: 'Titre', sec: 0, steps: 1,
     note: 'Reste à l\'écran pendant que les équipes s\'installent, hors des 30 minutes. Le chrono démarre au premier appui.' },
   { id: 's-zoom', label: 'One Health : le zoom jusqu\'à la salle', sec: 60, steps: 7,
-    note: 'Chaque appui avance d\'un arrêt : la Terre, l\'Europe, la Côte d\'Azur, Sophia Antipolis vue par satellite, le même cadre vu d\'avion, autour de l\'IPMC, l\'IPMC. À l\'arrivée sur l\'IPMC, l\'étiquette « Air : une valeur Copernicus pour environ 11 × 8 km » apparaît : c\'est la maille CAMS de la diapo 14, à peu près la largeur de l\'image de Sophia Antipolis (11 km).' },
+    note: 'Chaque appui avance d\'un arrêt : la Terre, l\'Europe, la Côte d\'Azur, Sophia Antipolis vue par satellite, le même cadre vu d\'avion, autour de l\'IPMC, l\'IPMC. Trois repères apparaissent en haut à droite : sur la Terre (étudier l\'environnement à différentes échelles), au passage aux photographies IGN (se rapprocher pour observer davantage de détails) et sur l\'IPMC (quelles données pouvons-nous mesurer ?).' },
   { id: 's-accroche', label: 'Accroche : le capteur dans la salle', sec: 30, steps: 1,
     note: 'Afficher l\'écran du téléphone (recopie). Si la recopie échoue, rester sur cette diapo : elle montre la capture de secours prise avant la rotation.' },
   { id: 's-sante', label: 'Santé environnementale : deux familles de risques', sec: 30, steps: 1,
@@ -1190,17 +1190,20 @@ const ORAL = {   // texte oral validé, diapo par diapo
   's-titre': `<p class="qui">Dimitri · pendant l'installation, hors chrono</p>
     <p>Bonjour à tous. Installez-vous, nous commençons dans un instant.</p>`,
   's-accroche': `<p class="qui">Dimitri</p>
-    <p>Justement, depuis que vous êtes entrés dans cette salle, ce petit boîtier mesure l'air que vous respirez, et je vais vous montrer ce qu'il voit en ce moment.</p>
+    <p>Depuis que vous êtes entrés dans cette salle, ce petit boîtier mesure l'air que vous respirez, et je vais vous montrer ce qu'il voit en ce moment.</p>
     <p class="jeu">[Afficher la page du boîtier.]</p>
     <p>Pour les particules fines, il affiche [valeur] microgrammes par mètre cube en PM2,5 et [valeur] en PM10. Ces valeurs décrivent l'air de cette pièce, à l'endroit où le boîtier est posé.</p>`,
   's-zoom': `<p class="qui">Dimitri</p>
-    <p><span class="ap">Appui 1</span> Cette photo de la Terre a été prise par un satellite de la NASA, à un million et demi de kilomètres. Le point blanc marque l'endroit où nous sommes.</p>
-    <p><span class="ap">Appui 2</span> Voici l'Europe, vue par le satellite Sentinel-2 du programme Copernicus.</p>
-    <p><span class="ap">Appuis 3 et 4</span> <span class="jeu">(silence, les images avancent)</span></p>
-    <p><span class="ap">Appui 5</span> Voici le même cadre photographié d'avion par l'IGN, avec vingt centimètres par pixel au lieu de dix mètres.</p>
+    <p><span class="ap">Appui 1</span> Aujourd'hui, nous allons vous présenter trois ressources qui permettent aux élèves d'étudier leur environnement, mais à des échelles très différentes.</p>
+    <p>Pour commencer, je vous propose de visualiser ce que signifie changer d'échelle.</p>
+    <p>Nous partons de la Terre, photographiée par un satellite de la NASA, à un million et demi de kilomètres.</p>
+    <p><span class="ap">Appuis 2 à 4</span> Nous nous rapprochons progressivement de l'Europe, de la Côte d'Azur, puis de Sophia Antipolis.</p>
+    <p><span class="ap">Appui 5</span> Nous passons ensuite aux photographies aériennes de l'IGN. En nous rapprochant, nous distinguons de plus en plus de détails : les bâtiments, les routes, les espaces végétalisés.</p>
     <p><span class="ap">Appui 6</span> <span class="jeu">(silence)</span></p>
-    <p><span class="ap">Appui 7</span> Nous voici dans ce bâtiment. L'approche One Health relie la santé des personnes, celle des animaux et celle des milieux, à toutes ces échelles.</p>
-    <p>Les images nous montrent ce bâtiment à 20 centimètres près. Pour l'air, la précision n'est pas la même : Copernicus estime les particules fines avec une seule valeur pour un carré d'environ 11 kilomètres sur 8, à peu près toute l'image de Sophia Antipolis que vous venez de voir. Alors, que respirons-nous dans cette salle ? Pour le savoir, il faut mesurer ici.</p>`,
+    <p><span class="ap">Appui 7</span> Et nous voici ici, dans le bâtiment où nous sommes réunis.</p>
+    <p>Nous avons observé notre environnement à différentes échelles.</p>
+    <p>Mais pour le caractériser, les images ne suffisent pas toujours. Il nous faut aussi des mesures de paramètres environnementaux.</p>
+    <p><b>Et justement, nous avons commencé à en enregistrer dans cette salle.</b></p>`,
   's-sante': `<p class="qui">Dimitri</p>
     <p>Nous venons de mesurer des particules fines dans l'air de cette salle.</p>
     <p>Mais pourquoi ces mesures nous intéressent-elles ?</p>
@@ -1433,7 +1436,9 @@ function fmtWidth(km) {
 }
 const zInstr = document.getElementById('z-instr'), zCredit = document.getElementById('z-credit');
 const zWidth = document.getElementById('z-width'), zPlace = document.getElementById('z-place'), zSwitch = document.getElementById('z-switch');
-const zAir = document.getElementById('z-air');
+const zCle = document.getElementById('z-cle');
+const Z_CLES = ['Étudier l\'environnement à différentes échelles', 'Se rapprocher pour observer davantage de détails', 'Et ici, quelles données pouvons-nous mesurer ?'];
+let zCleVue = -1;
 let lastSrc = '';
 function zLabels(p) {
   const src = p < 0.8 ? 'epic' : (p < 10.5 ? 's2' : 'ign');
@@ -1448,7 +1453,9 @@ function zLabels(p) {
   }
   zWidth.innerHTML = p < 0.15 ? 'Diamètre de la Terre : 12 742 km' : '<i></i>Largeur de l\'image : ' + fmtWidth(widthKm(p));
   zSwitch.style.opacity = (p > 10.05 && p <= 11.001) ? 1 : 0;
-  zAir.style.opacity = p > 15.98 ? 1 : 0;
+  const cle = p < 0.02 ? 0 : Math.abs(p - 11) < 0.02 ? 1 : p > 15.98 ? 2 : -1;
+  if (cle >= 0 && cle !== zCleVue) { zCle.textContent = Z_CLES[cle]; zCleVue = cle; }
+  zCle.style.opacity = cle >= 0 ? 1 : 0;
 }
 function setPlace(k, show) {
   zPlace.querySelector('.n').textContent = STOPS[k].name;
