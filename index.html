@@ -101,9 +101,13 @@
   #f-synthese .carte .txt { padding: 24px 32px; }
   #f-synthese .carte .echelle { font-size: 44px; }
   #f-synthese .carte .action { font-size: 33px; font-weight: 700; color: var(--nuit); margin-top: 8px; line-height: 1.2; }
-  #f-synthese .message { position: absolute; left: 70px; right: 70px; top: 602px; padding: 30px 36px; border-radius: 24px; text-align: center; background: linear-gradient(90deg, #DCEBF6, #F3F8FC); }
-  #f-synthese .message .m1 { font-size: 54px; font-weight: 700; color: var(--nuit); letter-spacing: -.01em; line-height: 1.15; }
-  #f-synthese .message .m2 { font-size: 30px; font-weight: 600; color: var(--gris); margin-top: 14px; }
+  #f-synthese .bilan { position: absolute; left: 70px; right: 70px; top: 598px; padding: 32px 48px; border-radius: 24px; background: linear-gradient(90deg, #DCEBF6, #F3F8FC); }
+  #f-synthese .bilan ul { margin: 0; padding: 0; list-style: none; }
+  #f-synthese .bilan li { position: relative; padding-left: 46px; font-size: 42px; font-weight: 600; color: var(--nuit); line-height: 1.25; letter-spacing: -.01em; }
+  #f-synthese .bilan li + li { margin-top: 20px; }
+  #f-synthese .bilan li::before { content: ""; position: absolute; left: 4px; top: .42em; width: 18px; height: 18px; border-radius: 50%; background: var(--bleu); }
+  #f-synthese .bilan li.fort { font-weight: 700; }
+  #f-synthese .bilan li.fort::before { background: var(--vert); }
 
   /* ---------- grille ---------- */
   #s-grille { background: linear-gradient(90deg, #EAF3FA 0%, #FFFFFF 75%); }
@@ -1021,6 +1025,7 @@
 
   <!-- ===================== CLÔTURE (3 min) ===================== -->
   <section class="slide" id="f-synthese">
+    <div class="chip"><b>Bilan</b> avec ces ressources :</div>
     <div class="cartes">
       <div class="carte">
         <div class="img" style="background-image:url('images/zoom/ign18.jpg')"></div>
@@ -1035,7 +1040,7 @@
         <div class="txt"><div class="echelle">La mer</div><div class="action">Interroger les modèles</div></div>
       </div>
     </div>
-    <div class="message" data-step="1"><div class="m1">Trois échelles, une même démarche scientifique</div><div class="m2">Des données à une recommandation argumentée</div></div>
+    <div class="bilan"><ul><li>Trois milieux, trois échelles différentes</li><li class="fort">Mais une même démarche scientifique</li></ul></div>
   </section>
 
   <section class="slide" id="f-action">
@@ -1148,8 +1153,8 @@ const SLIDES = [
     note: 'Bulletin écrit lors de l\'activité faite en élève. Les niveaux sont des propositions d\'élève ; ÉLEVÉ pour la Gironde désigne une favorabilité calculée élevée, pas une alerte officielle. Sète et Thau sont NON ÉVALUÉ pour deux raisons : à Sète, les données existent mais le seuil de salinité bloque le calcul de l\'indice ; à Thau, les outils européens n\'ont pas de données. Cellule de crise : ressource p. 12.' },
   { id: 'g-vibrio', label: 'La grille : colonne de la mer', sec: 30, steps: 1,
     note: 'Les mots de chaque case sont choisis ; la ligne « Caractériser un événement » a été supprimée.' },
-  { id: 'f-synthese', label: 'Clôture : trois échelles, une même démarche', sec: 60, steps: 2,
-    note: 'Les trois cartes apparaissent à l\'arrivée. Appui 1 sur « Mais derrière ces différences » : le message apparaît. La grille complète reste sur la diapo précédente.' },
+  { id: 'f-synthese', label: 'Clôture : trois échelles, une même démarche', sec: 60, steps: 1,
+    note: 'Les trois cartes et le bilan sont affichés dès l\'arrivée, sans appui. La grille complète reste sur la diapo précédente.' },
   { id: 'f-action', label: 'Clôture : à vous de tester', sec: 90, steps: 2,
     note: 'Appui 1 : les quatre retours. Pas de QR code sur la diapo : comment les équipes accèdent aux ressources et à qui elles envoient les retours, à vérifier avec Fatima avant la présentation (les liens Calaméo reçus contiennent une clé d\'accès privée, authid). Rappeler que les productions d\'élèves transmises doivent être anonymisées.' },
   { id: 'f-fin', label: 'Clôture : et après', sec: 30, steps: 1,
@@ -1299,7 +1304,7 @@ const ORAL = {   // texte oral validé, diapo par diapo
     <p>La colonne de la mer se remplit, et le tableau est complet. Je laisse Dimitri conclure.</p>`,
   'f-synthese': `<p class="qui">Dimitri</p>
     <p><span class="ap">À l'arrivée</span> Merci Cédric. Nous venons de parcourir trois milieux, avec trois façons différentes de travailler. Dans la rue, les élèves réalisent leurs propres mesures. À l'échelle régionale, ils croisent des données climatiques, entomologiques et sanitaires. En mer, ils interrogent un modèle et découvrent les limites de ses résultats.</p>
-    <p><span class="ap">Appui 1</span> Mais derrière ces différences, la démarche scientifique reste la même : comprendre les données, comparer, discuter leur fiabilité, changer d'échelle et formuler une recommandation. C'est ce fil conducteur qui relie nos trois ressources, malgré des outils et des situations très différents.</p>`,
+    <p>Mais derrière ces différences, la démarche scientifique reste la même : comprendre les données, comparer, discuter leur fiabilité, changer d'échelle et formuler une recommandation. C'est ce fil conducteur qui relie nos trois ressources, malgré des outils et des situations très différents.</p>`,
   'f-action': `<p class="qui">Dimitri</p>
     <p>Nous arrivons maintenant à l'étape la plus importante pour la suite du projet : <b>l'expérimentation dans vos classes</b>.</p>
     <p>Vous avez découvert trois ressources. L'idée n'est pas de toutes les tester, mais d'en choisir une qui corresponde à votre niveau, à votre matériel et au temps dont vous disposez.</p>
