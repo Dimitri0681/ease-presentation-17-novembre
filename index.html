@@ -311,7 +311,9 @@
 
   /* Capteurs 6 : trois échelles */
   #k-echelles .k13-sources { position: absolute; left: 60px; right: 60px; top: 112px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
-  #k-echelles .k13-s { padding: 20px 24px 18px; border-radius: 18px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); }
+  #k-echelles .k13-s { position: relative; padding: 20px 24px 18px; border-radius: 18px; background: linear-gradient(90deg, #DCEBF6, #F5F9FC); }
+  #k-echelles .k13-s .ok { position: absolute; top: 16px; right: 18px; width: 46px; height: 46px; border-radius: 50%; background: var(--vert); box-shadow: 0 6px 16px rgba(16,132,84,.30); display: grid; place-items: center; }
+  #k-echelles .k13-s .ok svg { width: 26px; height: 26px; }
   #k-echelles .k13-s .a { font-size: 16px; letter-spacing: .12em; text-transform: uppercase; color: var(--bleu); font-weight: 700; }
   #k-echelles .k13-s .t { font-size: 28px; font-weight: 700; color: var(--nuit); margin-top: 4px; line-height: 1.2; }
   #k-echelles .k13-s dl { display: grid; grid-template-columns: 96px 1fr; gap: 8px 10px; margin: 14px 0 0; font-size: 20px; line-height: 1.3; }
@@ -774,9 +776,9 @@
   </section>
 
   <section class="slide bloc" id="k-echelles">
-    <div class="chip"><b>La rue</b> · Trois sources, trois échelles</div>
+    <div class="chip"><b>La rue</b> · Trois sources : comment replacer les mesures dans un contexte plus large ?</div>
     <div class="k13-sources">
-      <div class="k13-s"><div class="a">Mesure portée</div><div class="t">Le boîtier</div><dl><dt>Où ?</dt><dd>Un point précis du parcours.</dd><dt>Quand ?</dt><dd>Un arrêt de 3 minutes.</dd><dt>Résultat</dt><dd>Une concentration locale estimée de PM2,5.</dd></dl></div>
+      <div class="k13-s"><div class="ok" aria-label="Notre point de départ"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div class="a">Mesure portée</div><div class="t">Le boîtier</div><dl><dt>Où ?</dt><dd>Un point précis du parcours.</dd><dt>Quand ?</dt><dd>Un arrêt de 3 minutes.</dd><dt>Résultat</dt><dd>Une concentration locale estimée de PM2,5.</dd></dl></div>
       <div class="k13-s"><div class="a">Mesure fixe</div><div class="t">La station réglementaire</div><dl><dt>Où ?</dt><dd>Un site fixe, parfois éloigné.</dd><dt>Quand ?</dt><dd>Selon le pas de temps des données.</dd><dt>Résultat</dt><dd>Une mesure contrôlée de PM2,5.</dd></dl></div>
       <div class="k13-s"><div class="a">Modèle régional</div><div class="t">CAMS, Copernicus</div><dl><dt>Où ?</dt><dd>Une maille de plusieurs kilomètres.</dd><dt>Quand ?</dt><dd>Selon le pas de temps du modèle.</dd><dt>Résultat</dt><dd>Une estimation modélisée des PM2,5.</dd></dl></div>
     </div>
